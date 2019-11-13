@@ -1,0 +1,403 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* web_sms_manage
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e-20191022\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-07 18:09+0000\n"
+"PO-Revision-Date: 2019-11-07 18:09+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "<span id=\"label\">&gt;&gt;</span>\n"
+"                    <span id=\"labelTip\">请按住滑块,拖动到最右边</span>"
+msgstr "<span id=\"label\">&gt;&gt;</span>\n"
+"                    <span id=\"labelTip\">Please hold down the slider and drag to the far right</span>"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__active
+msgid "Active"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__app_key
+msgid "App Key"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,help:web_sms_manage.field_sms_service_config__app_key
+msgid "App Key是用来校验短信发送请求合法性的密码"
+msgstr "App Key is a password used to verify the validity of a short message sending request."
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__app_id
+msgid "AppID标识"
+msgstr "AppID Identification"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__create_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__create_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__create_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__create_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__create_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__create_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__display_name
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__display_name
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__display_name
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__id
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__id
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__id
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__id
+msgid "ID"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message____last_update
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config____last_update
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template____last_update
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__write_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__write_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__write_uid
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__write_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__write_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__write_date
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "Odoo账号登录"
+msgstr "Odoo account login"
+
+#. module: web_sms_manage
+#: model:ir.module.category,name:web_sms_manage.web_sms_manage_groups
+msgid "SMS-短信服务"
+msgstr "SMS Messaging Service"
+
+#. module: web_sms_manage
+#: model:ir.model,name:web_sms_manage.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__priority
+msgid "优先级(1-10)"
+msgstr "Priority (1-10)"
+
+#. module: web_sms_manage
+#: selection:sms.service.template,used_for:0
+msgid "修改密码通知模板"
+msgstr "Change password notification template"
+
+#. module: web_sms_manage
+#: selection:sms.service.config,state:0
+#: selection:sms.service.template,used_for:0
+msgid "关闭"
+msgstr "Shut down"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_service_config_form_view
+msgid "关闭服务"
+msgstr "Out of service"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__send_time
+msgid "发送时间"
+msgstr "Sending Time"
+
+#. module: web_sms_manage
+#: model:ir.actions.act_window,name:web_sms_manage.send_sms_message_action
+#: model:ir.model,name:web_sms_manage.model_send_sms_message
+#: model:ir.ui.menu,name:web_sms_manage.send_sms_message_menu
+msgid "发送通知短信"
+msgstr "Send notification SMS"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "发送验证码"
+msgstr "Send the verification code"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.send_sms_message_form_view
+msgid "取消"
+msgstr "Cancel"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__name
+msgid "名称"
+msgstr "Name"
+
+#. module: web_sms_manage
+#: selection:sms.service.config,state:0
+msgid "启用"
+msgstr "Enable"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__emp_ids
+msgid "员工"
+msgstr "Employee"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_verification_record_search
+#: selection:sms.verification.record,state:0
+msgid "已使用"
+msgstr "Already started using"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__sms_type
+msgid "平台类型"
+msgstr "Platform type"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_service_config_form_view
+msgid "开启服务"
+msgstr "Open service"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__end_time
+msgid "截至时间"
+msgstr "Final time"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "手机号"
+msgstr "Phone number"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__phone
+msgid "手机号码"
+msgstr "Mobile Number"
+
+#. module: web_sms_manage
+#: model:auth.oauth.provider,body:web_sms_manage.provider_sms
+msgid "手机验证码登陆"
+msgstr "Mobile verification code login"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.send_sms_message_form_view
+msgid "收信人..."
+msgstr "Receiving information person..."
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__timeout
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__timeout
+msgid "有效时长(分钟)"
+msgstr "Effective duration (minutes)"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_service_config_form_view
+msgid "服务名称..."
+msgstr "service name..."
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_verification_record_search
+#: selection:sms.verification.record,state:0
+msgid "未使用"
+msgstr "Unused"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "未收到验证码"
+msgstr "Did not receive verification code"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__template_id
+msgid "模板Id"
+msgstr "Template ID"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__used_for
+msgid "模板用于"
+msgstr "Template Use"
+
+#. module: web_sms_manage
+#: selection:sms.service.template,used_for:0
+msgid "注册时发送验证码"
+msgstr "Send verification code when registering"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_send_sms_message__message
+msgid "消息内容"
+msgstr "Message content"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__state
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__state
+msgid "状态"
+msgstr "Status"
+
+#. module: web_sms_manage
+#: selection:sms.service.template,used_for:0
+msgid "用于Odoo通知消息"
+msgstr "Used for Odoo Notification Messages"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__user_id
+msgid "用户"
+msgstr "User"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "登 录"
+msgstr "login"
+
+#. module: web_sms_manage
+#: selection:sms.service.template,used_for:0
+msgid "登录时发送验证码"
+msgstr "Send verification code when logging in"
+
+#. module: web_sms_manage
+#: model:ir.ui.menu,name:web_sms_manage.main_menu
+msgid "短信"
+msgstr "SMS"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__service_id
+msgid "短信服务"
+msgstr "SMS Service"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__service_id
+msgid "短信服务平台"
+msgstr "SMS Service platform"
+
+#. module: web_sms_manage
+#: model:ir.model,name:web_sms_manage.model_sms_service_template
+msgid "短信服务模板"
+msgstr "SMS service template"
+
+#. module: web_sms_manage
+#: model:ir.actions.act_window,name:web_sms_manage.sms_service_config_action
+#: model:ir.model,name:web_sms_manage.model_sms_service_config
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_service_config_search
+msgid "短信服务配置"
+msgstr "SMS Service Configuration"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__sid
+msgid "短信标识 ID"
+msgstr "SMS Identification ID"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__template_ids
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_service_config_form_view
+msgid "短信模板"
+msgstr "SMS template"
+
+#. module: web_sms_manage
+#: model:ir.ui.menu,name:web_sms_manage.sms_service_config_menu
+msgid "短信模板配置"
+msgstr "SMS Template Configuration"
+
+#. module: web_sms_manage
+#: model:ir.actions.act_window,name:web_sms_manage.sms_verification_record_action
+#: model:ir.model,name:web_sms_manage.model_sms_verification_record
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.sms_verification_record_search
+msgid "短信验证码记录"
+msgstr "SMS verification code record"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.send_sms_message_form_view
+msgid "立即发送"
+msgstr "Send immediately"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__sign_name
+msgid "签名名称"
+msgstr "Signature"
+
+#. module: web_sms_manage
+#: model:res.groups,name:web_sms_manage.manage_groups
+msgid "管理员"
+msgstr "Administrator"
+
+#. module: web_sms_manage
+#: selection:sms.service.config,sms_type:0
+msgid "腾讯云"
+msgstr "Tencent Cloud"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,help:web_sms_manage.field_send_sms_message__message
+msgid "要发送的消息内容"
+msgstr "The content of the message to be sent"
+
+#. module: web_sms_manage
+#: model:ir.ui.menu,name:web_sms_manage.sms_configure_menu
+msgid "设置"
+msgstr "Setting"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_template__name
+msgid "说明"
+msgstr "Description"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.send_sms_message_form_view
+msgid "请输入发送内容..."
+msgstr "Please enter the content to send..."
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "请输入手机号码（仅支持国内）"
+msgstr "Please enter your mobile number (China only)"
+
+#. module: web_sms_manage
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "请输入收到的验证码"
+msgstr "Please enter the verification code you received."
+
+#. module: web_sms_manage
+#: selection:sms.service.config,sms_type:0
+msgid "阿里云"
+msgstr "Ali Cloud"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_verification_record__code
+#: model_terms:ir.ui.view,arch_db:web_sms_manage.login_signup
+msgid "验证码"
+msgstr "Verification code"
+
+#. module: web_sms_manage
+#: model:ir.ui.menu,name:web_sms_manage.sms_verification_record_menu
+msgid "验证码记录"
+msgstr "Verification Code Record"
+
+#. module: web_sms_manage
+#: model:ir.model.fields,field_description:web_sms_manage.field_sms_service_config__code_length
+msgid "验证码长度"
+msgstr "Verification code length"
+
