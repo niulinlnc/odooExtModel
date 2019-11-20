@@ -66,11 +66,8 @@ class WageEmpAttendanceAnnal(models.TransientModel):
             raise UserError("暂未实现！！！")
         elif self.soure_type == 'and':
             raise UserError("暂未实现！！！")
-
         # 计算后重载考勤统计列表
-        action = self.env.ref('odoo_wage_manage.wage_employee_attendance_annal_action')
-        action_dict = action.read()[0]
-        return action_dict
+        return {'type': 'ir.actions.act_window_close'}
 
     def attendance_total_cal_dingding(self, emp_list, start_date, end_date):
         """

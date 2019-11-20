@@ -151,8 +151,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                     'statement_ids': [(2, payrolls.statement_ids.ids)],
                 })
                 payrolls.write(payroll_data)
-        action = self.env.ref('odoo_wage_manage.wage_payroll_accounting_action')
-        return action.read()[0]
+        return {'type': 'ir.actions.act_window_close'}
 
     # 计算个税
     @api.model

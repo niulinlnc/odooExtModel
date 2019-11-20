@@ -35,7 +35,14 @@ odoo.define('wage.employee.attendance.annal_js_class.tree.button', function (req
                         target: 'new',
                         views: [[false, 'form']],
                         context: [],
-                    });
+                    },{
+                        on_reverse_breadcrumb: function () {
+                            self.reload();
+                        },
+                          on_close: function () {
+                            self.reload();
+                        }
+                     });
                 });
             }
         }

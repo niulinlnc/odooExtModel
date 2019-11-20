@@ -71,8 +71,7 @@ class ComputeWageInsuredMonthlyStatement(models.TransientModel):
             else:
                 self.env['wage.insured.monthly.statement'].create(monthly_data)
         logging.info(">>>End生成员工月结账单")
-        action = self.env.ref('odoo_wage_manage.wage_insured_monthly_statement_action')
-        return action.read()[0]
+        return {'type': 'ir.actions.act_window_close'}
 
     @api.onchange('monthly_date')
     def _onchagnge_monthly_date(self):

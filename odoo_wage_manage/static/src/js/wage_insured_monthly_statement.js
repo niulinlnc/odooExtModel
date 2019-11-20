@@ -35,7 +35,14 @@ odoo.define('odoo.wage.insured.monthly.statement.tree.button', function (require
                         target: 'new',
                         views: [[false, 'form']],
                         context: [],
-                    });
+                    },{
+                        on_reverse_breadcrumb: function () {
+                            self.reload();
+                        },
+                          on_close: function () {
+                            self.reload();
+                        }
+                     });
                 });
             }
         }

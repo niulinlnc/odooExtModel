@@ -73,8 +73,7 @@ class WageArchivesTransient(models.TransientModel):
                 archives.write({'line_ids': [(2, archives.line_ids.ids)]})
                 archives.write(archives_data)
         logging.info(">>>End批量初始化档案")
-        action = self.env.ref('odoo_wage_manage.wage_archives_action')
-        return action.read()[0]
+        return {'type': 'ir.actions.act_window_close'}
 
     @api.model
     def get_info_by_dingding_hrm(self, archives_data, emp):
