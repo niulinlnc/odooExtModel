@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<template id="template" xml:space="preserve">
+
+    <t t-name="ListView.insured_monthly_statement_but">
+        <button type="button" class="btn btn-primary insured_monthly_statement_class" groups="odoo_social_security.manage_groups">
+            新建月结账单
+        </button>
+    </t>
+    <t t-extend="ListView.buttons" t-name="ListView.insured_monthly_statement_buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="replace">
+            <t t-call="ListView.insured_monthly_statement_but"/>
+            <t t-js="ctx">
+                if (window.odoo._modules.indexOf("base_import") >= 0) {
+                    r.push(context.engine.tools.call(context, 'ImportView.import_button', dict));
+                };
+            </t>
+        </t>
+    </t>
+
+</template>
+
+

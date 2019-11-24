@@ -1,2 +1,7 @@
-# odooWageManage
-odoo薪酬管理
+# 拓展odoo平台的模块
+
+
+
+
+
+

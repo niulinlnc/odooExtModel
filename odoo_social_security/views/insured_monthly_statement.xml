@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+
+    <record id="insured_monthly_statement_tree_view" model="ir.ui.view">
+        <field name="name">月结账单</field>
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <tree default_order="id" js_class="insured_monthly_statement_tree_class">
+                <field name="company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="monthly_date"/>
+                <field name="date_code"/>
+                <field name="payment_method"/>
+                <field name="personal_sum"/>
+                <field name="company_sum"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="insured_monthly_statement_form_view" model="ir.ui.view">
+        <field name="name">月结账单</field>
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" confirm="确认归档本记录，你想继续吗？"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h2>
+                            <field name="name" readonly="1" placeholder="根据员工和日期生成name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="department_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                        </group>
+                        <group>
+                            <field name="monthly_date" required="1"/>
+                            <field name="date_code" readonly="1"/>
+                            <field name="payment_method" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="社保明细">
+                            <field name="line_ids">
+                                <tree editable="bottom" default_order="sequence">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="insurance_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                                    <field name="base_number" sum="base_number"/>
+                                    <field name="company_pay" sum="company_pay"/>
+                                    <field name="pension_pay" sum="pension_pay"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="公积金明细">
+                            <field name="provident_ids">
+                                <tree editable="bottom" default_order="sequence">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="insurance_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                                    <field name="base_number" sum="base_number"/>
+                                    <field name="company_pay" sum="company_pay"/>
+                                    <field name="pension_pay" sum="pension_pay"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group string="合计" col="2">
+                        <group>
+                            <field name="company_sum"/>
+                        </group>
+                        <group>
+                            <field name="personal_sum"/>
+                        </group>
+                        <field name="notes" placeholder="可以填写备注信息..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="insured_monthly_statement_view_kanban" model="ir.ui.view">
+        <field name="name">insured.monthly.statement.kanban</field>
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban" >
+                <field name="company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="monthly_date"/>
+                <field name="date_code"/>
+                <field name="payment_method"/>
+                <field name="personal_sum"/>
+                <field name="company_sum"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('insured.monthly.statement', 'image', record.employee_id.raw_value)" alt="图标"
+                                    class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="date_code"/>
+                                </p>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <img t-att-src="kanban_image('hr.employee', 'image_1920', record.employee_id.raw_value)" t-att-title="record.employee_id.value" t-att-alt="record.employee_id.value" class="oe_kanban_avatar"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+     <record id="insured_monthly_statement_calendar" model="ir.ui.view">
+        <field name="name">insured.monthly.statement.calendar</field>
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <calendar string="月结账单" date_start="monthly_date" color="employee_id">
+                <field name="employee_id"/>
+                <field name="personal_sum"/>
+                <field name="company_sum"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="insured_monthly_statement_pivot">
+        <field name="name">insured.monthly.statement.pivot</field>
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <pivot string="月结账单">
+                <field name="monthly_date" type="row"/>
+                <field name="department_id" type="row"/>
+                <field name="employee_id" type="row"/>
+                <field name="payment_method" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="insured_monthly_statement_action">
+        <field name="name">月结账单</field>
+        <field name="res_model">insured.monthly.statement</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="context">{'search_default_group_by_date_code': True, 'search_default_domain_year': True, }</field>
+    </record>
+
+    <record model="ir.ui.view" id="insured_monthly_statement_search">
+        <field name="model">insured.monthly.statement</field>
+        <field name="arch" type="xml">
+            <search string="月结账单">
+                <field name="company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="monthly_date"/>
+                <field name="date_code"/>
+                <field name="payment_method"/>
+                <separator/>
+                <filter string="近三月内" name="domain_3month" domain="[('monthly_date','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('monthly_date','&gt;=', (context_today()-relativedelta(months=3)).strftime('%Y-%m-%d') )]"/>
+                <filter string="近半年内" name="domain_6month" domain="[('monthly_date','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('monthly_date','&gt;=', (context_today()-relativedelta(months=6)).strftime('%Y-%m-%d') )]"/>
+                <filter string="当前年内" name="domain_year" domain="[('monthly_date','&lt;=', time.strftime('%%Y-12-31')),('monthly_date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <separator/>
+                <group expand="0" string="分类">
+                    <filter name="group_by_date_code" string="期间" context="{'group_by':'date_code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="insured_monthly_statement_menu" name="月结账单" parent="root_menu" sequence="3" action="insured_monthly_statement_action"/>
+
+</odoo>

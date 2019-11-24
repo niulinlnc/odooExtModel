@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_insured_scheme_insurance,insured.scheme.insurance,model_insured_scheme_insurance,odoo_social_security.user_groups,1,0,0,0
+access_insured_scheme_insurance_manage,insured.scheme.insurance.manage,model_insured_scheme_insurance,odoo_social_security.manage_groups,1,1,1,1
+access_provident_fund_kind,provident.fund.kind,model_provident_fund_kind,odoo_social_security.user_groups,1,0,0,0
+access_provident_fund_kind_manage,provident.fund.kind.manage,model_provident_fund_kind,odoo_social_security.manage_groups,1,1,1,1
+access_insured_scheme,insured.scheme,model_insured_scheme,odoo_social_security.user_groups,1,0,0,0
+access_insured_scheme_manage,insured.scheme.manage,model_insured_scheme,odoo_social_security.manage_groups,1,1,1,1
+access_insured_scheme_line,insured.scheme.line,model_insured_scheme_line,odoo_social_security.user_groups,1,0,0,0
+access_insured_scheme_line_manage,insured.scheme.line.manage,model_insured_scheme_line,odoo_social_security.manage_groups,1,1,1,1
+access_insured_scheme_employee,insured.scheme.employee,model_insured_scheme_employee,odoo_social_security.user_groups,1,0,0,0
+access_insured_scheme_employee_manage,insured.scheme.employee.manage,model_insured_scheme_employee,odoo_social_security.manage_groups,1,1,1,1
+access_insured_monthly_statement,insured.monthly.statement,model_insured_monthly_statement,odoo_social_security.user_groups,1,0,0,0
+access_insured_monthly_statement_manage,insured.monthly.statement.manage,model_insured_monthly_statement,odoo_social_security.manage_groups,1,1,1,1
+access_insured_monthly_statement_line,insured.monthly.statement.line,model_insured_monthly_statement_line,odoo_social_security.user_groups,1,0,0,0
+access_insured_monthly_statement_line_manage,insured.monthly.statement.line.manage,model_insured_monthly_statement_line,odoo_social_security.manage_groups,1,1,1,1
+access_insured_scheme_provident_line,insured.scheme.provident.line,model_insured_scheme_provident_line,odoo_social_security.user_groups,1,1,1,1
+access_insured_monthly_provident_line,insured.monthly.provident.line,model_insured_monthly_provident_line,odoo_social_security.user_groups,1,1,1,1
