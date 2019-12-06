@@ -29,7 +29,7 @@ limitations under the License.
                     </group>
                 </group>
                 <group>
-                    <field name="emp_ids" widget="many2many_tags" placeholder="选择员工..."  required="1"/>
+                    <field name="emp_ids" widget="many2many_tags" placeholder="选择员工..."  required="1" options='{"no_edit": "1","no_create": "1"}'/>
                 </group>
                 <footer>
                     <button string="初始化" name="init_employee_tax_details" type="object" class="oe_highlight"/>

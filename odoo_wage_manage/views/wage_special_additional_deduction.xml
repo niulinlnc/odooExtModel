@@ -41,7 +41,7 @@ limitations under the License.
             <form>
                 <group>
                     <group>
-                        <field name="employee_id"/>
+                        <field name="employee_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                         <field name="start_date"/>
                         <field name="end_date"/>
                         <field name="date_code" readonly="1"/>

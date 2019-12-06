@@ -55,11 +55,11 @@ limitations under the License.
                     </div>
                     <group col="2">
                         <group>
-                            <field name="company_id" required="1"/>
-                            <field name="employee_id" required="1"/>
+                            <field name="company_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                             <field name="employee_code"/>
-                            <field name="department_id"/>
-                            <field name="job_id"/>
+                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                         </group>
                         <group>
                             <field name="employee_type"/>
@@ -82,7 +82,7 @@ limitations under the License.
                             <field name="line_ids">
                                 <tree editable="bottom" default_order="sequence">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="structure_id" required="1"/>
+                                    <field name="structure_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                                     <field name="wage_amount" required="1"/>
                                 </tree>
                             </field>
@@ -94,8 +94,8 @@ limitations under the License.
                                     <field name="accountBank"/>
                                 </group>
                                 <group>
-                                    <field name="payroll_company"/>
-                                    <field name="household_id"/>
+                                    <field name="payroll_company" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                                    <field name="household_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                                 </group>
                             </group>
                         </page>

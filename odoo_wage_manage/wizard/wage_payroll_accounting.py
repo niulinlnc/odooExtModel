@@ -50,7 +50,6 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 wage_date = str(res.wage_date)
                 res.date_code = "{}/{}".format(wage_date[:4], wage_date[5:7])
 
-    @api.multi
     def compute_payroll_accounting(self):
         """
         计算薪资
@@ -91,7 +90,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 performance_ids, performance_amount_sum = performance.get_emp_performance_list()
             # 获取社保月结账单
             domain = [('employee_id', '=', emp.id), ('date_code', '=', date_code)]
-            statements = self.env['wage.insured.monthly.statement'].search(domain, limit=1)
+            statements = self.env['insured.monthly.statement'].search(domain, limit=1)
             if statements:
                 statement_ids = statements.get_employee_monthly_statement_line()
             payroll_data.update({
@@ -322,7 +321,6 @@ class PayrollAccountingToPayslipTransient(models.TransientModel):
                 start_date = str(res.start_date)
                 res.date_code = "{}/{}".format(start_date[:4], start_date[5:7])
 
-    @api.multi
     def create_employee_payslip(self):
         """
         生成工资条
@@ -388,7 +386,6 @@ class SendPayrollAccountingToPayslipEmailTransient(models.TransientModel):
                 wage_date = str(res.wage_date)
                 res.date_code = "{}/{}".format(wage_date[:4], wage_date[5:7])
 
-    @api.multi
     def send_email_now(self):
         """
         批量发送核算明细至员工email,注意不是立即发送，通过邮件：EMail队列管理器进行发送

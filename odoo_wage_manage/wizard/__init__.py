@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###################################################################################
-from . import wage_insured_monthly_statement
+
 from . import wage_archives
 from . import wage_payroll_accounting
 from . import wage_employee_tax_details

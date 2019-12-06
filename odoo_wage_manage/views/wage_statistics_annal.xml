@@ -46,9 +46,9 @@ limitations under the License.
                 <sheet>
                     <group>
                         <group string="员工信息">
-                            <field name="employee_id" required="1"/>
-                            <field name="department_id"/>
-                            <field name="job_id"/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                             <field name="employee_number"/>
                         </group>
                         <group string="考勤期间">
@@ -160,9 +160,9 @@ limitations under the License.
                 <sheet>
                     <group>
                         <group string="员工信息">
-                            <field name="employee_id" required="1"/>
-                            <field name="department_id"/>
-                            <field name="job_id"/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                             <field name="employee_number"/>
                         </group>
                         <group string="绩效期间">

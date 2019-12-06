@@ -29,7 +29,7 @@ limitations under the License.
                 </group>
                 <group>
                     <field name="is_all_emp"/>
-                    <field name="emp_ids" widget="many2many_tags" placeholder="获取的员工..."/>
+                    <field name="emp_ids" widget="many2many_tags" placeholder="获取的员工..." options='{"no_edit": "1","no_create": "1"}'/>
                 </group>
                 <p>
                     请注意: 当选择为"从钉钉考勤计算"时，请确保你已经安装了钉钉模块并启用考勤功能！Odoo考勤也是一样；否则系统将会提示错误！！

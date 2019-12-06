@@ -42,7 +42,7 @@ limitations under the License.
                     <div class="oe_title" name="title">
                         <label for="employee_id" class="oe_edit_only"/>
                         <h2>
-                            <field name="employee_id" required="1" placeholder="请选择员工"/>
+                            <field name="employee_id" required="1" placeholder="请选择员工" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                         </h2>
                     </div>
                     <group>
