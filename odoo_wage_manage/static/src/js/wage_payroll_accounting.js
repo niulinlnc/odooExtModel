@@ -35,15 +35,6 @@ odoo.define('odoo.wage.payroll.accounting.tree.button', function (require) {
                         target: 'new',
                         views: [[false, 'form']],
                         context: [],
-                    });
-                });
-                this.$buttons.on('click', '.push_down_the_pay_slip_but_class', function () {
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        res_model: 'wage.payroll.accounting.to.payslip.transient',
-                        target: 'new',
-                        views: [[false, 'form']],
-                        context: [],
                     },{
                         on_reverse_breadcrumb: function () {
                             self.reload();
@@ -53,10 +44,10 @@ odoo.define('odoo.wage.payroll.accounting.tree.button', function (require) {
                         }
                      });
                 });
-                this.$buttons.on('click', '.send_wage_payroll_accounting_email_but_class', function () {
+                this.$buttons.on('click', '.push_down_the_pay_slip_but_class', function () {
                     self.do_action({
                         type: 'ir.actions.act_window',
-                        res_model: 'send.wage.payroll.to.email.transient',
+                        res_model: 'wage.payroll.accounting.to.payslip.transient',
                         target: 'new',
                         views: [[false, 'form']],
                         context: [],

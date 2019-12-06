@@ -135,7 +135,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 overtime_amount_sum = work_overtime+weekend_overtime+holiday_overtime
                 attendance_amount_sum = late_attendance+notsigned_attendance+early_attendance
             # 计算应发工资
-            # 应发工资=基本工资+薪资结构+ 绩效合计-缺勤扣款合计+加班费合计-打卡扣款合计
+            # 应发工资=基本工资+薪资结构+绩效合计-缺勤扣款合计+加班费合计-打卡扣款合计
             pay_wage = base_wage+structure_amount_sum+performance_amount_sum-absence_amount_sum+overtime_amount_sum-attendance_amount_sum
             payroll_data.update({'pay_wage': pay_wage})
             payroll_data = self._compute_employee_tax(pay_wage, payroll_data, emp, date_code)
@@ -145,12 +145,16 @@ class WagePayrollAccountingTransient(models.TransientModel):
             if not payrolls:
                 self.env['wage.payroll.accounting'].create(payroll_data)
             else:
-                payrolls.write({
-                    'structure_ids': [(2, payrolls.structure_ids.ids)],
-                    'performance_ids': [(2, payrolls.performance_ids.ids)],
-                    'statement_ids': [(2, payrolls.statement_ids.ids)],
-                })
-                payrolls.write(payroll_data)
+                if payrolls.state == 'draft':
+                    payrolls.write({
+                        'structure_ids': [(2, payrolls.structure_ids.ids)],
+                        'performance_ids': [(2, payrolls.performance_ids.ids)],
+                        'statement_ids': [(2, payrolls.statement_ids.ids)],
+                    })
+                    payrolls.write(payroll_data)
+                else:
+                    raise UserError("核算单:({})已不是待审核确认阶段，请先反审核后再重新计算！".format(payrolls[0].name))
+
         return {'type': 'ir.actions.act_window_close'}
 
     # 计算个税
@@ -353,7 +357,6 @@ class PayrollAccountingToPayslipTransient(models.TransientModel):
                     'this_months_tax': payroll.this_months_tax,  # 本月个税
                     'pay_wage': payroll.pay_wage,  # 应发工资
                     'real_wage': payroll.real_wage,  # 实发工资
-                    'statement_sum': payroll.statement_sum,  # 社保个人合计
                     'structure_sum': payroll.structure_sum,  # 薪资项目合计
                 })
             # 创建工资单
