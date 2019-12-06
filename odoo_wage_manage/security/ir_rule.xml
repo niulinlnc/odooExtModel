@@ -90,27 +90,6 @@
             <field name="perm_unlink" eval="True"/>
         </record>
 
-<!--社保月结账单-->
-        <record id="wage_insured_monthly_statement_user_groups_ir_rule" model="ir.rule">
-            <field name="name">员工-社保月结账单过滤规则</field>
-            <field name="model_id" ref="odoo_wage_manage.model_wage_insured_monthly_statement"/>
-            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
-            <field name="groups" eval="[(4, ref('odoo_wage_manage.user_groups'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
-        <record id="wage_insured_monthly_statement_supervisor_groups_rule" model="ir.rule">
-            <field name="name">主管-社保月结账单过滤规则</field>
-            <field name="model_id" ref="odoo_wage_manage.model_wage_insured_monthly_statement"/>
-            <field name="domain_force">[]</field>
-            <field name="groups" eval="[(4, ref('odoo_wage_manage.supervisor_groups'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
 <!--纳税信息-->
         <record id="wage_tax_information_user_groups_ir_rule" model="ir.rule">
             <field name="name">员工-纳税信息过滤规则</field>
