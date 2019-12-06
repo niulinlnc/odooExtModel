@@ -101,9 +101,7 @@ limitations under the License.
         </field>
     </record>
 
-    <menuitem id="wage_tax_information_menu" name="纳税信息" parent="tax_main" sequence="1"
-              action="wage_tax_information_action"/>
-
+<!--    <menuitem id="wage_tax_information_menu" name="纳税信息" parent="tax_main" sequence="1" action="wage_tax_information_action"/>-->
 
     <record id="wage_tax_child_education_application_tree_view" model="ir.ui.view">
         <field name="name">子女教育专项扣除申请</field>

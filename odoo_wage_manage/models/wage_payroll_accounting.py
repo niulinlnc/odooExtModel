@@ -64,7 +64,8 @@ class WagePayrollAccounting(models.Model):
     early_attendance = fields.Float(string=u'早退扣款', digits=(10, 2))
     attendance_sum = fields.Float(string=u'打卡扣款合计', digits=(10, 2), compute='_compute_amount_sum')
     # 社保公积金
-    statement_ids = fields.One2many('wage.payroll.accounting.monthly.statement.line', 'accounting_id', string=u'社保公积金')
+    statement_ids = fields.One2many('wage.insured.monthly.statement.line', 'accounting_id', string=u'社保明细')
+    provident_ids = fields.One2many('wage.insured.monthly.provident.line', 'accounting_id', string=u'公积金明细')
     statement_sum = fields.Float(string=u'社保个人合计', digits=(10, 2), compute='_compute_amount_sum')
     # 个税
     cumulative_expenditure_deduction = fields.Float(string=u'累计子女教育抵扣总额', digits=(10, 2))
@@ -187,15 +188,27 @@ class WagePayrollAccountingPerformanceLine(models.Model):
     wage_amount = fields.Float(string=u'绩效金额')
 
 
-class WagePayrollMonthlyStatementLine(models.Model):
-    _description = '社保公积金列表'
-    _name = 'wage.payroll.accounting.monthly.statement.line'
+class WageInsuredMonthlyStatementLine(models.Model):
+    _description = '社保明细'
+    _name = 'wage.insured.monthly.statement.line'
 
     sequence = fields.Integer(string=u'序号')
-    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算')
-    insurance_id = fields.Many2one(comodel_name='wage.insured.scheme.insurance', string=u'险种', required=True)
+    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算', ondelete='cascade')
+    insurance_id = fields.Many2one(comodel_name='insured.scheme.insurance', string=u'社保种类', required=True)
     base_number = fields.Float(string=u'险种基数', digits=(10, 2))
-    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 4))
-    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 4))
+    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 2))
+    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 2))
+
+
+class WageInsuredMonthlyProvidentLine(models.Model):
+    _description = '公积金明细'
+    _name = 'wage.insured.monthly.provident.line'
+
+    sequence = fields.Integer(string=u'序号')
+    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算', ondelete='cascade')
+    insurance_id = fields.Many2one(comodel_name='provident.fund.kind', string=u'公积金种类', required=True)
+    base_number = fields.Float(string=u'基数', digits=(10, 2))
+    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 2))
+    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 2))
 
 

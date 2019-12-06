@@ -92,12 +92,13 @@ class WagePayrollAccountingTransient(models.TransientModel):
             domain = [('employee_id', '=', emp.id), ('date_code', '=', date_code)]
             statements = self.env['insured.monthly.statement'].search(domain, limit=1)
             if statements:
-                statement_ids = statements.get_employee_monthly_statement_line()
+                statement_ids, provident_ids = statements.get_employee_all_list()
             payroll_data.update({
                 'base_wage': base_wage,  # 基本工资
                 'structure_ids': structure_ids,  # 薪资结构
                 'performance_ids': performance_ids,   # 绩效列表
-                'statement_ids': statement_ids,   # 社保公积金
+                'statement_ids': statement_ids or False,   # 社保
+                'provident_ids': provident_ids or False,   # 公积金
             })
             # 获取员工考勤统计表
             domain = [('employee_id', '=', emp.id), ('attend_code', '=', date_code)]

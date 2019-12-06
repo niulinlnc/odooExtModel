@@ -71,6 +71,31 @@ class InsuredMonthlyStatement(models.Model):
                 'personal_sum': personal_sum,
             })
 
+    def get_employee_all_list(self):
+        """
+        返回该对象的社保和公积金列表list
+        :return:
+        """
+        statement_ids = list()
+        provident_ids = list()
+        for line in self.line_ids:
+            statement_ids.append((0, 0, {
+                'sequence': line.sequence,
+                'insurance_id': line.insurance_id.id,
+                'base_number': line.base_number,
+                'company_pay': line.company_pay,
+                'pension_pay': line.pension_pay,
+            }))
+        for provident in self.provident_ids:
+            provident_ids.append((0, 0, {
+                'sequence': provident.sequence,
+                'insurance_id': provident.insurance_id.id,
+                'base_number': provident.base_number,
+                'company_pay': provident.company_pay,
+                'pension_pay': provident.pension_pay,
+            }))
+        return statement_ids, provident_ids
+
 
 class InsuredMonthlyStatementLine(models.Model):
     _description = '月结社保明细'

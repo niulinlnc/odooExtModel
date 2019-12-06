@@ -33,9 +33,9 @@ limitations under the License.
 
     <menuitem name="社保" id="social_security_menu" parent="odoo_wage_manage.main_menu" sequence="40"/>
 
-    <menuitem name="个税" id="tax_main" parent="odoo_wage_manage.main_menu" sequence="60"/>
+    <menuitem name="个税" id="tax_main" parent="main_menu" sequence="60"/>
 
-    <menuitem name="个税抵扣申请" id="tax_application" parent="tax_main" sequence="10"/>
+<!--    <menuitem name="个税抵扣申请" id="tax_application" parent="tax_main" sequence="10"/>-->
 
     <menuitem name="报表" id="report_menu" parent="odoo_wage_manage.main_menu" sequence="80"/>
 
