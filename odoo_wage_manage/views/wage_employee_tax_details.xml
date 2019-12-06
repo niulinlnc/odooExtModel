@@ -77,6 +77,6 @@
         </field>
     </record>
 
-    <menuitem id="wage_employee_tax_details_menu" name="个税明细" parent="tax_main" sequence="2" action="wage_employee_tax_details_action"/>
+    <menuitem id="wage_employee_tax_details_menu" name="员工个税明细" parent="tax_main" sequence="2" action="wage_employee_tax_details_action"/>
 
 </odoo>

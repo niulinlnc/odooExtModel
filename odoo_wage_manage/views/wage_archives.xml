@@ -83,7 +83,7 @@ limitations under the License.
                                 <tree editable="bottom" default_order="sequence">
                                     <field name="sequence" widget="handle"/>
                                     <field name="structure_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                                    <field name="wage_amount" required="1"/>
+                                    <field name="wage_amount" required="1" sum="wage_amount"/>
                                 </tree>
                             </field>
                         </page>

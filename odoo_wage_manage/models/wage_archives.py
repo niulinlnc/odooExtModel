@@ -100,7 +100,10 @@ class EmployeeWageArchives(models.Model):
         :return:
         """
         for res in self:
-            roster = self.env['dingtalk.employee.roster'].search([('emp_id', '=', res.employee_id.id)], limit=1)
+            try:
+                roster = self.env['dingtalk.employee.roster'].search([('emp_id', '=', res.employee_id.id)], limit=1)
+            except Exception as e:
+                raise UserError("钉钉花名册读取失败！")
             if not roster:
                 raise UserError("没有在钉钉花名册中发现该员工信息，请确保花名册为最新！")
             res.department_id = roster.mainDept.id
