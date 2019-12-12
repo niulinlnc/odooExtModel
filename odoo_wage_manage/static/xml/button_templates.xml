@@ -17,7 +17,7 @@ limitations under the License.
 
     <t t-name="OdooWageManageListView.wage_archives_but">
         <button type="button" class="btn btn-secondary batch_initialization_wage_archives_file">
-            批量初始化档案
+            初始化档案
         </button>
     </t>
     <t t-extend="ListView.buttons" t-name="OdooWageManageListView.wage_archives_buttons">

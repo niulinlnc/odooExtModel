@@ -37,6 +37,7 @@ class EmployeeWageArchives(models.Model):
     code = fields.Char(string=u'档案编号', default='New', index=True)
     company_id = fields.Many2one('res.company', '公司', default=lambda self: self.env.user.company_id, index=True)
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', index=True, track_visibility='onchange')
+    image = fields.Binary(string="Image")
     employee_type = fields.Selection(string=u'员工类型', selection=EMPLOYEESTATUS, default='formal', required=True)
     employee_code = fields.Char(string='员工工号')
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True)
@@ -86,6 +87,7 @@ class EmployeeWageArchives(models.Model):
             if len(res.line_ids) < 1:
                 self.create_all_structure()
             if res.employee_id:
+                res.image = res.employee_id.image
                 res.department_id = res.employee_id.department_id.id if res.employee_id.department_id else False
                 res.job_id = res.employee_id.job_id.id if res.employee_id.job_id else False
                 if res.employee_id.bank_account_id:

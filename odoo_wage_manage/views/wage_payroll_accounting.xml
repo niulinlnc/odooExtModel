@@ -14,6 +14,7 @@
                 <field name="date_code"/>
                 <field name="pay_wage"/>
                 <field name="real_wage"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

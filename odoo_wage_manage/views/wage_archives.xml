@@ -43,10 +43,10 @@ limitations under the License.
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button"
-                                   options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                         </button>
                     </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title" name="title">
                         <label for="code" class="oe_edit_only"/>
                         <h1>
@@ -55,7 +55,6 @@ limitations under the License.
                     </div>
                     <group col="2">
                         <group>
-                            <field name="company_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                             <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                             <field name="employee_code"/>
                             <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
@@ -96,6 +95,7 @@ limitations under the License.
                                 <group>
                                     <field name="payroll_company" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                                     <field name="household_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                                    <field name="company_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
                                 </group>
                             </group>
                         </page>
@@ -113,10 +113,48 @@ limitations under the License.
         </field>
     </record>
 
+    <record model="ir.ui.view" id="wage_archives_kanban">
+        <field name="name">薪资档案看板</field>
+        <field name="model">wage.archives</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban" js_class="wage_archives_kanban_js_class">
+                <field name="code"/>
+                <field name="image"/>
+                <field name="company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="base_wage"/>
+                <field name="trial_period_salary"/>
+                <field name="payroll_company"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <div class="oe_kanban_avatar float-left mr-3">
+<!--                                <field name="image" widget="image" class="oe_avatar"/>-->
+                            </div>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="employee_id"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="code"/>
+                                </p>
+                                <div class="oe_module_action" t-if="!selection_mode">
+                                    <field name="department_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="wage_archives_action">
         <field name="name">薪资档案</field>
         <field name="res_model">wage.archives</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <record model="ir.ui.view" id="wage_archives_search">

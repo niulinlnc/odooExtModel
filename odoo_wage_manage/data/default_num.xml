@@ -74,6 +74,36 @@ limitations under the License.
             <field name="month_11">22</field>
             <field name="month_12">22</field>
         </record>
+        <record id="wage_attend_days_config_data2" model="wage.attend.days.config">
+            <field name="year">2020</field>
+            <field name="month_1">22</field>
+            <field name="month_2">18</field>
+            <field name="month_3">22</field>
+            <field name="month_4">23</field>
+            <field name="month_5">23</field>
+            <field name="month_6">23</field>
+            <field name="month_7">23</field>
+            <field name="month_8">22</field>
+            <field name="month_9">21</field>
+            <field name="month_10">22</field>
+            <field name="month_11">22</field>
+            <field name="month_12">22</field>
+        </record>
+        <record id="wage_attend_days_config_data3" model="wage.attend.days.config">
+            <field name="year">2021</field>
+            <field name="month_1">22</field>
+            <field name="month_2">18</field>
+            <field name="month_3">22</field>
+            <field name="month_4">23</field>
+            <field name="month_5">23</field>
+            <field name="month_6">23</field>
+            <field name="month_7">23</field>
+            <field name="month_8">22</field>
+            <field name="month_9">21</field>
+            <field name="month_10">22</field>
+            <field name="month_11">22</field>
+            <field name="month_12">22</field>
+        </record>
 
         <record id="wage_performance_list_data1" model="wage.performance.list">
             <field name="name">课时费</field>
