@@ -27,8 +27,10 @@ class InsuredMonthlyStatement(models.Model):
     payment_method = fields.Selection(string=u'缴纳方式', selection=[('company', '公司自缴'), ('other', '其他')], default='company')
     line_ids = fields.One2many('insured.monthly.statement.line', 'statement_id', string=u'社保明细')
     provident_ids = fields.One2many('insured.monthly.provident.line', 'statement_id', string=u'公积金明细')
-    personal_sum = fields.Float(string=u'个人缴纳总计', digits=(10, 2), compute='_compute_statement_sum')
-    company_sum = fields.Float(string=u'公司缴纳合计', digits=(10, 2), compute='_compute_statement_sum')
+    personal_sum = fields.Float(string=u'个人缴纳社保合计', digits=(10, 2), store=True, compute='_compute_statement_sum')
+    company_sum = fields.Float(string=u'公司缴纳社保合计', digits=(10, 2), store=True, compute='_compute_statement_sum')
+    public_personal_sum = fields.Float(string=u'个人缴纳公积金合计', digits=(10, 2), store=True, compute='_compute_statement_sum')
+    public_company_sum = fields.Float(string=u'公司缴纳公积金合计', digits=(10, 2), store=True, compute='_compute_statement_sum')
     notes = fields.Text(string=u'备注')
 
     @api.constrains('employee_id', 'monthly_date')
@@ -53,23 +55,24 @@ class InsuredMonthlyStatement(models.Model):
                 monthly_date = str(res.monthly_date)
                 res.date_code = "{}/{}".format(monthly_date[:4], monthly_date[5:7])
 
+    @api.depends('line_ids', 'provident_ids', 'date_code')
     def _compute_statement_sum(self):
         """
         公司缴纳合计、个人缴纳总计
         :return:
         """
         for res in self:
-            personal_sum = company_sum = 0
+            personal_sum = company_sum = public_personal_sum = public_company_sum = 0
             for line in res.line_ids:
                 company_sum += line.company_pay
                 personal_sum += line.pension_pay
             for provident in res.provident_ids:
-                company_sum += provident.company_pay
-                personal_sum += provident.pension_pay
-            res.update({
-                'company_sum': company_sum,
-                'personal_sum': personal_sum,
-            })
+                public_company_sum += provident.company_pay
+                public_personal_sum += provident.pension_pay
+            res.company_sum = company_sum
+            res.personal_sum = personal_sum
+            res.public_personal_sum = public_personal_sum
+            res.public_company_sum = public_company_sum
 
     def get_employee_all_list(self):
         """

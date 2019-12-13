@@ -6,3 +6,4 @@
 from . import insured_scheme
 from . import insured_scheme_emp
 from . import insured_monthly_statement
+from . import employee_month_report

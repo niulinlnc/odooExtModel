@@ -15,3 +15,6 @@ access_insured_monthly_statement_line,insured.monthly.statement.line,model_insur
 access_insured_monthly_statement_line_manage,insured.monthly.statement.line.manage,model_insured_monthly_statement_line,odoo_social_security.manage_groups,1,1,1,1
 access_insured_scheme_provident_line,insured.scheme.provident.line,model_insured_scheme_provident_line,odoo_social_security.user_groups,1,1,1,1
 access_insured_monthly_provident_line,insured.monthly.provident.line,model_insured_monthly_provident_line,odoo_social_security.user_groups,1,1,1,1
+
+
+access_employee_monthly_insured_report,employee.monthly.insured.report,model_employee_monthly_insured_report,odoo_social_security.manage_groups,1,1,1,1
