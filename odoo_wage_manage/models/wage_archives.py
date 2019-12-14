@@ -51,6 +51,7 @@ class EmployeeWageArchives(models.Model):
     bank_account_number = fields.Char(string='银行卡号')
     accountBank = fields.Char(string='开户行')
     line_ids = fields.One2many(comodel_name='wage.archives.line', inverse_name='archives_id', string=u'薪资结构')
+    amount_total = fields.Float(string=u'合计', digits=(10, 2), compute='_compute_amount_total')
     notes = fields.Text(string=u'备注')
 
     @api.model
@@ -165,6 +166,19 @@ class EmployeeWageArchives(models.Model):
             return self.trial_period_salary
         else:
             return 0
+
+    def _compute_amount_total(self):
+        """
+        计算合计
+        """
+        for res in self:
+            if res.employee_type == 'probation':
+                amount_total = res.trial_period_salary
+            else:
+                amount_total = res.base_wage
+            for line in res.line_ids:
+                amount_total += line.wage_amount
+            res.amount_total = amount_total
 
 
 class EmployeeWageArchivesLine(models.Model):

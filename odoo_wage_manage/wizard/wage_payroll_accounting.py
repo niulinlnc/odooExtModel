@@ -74,7 +74,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 'attendance_days': attendance_days,
             }
             # 获取员工薪资合同
-            archives = self.env['wage.archives'].search([('employee_id', '=', emp.id), ('active', '=', True)], limit=1)
+            archives = self.env['wage.archives'].search([('employee_id', '=', emp.id), ('employee_type', '!=', 'stop')], limit=1)
             base_wage = performance_amount_sum = structure_amount_sum = 0      # 基本工资,绩效合计,薪资结构合计金额
             structure_ids = list()
             performance_ids = list()

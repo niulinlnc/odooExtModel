@@ -17,7 +17,7 @@ limitations under the License.
         <field name="name">员工考勤统计</field>
         <field name="model">wage.employee.attendance.annal</field>
         <field name="arch" type="xml">
-            <tree default_order="employee_id desc" js_class="wage_employee_attendance_annal_js_class">
+            <tree default_order="employee_id desc">
                 <field name="company_id"/>
                 <field name="employee_id"/>
                 <field name="department_id"/>
@@ -42,6 +42,11 @@ limitations under the License.
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_wage_manage.manage_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
                     <group>
                         <group string="员工信息">
                             <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
@@ -80,10 +85,85 @@ limitations under the License.
         </field>
     </record>
 
+    <record id="wage_employee_attendance_annal_kanban_view" model="ir.ui.view">
+        <field name="name">wage.employee.attendance.annal.kanban</field>
+        <field name="model">wage.employee.attendance.annal</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban" >
+                <field name="company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="employee_number"/>
+                <field name="attend_code"/>
+                <field name="work_overtime_hour"/>
+                <field name="weekend_overtime_hour"/>
+                <field name="holiday_overtime_hour"/>
+                <field name="leave_absence_hour"/>
+                <field name="sick_absence_hour"/>
+                <field name="late_attendance_num"/>
+                <field name="notsigned_attendance_num"/>
+                <field name="early_attendance_num"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('hr.employee', 'image', record.employee_id.raw_value)" alt="图标" class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="employee_id"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="department_id"/>
+                                </p>
+                                <p class="oe_module_name">
+                                    <field name="attend_code"/>
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="wage_employee_attendance_annal_calendar" model="ir.ui.view">
+        <field name="name">wage.employee.attendance.annal.calendar</field>
+        <field name="model">wage.employee.attendance.annal</field>
+        <field name="arch" type="xml">
+            <calendar string="员工考勤统计" date_start="attendance_month" color="employee_id">
+                <field name="department_id"/>
+                <field name="employee_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="wage_employee_attendance_annal_pivot">
+        <field name="name">wage.employee.attendance.annal.pivot</field>
+        <field name="model">wage.employee.attendance.annal</field>
+        <field name="arch" type="xml">
+            <pivot string="员工考勤统计">
+                <field name="company_id" type="row"/>
+                <field name="attend_code" type="row"/>
+                <field name="department_id" type="row"/>
+                <field name="employee_id" type="row"/>
+                <field name="work_overtime_hour" type="measure"/>
+                <field name="weekend_overtime_hour" type="measure"/>
+                <field name="holiday_overtime_hour" type="measure"/>
+                <field name="leave_absence_hour" type="measure"/>
+                <field name="sick_absence_hour" type="measure"/>
+                <field name="late_attendance_num" type="measure"/>
+                <field name="notsigned_attendance_num" type="measure"/>
+                <field name="early_attendance_num" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="wage_employee_attendance_annal_action">
         <field name="name">员工考勤统计</field>
         <field name="res_model">wage.employee.attendance.annal</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
     </record>
 
     <record model="ir.ui.view" id="wage_employee_attendance_annal_search">
@@ -103,6 +183,17 @@ limitations under the License.
                 <field name="late_attendance_num"/>
                 <field name="notsigned_attendance_num"/>
                 <field name="early_attendance_num"/>
+                <separator/>
+                <filter string="近三月内" name="domain_3month" domain="[('attendance_month','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('attendance_month','&gt;=', (context_today()-relativedelta(months=3)).strftime('%Y-%m-%d') )]"/>
+                <filter string="近半年内" name="domain_6month" domain="[('attendance_month','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('attendance_month','&gt;=', (context_today()-relativedelta(months=6)).strftime('%Y-%m-%d') )]"/>
+                <filter string="当前年内" name="domain_year" domain="[('attendance_month','&lt;=', time.strftime('%%Y-12-31')),('attendance_month','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <separator/>
+                <group expand="0" string="分类">
+                    <filter name="group_by_attend_code" string="期间" context="{'group_by':'attend_code'}"/>
+                    <filter name="group_by_employee_id" string="员工" context="{'group_by':'employee_id'}"/>
+                    <filter name="group_by_company_id" string="公司" context="{'group_by':'company_id'}"/>
+                    <filter name="group_by_department_id" string="部门" context="{'group_by':'department_id'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -125,7 +216,7 @@ limitations under the License.
     <record model="ir.actions.act_window" id="wage_holiday_action">
         <field name="name">法定节假日表</field>
         <field name="res_model">legal.holiday</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,</field>
     </record>
 
     <menuitem id="wage_holiday_menu" name="节假日" parent="wage_istructure_setting_menu" sequence="5"
@@ -135,7 +226,7 @@ limitations under the License.
         <field name="name">员工绩效统计</field>
         <field name="model">wage.employee.performance.manage</field>
         <field name="arch" type="xml">
-            <tree default_order="id desc" js_class="wage_employee_performance_manage_js_class">
+            <tree default_order="id desc">
                 <field name="performance_code"/>
                 <field name="employee_id"/>
                 <field name="department_id"/>
@@ -156,6 +247,11 @@ limitations under the License.
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_wage_manage.manage_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
                     <group>
                         <group string="员工信息">
                             <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
@@ -193,10 +289,79 @@ limitations under the License.
         </field>
     </record>
 
+    <record id="wage_employee_performance_manage_kanban_view" model="ir.ui.view">
+        <field name="name">wage.employee.performance.manage.kanban</field>
+        <field name="model">wage.employee.performance.manage</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban" >
+                <field name="performance_code"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="employee_number"/>
+                <field name="performance_code"/>
+                <field name="work_reward"/>
+                <field name="class_fee"/>
+                <field name="performance_bonus"/>
+                <field name="other_wage"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('hr.employee', 'image', record.employee_id.raw_value)" alt="图标" class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="employee_id"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="department_id"/>
+                                </p>
+                                <p class="oe_module_name">
+                                    <field name="performance_code"/>
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="wage_employee_performance_manage_calendar" model="ir.ui.view">
+        <field name="name">wage.employee.performance.manage.calendar</field>
+        <field name="model">wage.employee.performance.manage</field>
+        <field name="arch" type="xml">
+            <calendar string="员工绩效统计" date_start="performance_month" color="employee_id">
+                <field name="department_id"/>
+                <field name="employee_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="wage_employee_performance_manage_pivot">
+        <field name="name">wage.employee.performance.manage.pivot</field>
+        <field name="model">wage.employee.performance.manage</field>
+        <field name="arch" type="xml">
+            <pivot string="员工绩效统计">
+                <field name="company_id" type="row"/>
+                <field name="performance_code" type="row"/>
+                <field name="department_id" type="row"/>
+                <field name="employee_id" type="row"/>
+                <field name="performance_wage" type="measure"/>
+                <field name="work_reward" type="measure"/>
+                <field name="class_fee" type="measure"/>
+                <field name="performance_bonus" type="measure"/>
+                <field name="other_wage" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="wage_employee_performance_manage_action">
         <field name="name">员工绩效统计</field>
         <field name="res_model">wage.employee.performance.manage</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="context">{'search_default_group_by_performance_code': True, 'search_default_domain_year': True}</field>
     </record>
 
     <record model="ir.ui.view" id="wage_employee_performance_manage_search">
@@ -212,6 +377,17 @@ limitations under the License.
                 <field name="class_fee"/>
                 <field name="performance_bonus"/>
                 <field name="other_wage"/>
+                <separator/>
+                <filter string="近三月内" name="domain_3month" domain="[('performance_month','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('performance_month','&gt;=', (context_today()-relativedelta(months=3)).strftime('%Y-%m-%d') )]"/>
+                <filter string="近半年内" name="domain_6month" domain="[('performance_month','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('performance_month','&gt;=', (context_today()-relativedelta(months=6)).strftime('%Y-%m-%d') )]"/>
+                <filter string="当前年内" name="domain_year" domain="[('performance_month','&lt;=', time.strftime('%%Y-12-31')),('performance_month','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <separator/>
+                <group expand="0" string="分类">
+                    <filter name="group_by_performance_code" string="期间" context="{'group_by':'performance_code'}"/>
+                    <filter name="group_by_employee_id" string="员工" context="{'group_by':'employee_id'}"/>
+                    <filter name="group_by_company_id" string="公司" context="{'group_by':'company_id'}"/>
+                    <filter name="group_by_department_id" string="部门" context="{'group_by':'department_id'}"/>
+                </group>
             </search>
         </field>
     </record>

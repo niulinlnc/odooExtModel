@@ -46,10 +46,10 @@ class WageEmpAttendanceAnnal(models.Model):
     def _get_default_date(self):
         return str(fields.date.today())
 
+    active = fields.Boolean('Active', default=True)
     company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True)
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True, track_visibility='onchange')
-    employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工',
-                                  required=True, index=True, track_visibility='onchange')
+    employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', required=True, index=True, track_visibility='onchange')
     job_id = fields.Many2one(comodel_name='hr.job', string=u'在职岗位')
     employee_number = fields.Char(string='员工工号')
     attendance_month = fields.Date(string=u'考勤日期', required=True, index=True, default=_get_default_date)
@@ -65,22 +65,6 @@ class WageEmpAttendanceAnnal(models.Model):
     late_attendance_num = fields.Integer(string=u'迟到次数')
     notsigned_attendance_num = fields.Integer(string=u'忘记打卡次数')
     early_attendance_num = fields.Integer(string=u'早退次数')
-
-    arrive_total = fields.Float('应到天数')
-    real_arrive_total = fields.Float('实到天数')
-    absenteeism_total = fields.Float('旷工天数')
-    late_total = fields.Float('迟到/早退次数')
-    sick_leave_total = fields.Float('病假天数')
-    personal_leave_total = fields.Float('事假天数')
-    annual_leave_total = fields.Float('年假天数')
-    marriage_leave_total = fields.Float('婚假天数')
-    bereavement_leave_total = fields.Float('丧假天数')
-    paternity_leave_total = fields.Float('陪产假天数')
-    maternity_leave_total = fields.Float('产假天数')
-    work_related_injury_leave_total = fields.Float('工伤假天数')
-    home_leave_total = fields.Float('探亲假天数')
-    travelling_total = fields.Float('出差天数')
-    other_leave_total = fields.Float('其他假天数')
 
     @api.constrains('attendance_month')
     @api.onchange('attendance_month')
@@ -115,6 +99,7 @@ class WageEmployeePerformance(models.Model):
     def _get_default_date(self):
         return str(fields.date.today())
 
+    active = fields.Boolean('Active', default=True)
     company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True)
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True, track_visibility='onchange')
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工',

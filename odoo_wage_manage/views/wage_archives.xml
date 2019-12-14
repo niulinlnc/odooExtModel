@@ -28,6 +28,7 @@ limitations under the License.
                 <field name="base_wage"/>
                 <field name="trial_period_salary"/>
                 <field name="payroll_company"/>
+                <field name="amount_total"/>
             </tree>
         </field>
     </record>
@@ -38,7 +39,7 @@ limitations under the License.
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="get_info_by_dingding_hrm" type="object" string="从钉钉花名册获取资料"/>
+<!--                    <button name="get_info_by_dingding_hrm" type="object" string="从钉钉花名册获取资料"/>-->
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -85,6 +86,14 @@ limitations under the License.
                                     <field name="wage_amount" required="1" sum="wage_amount"/>
                                 </tree>
                             </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <div>
+                                    <label for="amount_total"/>
+                                </div>
+                                <field name="amount_total" nolabel="1"/>
+                            </group>
+                            <field name="notes" class="oe_inline" placeholder="可输入备注信息..."/>
+                            <div class="oe_clear"/>
                         </page>
                         <page string="其他">
                             <group col="2">
@@ -100,9 +109,6 @@ limitations under the License.
                             </group>
                         </page>
                     </notebook>
-                    <group string="备注">
-                        <field name="notes" nolabel="1"/>
-                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
