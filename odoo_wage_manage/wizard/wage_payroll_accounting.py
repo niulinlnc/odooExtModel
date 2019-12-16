@@ -24,7 +24,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
     _name = 'wage.payroll.accounting.transient'
     _description = "薪资计算"
 
-    wage_date = fields.Date(string=u'核算月份', required=True)
+    wage_date = fields.Date(string=u'核算月份', required=True, default=fields.date.today())
     date_code = fields.Char(string='期间代码')
     emp_ids = fields.Many2many('hr.employee', string=u'员工')
     all_emp = fields.Boolean(string=u'全部员工?')
@@ -38,6 +38,8 @@ class WagePayrollAccountingTransient(models.TransientModel):
         if self.all_emp:
             employees = self.env['hr.employee'].search([])
             self.emp_ids = [(6, 0, employees.ids)]
+        else:
+            self.emp_ids = False
 
     @api.onchange('wage_date')
     def _alter_date_code(self):
@@ -73,7 +75,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 'job_id': emp.job_id.id if emp.job_id else False,
                 'attendance_days': attendance_days,
             }
-            # 获取员工薪资合同
+            # 获取员工薪资档案
             archives = self.env['wage.archives'].search([('employee_id', '=', emp.id), ('employee_type', '!=', 'stop')], limit=1)
             base_wage = performance_amount_sum = structure_amount_sum = 0      # 基本工资,绩效合计,薪资结构合计金额
             structure_ids = list()
@@ -155,7 +157,6 @@ class WagePayrollAccountingTransient(models.TransientModel):
                     payrolls.write(payroll_data)
                 else:
                     raise UserError("核算单:({})已不是待审核确认阶段，请先反审核后再重新计算！".format(payrolls[0].name))
-
         return {'type': 'ir.actions.act_window_close'}
 
     # 计算个税

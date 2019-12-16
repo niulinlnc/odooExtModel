@@ -28,6 +28,7 @@ limitations under the License.
                 <field name="cumulative_home_loan_interest_deduction"/>
                 <field name="cumulative_housing_rental_expense_deduction"/>
                 <field name="total_tax_deduction"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -37,32 +38,35 @@ limitations under the License.
         <field name="model">wage.special.additional.deduction</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" modifiers="{'readonly': false}"/>
+                </header>
                 <group>
                     <group>
-                        <field name="employee_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="date_code" readonly="1"/>
+                        <field name="employee_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                        <field name="start_date" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                        <field name="end_date" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                        <field name="date_code" readonly="1" attrs="{'readonly': [('state', '!=', '00')]}"/>
                     </group>
                 </group>
                 <notebook>
                     <page string="累计金额">
                         <group>
                             <group>
-                                <field name="cumulative_expenditure_deduction"/>
-                                <field name="cumulative_support_for_the_elderly"/>
-                                <field name="cumulative_continuing_education_deduction"/>
+                                <field name="cumulative_expenditure_deduction" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                                <field name="cumulative_support_for_the_elderly" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                                <field name="cumulative_continuing_education_deduction" attrs="{'readonly': [('state', '!=', '00')]}"/>
                             </group>
                             <group>
-                                <field name="cumulative_home_loan_interest_deduction"/>
-                                <field name="cumulative_housing_rental_expense_deduction"/>
+                                <field name="cumulative_home_loan_interest_deduction" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                                <field name="cumulative_housing_rental_expense_deduction" attrs="{'readonly': [('state', '!=', '00')]}"/>
                                 <field name="total_tax_deduction"/>
                             </group>
                         </group>
                     </page>
                 </notebook>
                 <group string="备注">
-                    <field name="notes" nolabel="1"/>
+                    <field name="notes" nolabel="1" attrs="{'readonly': [('state', '!=', '00')]}"/>
                 </group>
             </form>
         </field>

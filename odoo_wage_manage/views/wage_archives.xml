@@ -178,7 +178,7 @@ limitations under the License.
         </field>
     </record>
 
-    <menuitem id="wage_archives_menu" name="薪资档案" parent="wage_menu" sequence="1"
+    <menuitem id="wage_archives_menu" name="薪资档案" parent="main_menu" sequence="5"
               action="wage_archives_action"/>
 
 </odoo>

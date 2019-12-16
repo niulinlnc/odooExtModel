@@ -21,16 +21,6 @@ from odoo.exceptions import UserError
 _logger = logging.getLogger(__name__)
 
 
-class LegalHoliday(models.Model):
-    _description = '法定节假日'
-    _name = 'legal.holiday'
-    _rec_name = 'legal_holiday_name'
-
-    legal_holiday_name = fields.Char('法定节假日名称')
-    legal_holiday = fields.Date('法定节假日')
-    status = fields.Char('法定节假日状态', selection=[('0', '未使用'), ('1', '使用中'), ('2', '已失效')])
-
-
 class WageEmpAttendanceAnnal(models.Model):
     _description = '员工考勤统计'
     _name = 'wage.employee.attendance.annal'
@@ -47,6 +37,7 @@ class WageEmpAttendanceAnnal(models.Model):
         return str(fields.date.today())
 
     active = fields.Boolean('Active', default=True)
+    state = fields.Selection(string="状态", selection=[('00', '待计算'), ('01', '已计算')], default='00')
     company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True)
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True, track_visibility='onchange')
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', required=True, index=True, track_visibility='onchange')
@@ -100,6 +91,7 @@ class WageEmployeePerformance(models.Model):
         return str(fields.date.today())
 
     active = fields.Boolean('Active', default=True)
+    state = fields.Selection(string="状态", selection=[('00', '待计算'), ('01', '已计算')], default='00')
     company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True)
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True, track_visibility='onchange')
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工',

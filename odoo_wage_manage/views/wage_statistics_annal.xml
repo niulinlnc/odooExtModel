@@ -32,6 +32,7 @@ limitations under the License.
                 <field name="late_attendance_num"/>
                 <field name="notsigned_attendance_num"/>
                 <field name="early_attendance_num"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -41,6 +42,9 @@ limitations under the License.
         <field name="model">wage.employee.attendance.annal</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" modifiers="{'readonly': false}"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_wage_manage.manage_groups">
@@ -49,30 +53,30 @@ limitations under the License.
                     </div>
                     <group>
                         <group string="员工信息">
-                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="employee_number"/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="employee_number" attrs="{'readonly': [('state', '!=', '00')]}"/>
                         </group>
                         <group string="考勤期间">
-                            <field name="attendance_month"/>
+                            <field name="attendance_month" attrs="{'readonly': [('state', '!=', '00')]}"/>
                             <field name="attend_code" readonly="1"/>
                         </group>
                     </group>
                     <group>
                         <group string="加班统计">
-                            <field name="work_overtime_hour"/>
-                            <field name="weekend_overtime_hour"/>
-                            <field name="holiday_overtime_hour"/>
+                            <field name="work_overtime_hour" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="weekend_overtime_hour" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="holiday_overtime_hour" attrs="{'readonly': [('state', '!=', '00')]}"/>
                         </group>
                         <group string="缺勤统计">
-                            <field name="leave_absence_hour"/>
-                            <field name="sick_absence_hour"/>
+                            <field name="leave_absence_hour" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="sick_absence_hour" attrs="{'readonly': [('state', '!=', '00')]}"/>
                         </group>
                         <group string="考勤统计">
-                            <field name="late_attendance_num"/>
-                            <field name="notsigned_attendance_num"/>
-                            <field name="early_attendance_num"/>
+                            <field name="late_attendance_num" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="notsigned_attendance_num" attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="early_attendance_num" attrs="{'readonly': [('state', '!=', '00')]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -164,6 +168,7 @@ limitations under the License.
         <field name="name">员工考勤统计</field>
         <field name="res_model">wage.employee.attendance.annal</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="context">{'search_default_group_by_attend_code': True, 'search_default_domain_year': True}</field>
     </record>
 
     <record model="ir.ui.view" id="wage_employee_attendance_annal_search">
@@ -201,27 +206,6 @@ limitations under the License.
     <menuitem id="wage_employee_attendance_annal_menu" name="员工考勤统计" parent="wage_statistics_menu" sequence="1"
               action="wage_employee_attendance_annal_action"/>
 
-    <record id="wage_holiday_tree_view" model="ir.ui.view">
-        <field name="name">法定节假日表</field>
-        <field name="model">legal.holiday</field>
-        <field name="arch" type="xml">
-            <tree default_order="id desc" editable="top">
-                <field name="legal_holiday_name" required="1"/>
-                <field name="legal_holiday" required="1"/>
-                <field name="status" required="1"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="wage_holiday_action">
-        <field name="name">法定节假日表</field>
-        <field name="res_model">legal.holiday</field>
-        <field name="view_mode">tree,form,</field>
-    </record>
-
-    <menuitem id="wage_holiday_menu" name="节假日" parent="wage_istructure_setting_menu" sequence="5"
-              action="wage_holiday_action"/>
-
     <record id="wage_employee_performance_manage_tree_view" model="ir.ui.view">
         <field name="name">员工绩效统计</field>
         <field name="model">wage.employee.performance.manage</field>
@@ -237,6 +221,7 @@ limitations under the License.
                 <field name="class_fee"/>
                 <field name="performance_bonus"/>
                 <field name="other_wage"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -246,6 +231,9 @@ limitations under the License.
         <field name="model">wage.employee.performance.manage</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" modifiers="{'readonly': false}"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_wage_manage.manage_groups">
@@ -254,19 +242,19 @@ limitations under the License.
                     </div>
                     <group>
                         <group string="员工信息">
-                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
-                            <field name="employee_number"/>
+                            <field name="employee_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="department_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="job_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}' attrs="{'readonly': [('state', '!=', '00')]}"/>
+                            <field name="employee_number" attrs="{'readonly': [('state', '!=', '00')]}"/>
                         </group>
                         <group string="绩效期间">
-                            <field name="performance_month"/>
+                            <field name="performance_month" attrs="{'readonly': [('state', '!=', '00')]}"/>
                             <field name="performance_code" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="绩效明细">
-                            <field name="line_ids">
+                            <field name="line_ids" attrs="{'readonly': [('state', '!=', '00')]}">
                                 <tree editable="bottom" default_order="sequence">
                                     <field name="sequence" widget="handle"/>
                                     <field name="performance_id" required="1"/>
@@ -277,7 +265,7 @@ limitations under the License.
                         </page>
                     </notebook>
                     <group string="备注">
-                        <field name="notes" nolabel="1"/>
+                        <field name="notes" nolabel="1" attrs="{'readonly': [('state', '!=', '00')]}"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">

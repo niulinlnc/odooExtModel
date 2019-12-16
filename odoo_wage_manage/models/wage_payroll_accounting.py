@@ -163,14 +163,42 @@ class WagePayrollAccounting(models.Model):
         审核核算结果
         :return:
         """
-        self.write({'state': 'confirm', 'review_id': self.env.user.id, 'review_time': datetime.datetime.now()})
+        for res in self:
+            res.write({'state': 'confirm', 'review_id': self.env.user.id, 'review_time': datetime.datetime.now()})
+            # 将绩效、考勤、专项附加扣除信息状态设为已计算
+            domain = [('employee_id', '=', res.employee_id.id), ('performance_code', '=', res.date_code)]
+            performance = self.env['wage.employee.performance.manage'].search(domain)
+            if performance:
+                performance.write({'state': '01'})
+            domain = [('employee_id', '=', res.employee_id.id), ('attend_code', '=', res.date_code)]
+            attendance = self.env['wage.employee.attendance.annal'].search(domain)
+            if attendance:
+                attendance.write({'state': '01'})
+            domain = [('employee_id', '=', res.employee_id.id), ('date_code', '=', res.date_code)]
+            deduction = self.env['wage.special.additional.deduction'].search(domain)
+            if deduction:
+                deduction.write({'state': '01'})
 
     def return_confirmation_audit(self):
         """
         反审核
         :return:
         """
-        self.write({'state': 'draft'})
+        for res in self:
+            res.write({'state': 'draft'})
+            # 将绩效、考勤、专项附加扣除信息状态设为待计算
+            domain = [('employee_id', '=', res.employee_id.id), ('performance_code', '=', res.date_code)]
+            performance = self.env['wage.employee.performance.manage'].search(domain)
+            if performance:
+                performance.write({'state': '00'})
+            domain = [('employee_id', '=', res.employee_id.id), ('attend_code', '=', res.date_code)]
+            attendance = self.env['wage.employee.attendance.annal'].search(domain)
+            if attendance:
+                attendance.write({'state': '00'})
+            domain = [('employee_id', '=', res.employee_id.id), ('date_code', '=', res.date_code)]
+            deduction = self.env['wage.special.additional.deduction'].search(domain)
+            if deduction:
+                deduction.write({'state': '00'})
 
 
 class WagePayrollAccountingLine(models.Model):

@@ -267,7 +267,7 @@ if records:
         </field>
     </record>
 
-    <menuitem id="wage_payroll_accounting_menu" name="薪资核算" parent="wage_menu" sequence="2"
+    <menuitem id="wage_payroll_accounting_menu" name="薪资核算" parent="main_menu" sequence="6"
               action="wage_payroll_accounting_action"/>
 
 </odoo>

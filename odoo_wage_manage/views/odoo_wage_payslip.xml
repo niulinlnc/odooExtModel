@@ -125,6 +125,6 @@
         </field>
     </record>
 
-    <menuitem name="工资条" id="odoo_wage_payslip_menu" parent="odoo_wage_manage.main_menu" sequence="1" action="odoo_wage_payslip_action"/>
+<!--    <menuitem name="工资条" id="odoo_wage_payslip_menu" parent="odoo_wage_manage.main_menu" sequence="1" action="odoo_wage_payslip_action"/>-->
 
 </odoo>

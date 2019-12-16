@@ -13,9 +13,7 @@
 
     <menuitem name="统计" id="wage_statistics_menu" parent="odoo_wage_manage.main_menu" sequence="10"/>
 
-    <menuitem name="个税" id="tax_main" parent="main_menu" sequence="15"/>
-
-    <menuitem name="薪资" id="wage_menu" parent="odoo_wage_manage.main_menu" sequence="20"/>
+    <menuitem name="个税" id="tax_main" parent="main_menu" sequence="11"/>
 
     <menuitem name="报表" id="report_menu" parent="odoo_wage_manage.main_menu" sequence="80"/>
 
