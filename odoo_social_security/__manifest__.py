@@ -24,6 +24,9 @@
         'views/insured_scheme_emp.xml',
         'views/insured_monthly_statement.xml',
         'views/employee_month_report.xml',
+
+        'views/social_onboarding.xml',
+
         'wizard/insured_monthly_statement.xml'
     ],
     'qweb': [
