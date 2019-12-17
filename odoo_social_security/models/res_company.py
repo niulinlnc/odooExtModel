@@ -20,6 +20,7 @@ class ResCompany(models.Model):
     insured_scheme_state = fields.Selection(SOCIALSTATE, string="参保方案完成情况", default='not_done')
     insured_scheme_emp_state = fields.Selection(SOCIALSTATE, string="参保员工完成情况", default='not_done')
     insured_month_scheme_state = fields.Selection(SOCIALSTATE, string="月结账单完成情况", default='not_done')
+    insured_month_report_scheme_state = fields.Selection(SOCIALSTATE, string="月结报表完成情况", default='not_done')
 
     @api.model
     def action_close_insured_scheme_state_onboarding(self):
@@ -33,6 +34,7 @@ class ResCompany(models.Model):
             'insured_scheme_state',
             'insured_scheme_emp_state',
             'insured_month_scheme_state',
+            'insured_month_report_scheme_state',
         ]
         return self.get_and_update_onbarding_state('insured_scheme_done_state', steps)
 
@@ -53,4 +55,9 @@ class ResCompany(models.Model):
     @api.model
     def action_insured_monthly_statement_layout(self):
         action = self.env.ref('odoo_social_security.action_insured_monthly_statement_layout').read()[0]
+        return action
+
+    @api.model
+    def action_insured_monthly_report_layout(self):
+        action = self.env.ref('odoo_social_security.action_insured_monthly_report_layout').read()[0]
         return action
