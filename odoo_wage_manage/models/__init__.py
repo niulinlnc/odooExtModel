@@ -23,3 +23,4 @@ from . import wage_payroll_accounting
 from . import wage_employee_tax_details
 from . import wage_employee_tax_application
 from . import odoo_wage_payslip
+from . import res_company

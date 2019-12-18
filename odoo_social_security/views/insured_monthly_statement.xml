@@ -4,27 +4,11 @@ Copyright (C) 2019 SuXueFeng GUN
 -->
 <odoo>
 
-<!--    <record id="insured_monthly_statement_tree_view" model="ir.ui.view">-->
-<!--        <field name="name">月结账单</field>-->
-<!--        <field name="model">insured.monthly.statement</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <tree default_order="id" js_class="insured_monthly_statement_tree_class">-->
-<!--                <field name="company_id"/>-->
-<!--                <field name="employee_id"/>-->
-<!--                <field name="department_id"/>-->
-<!--                <field name="monthly_date"/>-->
-<!--                <field name="date_code"/>-->
-<!--                <field name="payment_method"/>-->
-<!--                <field name="personal_sum"/>-->
-<!--                <field name="company_sum"/>-->
-<!--            </tree>-->
-<!--        </field>-->
-<!--    </record>-->
     <record id="insured_monthly_statement_tree_view" model="ir.ui.view">
         <field name="name">月结账单</field>
         <field name="model">insured.monthly.statement</field>
         <field name="arch" type="xml">
-            <tree class="o_sale_order" decoration-bf="message_needaction==True" js_class="insured_monthly_statement_tree_class">
+            <tree decoration-bf="message_needaction==True" js_class="insured_monthly_statement_tree_class">
                 <field name="message_needaction" invisible="1"/>
                 <field name="company_id"/>
                 <field name="employee_id"/>

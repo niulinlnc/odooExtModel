@@ -41,6 +41,7 @@
         'views/wage_employee_tax_details.xml',
         'views/wage_employee_tax_application.xml',
         'views/odoo_wage_payslip.xml',
+        'views/wage_onboarding.xml',
 
         'wizard/wage_archives.xml',
         'wizard/wage_payroll_accounting.xml',
