@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <template id="odoo_crm_assets" name="Odoo Crm Asset" inherit_id="web.assets_backend">-->
+<!--        <xpath expr="." position="inside">-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+    <menuitem name="CRM" id="root_menu" web_icon="odoo_crm,static/description/icon.png" sequence="20"/>
+
+    <menuitem name="客户" id="client_root_ment" parent="root_menu" sequence="2"/>
+
+    <menuitem name="合同" id="contract_root_menu" parent="root_menu" sequence="7"/>
+
+    <menuitem name="产品" id="product_root_menu" parent="root_menu" sequence="8" action="product.product_template_action"/>
+
+    <menuitem name="资金" id="money_root_menu" parent="root_menu" sequence="9"/>
+
+    <menuitem name="工单" id="work_order_root_menu" parent="root_menu" sequence="10"/>
+
+    <menuitem name="报表" id="report_root_menu" parent="root_menu" sequence="11"/>
+
+    <menuitem name="设置" id="configure_menu" parent="root_menu" sequence="100"/>
+
+</odoo>

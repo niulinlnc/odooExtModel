@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crm_sale_opportunity_tree_view" model="ir.ui.view">
+        <field name="name">销售机会</field>
+        <field name="model">crm.sale.opportunity</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="importance in ('during')" decoration-info="importance == 'high'" decoration-danger="importance == 'major'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="importance"/>
+                <field name="competitors"/>
+                <field name="estimated_amount" sum="estimated_amount"/>
+                <field name="estimated_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="crm_sale_opportunity_form_view" model="ir.ui.view">
+        <field name="name">销售机会</field>
+        <field name="model">crm.sale.opportunity</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="create_sale_order" type="object" class="oe_highlight" string="新建报价单"/>
+                    <button name="next_stated" type="object" class="oe_highlight" string="新建合同"/>
+                    <button name="%(res_partner_return_stated_action)d" type="action" string="状态变更"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_sale_order" string="报价单" type="object" class="oe_stat_button" icon="fa-id-card-o"/>
+                        <button name="create_ding_department" string="合同" type="object" class="oe_stat_button" icon="fa-book"/>
+                        <button name="attachment_image_preview" type="object" class="oe_stat_button" icon="fa-file-text">
+                            <field name="attachment_number" widget="statinfo"/>
+                        </button>
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.director_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="机会名称..."/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="importance"/>
+                        </group>
+                        <group>
+                            <field name="decision_makers" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="competitors"/>
+                            <field name="product_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <label for="estimated_amount"/>
+                            <div class="o_row" name="attendance_days">
+                                <field name="estimated_amount"/>
+                                <span>￥</span>
+                            </div>
+                            <field name="estimated_date" widget="date"/>
+                            <field name="create_uid" string="创建人"/>
+                        </group>
+                    </group>
+                    <group string="备注">
+                        <field name="note" nolabel="1" widget="html"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm_sale_opportunity_action">
+        <field name="name">销售机会</field>
+        <field name="res_model">crm.sale.opportunity</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的销售机会
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="crm_sale_opportunity_search">
+        <field name="model">crm.sale.opportunity</field>
+        <field name="arch" type="xml">
+            <search string="销售机会">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="importance"/>
+                <field name="competitors"/>
+                <field name="estimated_amount"/>
+                <field name="estimated_date"/>
+                <field name="state"/>
+                <separator/>
+                    <filter string="我创建的" name="domain_my" domain="[('create_uid', '=', uid)]"/>
+                    <filter string="我负责的" name="domain_principal" domain="[('principal_ids', 'in', uid)]"/>
+                    <filter string="我协同的" name="domain_collaborator" domain="[('collaborator_ids', 'in', uid)]"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_state" string="阶段" context="{'group_by':'state'}"/>
+                    <filter name="group_by_partner_id" string="客户" context="{'group_by':'partner_id'}"/>
+                    <filter name="group_by_importance" string="重要程度" context="{'group_by':'importance'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="crm_sale_opportunity_menu" name="机会" parent="root_menu" sequence="5" action="crm_sale_opportunity_action"/>
+
+</odoo>
