@@ -10,9 +10,9 @@
 
     <menuitem name="客户" id="client_root_ment" parent="root_menu" sequence="2"/>
 
-    <menuitem name="合同" id="contract_root_menu" parent="root_menu" sequence="7"/>
+    <menuitem name="产品" id="product_root_menu" parent="root_menu" sequence="4" action="product.product_template_action"/>
 
-    <menuitem name="产品" id="product_root_menu" parent="root_menu" sequence="8" action="product.product_template_action"/>
+    <menuitem name="合同" id="contract_root_menu" parent="root_menu" sequence="7"/>
 
     <menuitem name="资金" id="money_root_menu" parent="root_menu" sequence="9"/>
 

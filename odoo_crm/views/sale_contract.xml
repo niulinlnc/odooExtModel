@@ -24,7 +24,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="next_stated" type="object" class="oe_highlight" string="创建发票"/>
+                    <button name="next_stated" type="object" class="oe_highlight" string="确认合同"/>
+                    <button name="next_stated" type="object" string="创建发票"/>
+                    <button name="next_stated" type="object" string="新建退货退款单"/>
                     <button name="next_stated" type="object" string="已终止"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -74,9 +76,10 @@
                             </field>
                         </page>
                         <page string="回款计划">
-                            <field name="cashback_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id}">
+                            <field name="cashback_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id, 'default_partner_id': partner_id}">
                                 <tree editable="bottom" >
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="partner_id" invisible="1"/>
                                     <field name="code" readonly="1"/>
                                     <field name="amount_received" widget="monetary" sum="amount_received"/>
                                     <field name="state"/>
@@ -168,6 +171,7 @@
             <tree default_order="code desc" create="0" edit="0">
                 <field name="currency_id" invisible="1"/>
                 <field name="code" readonly="1"/>
+                <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}"/>
                 <field name="contract_id" options="{'no_create_edit': True, 'no_open': True}"/>
                 <field name="amount_received" widget="monetary" sum="amount_received"/>
                 <field name="state"/>
@@ -185,6 +189,6 @@
         <field name="view_mode">tree</field>
     </record>
 
-    <menuitem id="sale_contract_cashback_plan_menu" name="回款计划" parent="contract_root_menu" sequence="2" action="sale_contract_cashback_plan_action"/>
+    <menuitem id="sale_contract_cashback_plan_menu" name="回款计划" parent="money_root_menu" sequence="1" action="sale_contract_cashback_plan_action"/>
 
 </odoo>

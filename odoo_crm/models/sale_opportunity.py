@@ -35,15 +35,17 @@ class SaleOpportunity(models.Model):
     code = fields.Char(string="机会编号", required=True, default='New', track_visibility='onchange')
     name = fields.Char(string="机会名称", required=True, track_visibility='onchange')
     partner_id = fields.Many2one(comodel_name="res.partner", string="客户", required=True, index=True, track_visibility='onchange')
-    contact_ids = fields.Many2many(comodel_name="crm.contact.users", string="联系人", domain="[('partner_id','=', partner_id)]")
+    # _ids = fields.Many2many(comodel_name="", relation="", column1="", column2="", string="", )
+    contact_ids = fields.Many2many("crm.contact.users", "crm_opportunity_and_contract_rel", "opportunity_id", 'contract_id',
+                                   string="联系人", domain="[('partner_id','=', partner_id)]")
     state = fields.Selection(string="销售阶段", selection=SALESTATED, default='find', track_visibility='onchange')
-    principal_ids = fields.Many2many("res.users", "opportunity_principal_and_res_users_rel", string="负责人", required=True)
-    collaborator_ids = fields.Many2many("res.users", "opportunity_collaborator_and_res_users_rel", string="协同人")
-    importance = fields.Selection(string="重要程度", selection=CUSTOMERTIMPORTTANCE, default='during', track_visibility='onchange')
-    decision_makers = fields.Many2many("crm.contact.users", "opportunity_decision_and_users_rel",  string="决策人",
+    principal_ids = fields.Many2many("res.users", "opportunity_principal_and_res_users_rel", "opportunity_id", 'user_id',string="负责人", required=True)
+    collaborator_ids = fields.Many2many("res.users", "opportunity_collaborator_and_res_users_rel", "opportunity_id", 'user_id', string="协同人")
+    importance = fields.Selection(string="重要程度", selection=CUSTOMERTIMPORTTANCE, default='during')
+    decision_makers = fields.Many2many("crm.contact.users", "opportunity_decision_and_users_rel", "opportunity_id", 'user_id', string="决策人",
                                        domain="[('partner_id','=', partner_id)]")
     competitors = fields.Char(string="竞争对手")
-    product_ids = fields.Many2many(comodel_name="product.template", string="关联产品", track_visibility='onchange')
+    product_ids = fields.Many2many("product.template", "crm_opportunity_and_product_rel", 'opportunity_id', 'product_id', string="关联产品")
     estimated_amount = fields.Float(string="预计金额",  required=True, track_visibility='onchange')
     estimated_date = fields.Date(string="结束日期", required=True, default=fields.Date.context_today, track_visibility='onchange')
     note = fields.Text(string="备注")

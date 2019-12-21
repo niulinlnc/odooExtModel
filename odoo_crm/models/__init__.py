@@ -21,3 +21,5 @@ from . import follow_records
 from . import sale_opportunity
 from . import sale_order
 from . import sale_contract
+from . import sale_order_returns
+from . import sale_invoice

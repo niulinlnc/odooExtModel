@@ -70,22 +70,24 @@ class ResPartner(models.Model):
         result['views'] = [(res and res.id or False, 'form')]
         return result
 
-    @api.constrains('c_stated')
+    # @api.constrains('c_stated')
     @api.onchange('c_stated')
     def _onchange_stated(self):
         """
         获取阶段对应的工作
         """
-        if len(self.c_stated_word_ids) == 0:
-            stateds = self.env['crm.stated.work'].search([])
-            stated_list = list()
-            for stated in stateds:
-                stated_list.append({
-                    'c_stated': stated.c_stated,
-                    'stated_id': stated.id,
-                    'is_complete': False,
-                })
-            self.c_stated_word_ids = stated_list
+        for res in self:
+            if len(res.c_stated_word_ids) == 0:
+                stateds = self.env['crm.stated.work'].search([])
+                stated_list = list()
+                for stated in stateds:
+                    stated_list.append((0, 0, {
+                        'c_stated': stated.c_stated,
+                        'stated_id': stated.id,
+                        'is_complete': False,
+                        'partner_id': res.id,
+                    }))
+                # res.c_stated_word_ids = stated_list
 
     def next_stated(self):
         """
@@ -144,7 +146,7 @@ class CrmPartnerStatedWord(models.Model):
     c_stated = fields.Selection(string="所属阶段", selection=CUSTOMERSTATED, index=True)
     stated_id = fields.Many2one(comodel_name="crm.stated.work", string="阶段工作", required=True)
     is_complete = fields.Boolean(string="已完成", default=False, index=True)
-    partner_id = fields.Many2one(comodel_name="res.partner", string="客户", index=True)
+    partner_id = fields.Many2one(comodel_name="res.partner", string="客户", index=True, ondelete="set null")
 
     @api.constrains('is_complete')
     def _constrains_complete(self):

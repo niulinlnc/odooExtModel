@@ -46,5 +46,21 @@ limitations under the License.
             <field name="padding">4</field>
         </record>
 
+        <record id="sale_order_return_number" model="ir.sequence">
+            <field name="name">退货退款编号规则</field>
+            <field name="code">crm.sale.order.return.code</field>
+            <field name="prefix">RFO.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="crm_sale_invoice_number" model="ir.sequence">
+            <field name="name">销售发票编号规则</field>
+            <field name="code">crm.sale.invoice.code</field>
+            <field name="prefix">IVO.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
     </data>
 </odoo>
