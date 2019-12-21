@@ -45,7 +45,7 @@ class ResPartner(models.Model):
     c_nature_id = fields.Many2one(comodel_name="crm.partner.nature", string="客户性质")
     c_grading_id = fields.Many2one(comodel_name="crm.partner.grading", string="客户分级")
     c_industry_id = fields.Many2one(comodel_name="crm.partner.industry", string="客户行业")
-    c_importance = fields.Selection(string="重要程度", selection=CUSTOMERTIMPORTTANCE)
+    c_importance = fields.Selection(string="重要程度", selection=CUSTOMERTIMPORTTANCE, default='during')
     c_source_id = fields.Many2one(comodel_name="crm.partner.source", string="客户来源")
     c_website = fields.Char(string="客户官网")
     c_introduction = fields.Text(string="客户简介")
@@ -55,6 +55,7 @@ class ResPartner(models.Model):
     c_contact_ids = fields.One2many(comodel_name="crm.contact.users", inverse_name="partner_id", string="联系人")
     c_follow_record_ids = fields.One2many(comodel_name="crm.follow.records", inverse_name="partner_id", string="跟进记录")
     c_stated_word_ids = fields.One2many(comodel_name="res.partner.stated.word", inverse_name="partner_id", string="阶段工作")
+    is_crm_pond = fields.Boolean(string="是否属于公海池", default=True)
 
     def create_follow_records(self):
         """
@@ -70,9 +71,8 @@ class ResPartner(models.Model):
         result['views'] = [(res and res.id or False, 'form')]
         return result
 
-    # @api.constrains('c_stated')
-    @api.onchange('c_stated')
-    def _onchange_stated(self):
+    @api.constrains('c_stated')
+    def _constrains_get_stated_work(self):
         """
         获取阶段对应的工作
         """
@@ -85,9 +85,8 @@ class ResPartner(models.Model):
                         'c_stated': stated.c_stated,
                         'stated_id': stated.id,
                         'is_complete': False,
-                        'partner_id': res.id,
                     }))
-                # res.c_stated_word_ids = stated_list
+                res.write({'c_stated_word_ids': stated_list})
 
     def next_stated(self):
         """
@@ -138,6 +137,38 @@ class ResPartner(models.Model):
         result['domain'] = "[('partner_id','=',%s)]" % (self.id)
         return result
 
+    def action_sale_invoice(self):
+        """
+        跳转至销售发票
+        """
+        result = self.env.ref('odoo_crm.crm_sale_invoice_action').read()[0]
+        result['context'] = {'default_partner_id': self.id}
+        result['domain'] = "[('partner_id','=',%s)]" % (self.id)
+        return result
+
+    @api.onchange('name')
+    def _default_abbreviation(self):
+        for res in self:
+            if res.name:
+                res.c_abbreviation = res.name
+
+    def alert_partner_fond(self):
+        """
+        将客户取出公海池
+        """
+        for res in self:
+            res.write({
+                'is_crm_pond': False,
+                'c_principal_ids': [(6, 0, [self.env.user.id])],
+            })
+
+    def alert_partner_fond_true(self):
+        for res in self:
+            res.write({
+                'is_crm_pond': True,
+                'c_principal_ids': False,
+            })
+
 
 class CrmPartnerStatedWord(models.Model):
     _name = 'res.partner.stated.word'
@@ -148,18 +179,18 @@ class CrmPartnerStatedWord(models.Model):
     is_complete = fields.Boolean(string="已完成", default=False, index=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="客户", index=True, ondelete="set null")
 
-    @api.constrains('is_complete')
-    def _constrains_complete(self):
-        """
-        当完成状态发生变化时，将信息写入到客户的消息备注中
-        """
-        self.ensure_one()
-        # 获取阶段字符串
-        stated_str = ''
-        for cu in CUSTOMERSTATED:
-            if self.c_stated == cu[0]:
-                stated_str = cu[1]
-                break
-        stated = "完成" if self.is_complete else "关闭"
-        note = "{}-阶段任务：{}， 新状态：{}".format(stated_str, self.stated_id.content, stated)
-        self.partner_id.message_post(body=note, message_type='notification')
+    # @api.constrains('is_complete')
+    # def _constrains_complete(self):
+    #     """
+    #     当完成状态发生变化时，将信息写入到客户的消息备注中
+    #     """
+    #     # 获取阶段字符串
+    #     for res in self:
+    #         stated_str = ''
+    #         for cu in CUSTOMERSTATED:
+    #             if res.c_stated == cu[0]:
+    #                 stated_str = cu[1]
+    #                 break
+    #         stated = "完成" if res.is_complete else "关闭"
+    #         note = "{}-阶段任务：{}， 新状态：{}".format(stated_str, res.stated_id.content, stated)
+    #         res.partner_id.message_post(body=note, message_type='notification')

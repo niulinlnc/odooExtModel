@@ -63,7 +63,35 @@ class CrmContactUsers(models.Model):
         新建联系人机会
         """
         result = self.env.ref('odoo_crm.crm_sale_opportunity_action').read()[0]
-        result['context'] = {'default_partner_id': self.partner_id.id, 'default_contact_ids': [(6, 0, [self.id])]}
+        result['context'] = {
+            'default_name': "%s的销售机会" % (self.name),
+            'default_partner_id': self.partner_id.id,
+            'default_contact_ids': [(6, 0, [self.id])]
+        }
         res = self.env.ref('odoo_crm.crm_sale_opportunity_form_view', False)
         result['views'] = [(res and res.id or False, 'form')]
         return result
+
+    def create_sale_contract(self):
+        """
+        新建合同
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {
+            'default_name': "%s的销售合同" % (self.name),
+            'default_partner_id': self.partner_id.id,
+            'default_contact_ids': [(6, 0, [self.id])]
+        }
+        res = self.env.ref('odoo_crm.crm_sale_contract_form_view', False)
+        result['views'] = [(res and res.id or False, 'form')]
+        return result
+
+    def action_sale_contract(self):
+        """
+        跳转至合同
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {'default_partner_id': self.partner_id.id, 'default_contact_ids': [(6, 0, [self.id])]}
+        result['domain'] = "[('contact_ids','=', %s)]" % (self.id)
+        return result
+

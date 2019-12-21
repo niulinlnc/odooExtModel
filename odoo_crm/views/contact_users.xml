@@ -26,14 +26,14 @@
             <form>
                 <header>
                     <button name="create_contact_opportunity" type="object" class="oe_highlight" string="新建机会"/>
-                    <button name="create_partner_opportunity" type="object" class="oe_highlight" string="新建合同"/>
+                    <button name="create_sale_contract" type="object" class="oe_highlight" string="新建合同"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_contact_opportunity" string="机会" type="object" class="oe_stat_button"
                                 icon="fa-clock-o" groups="odoo_crm.sale_groups">
                         </button>
-                        <button name="create_ding_department" string="合同" type="object" class="oe_stat_button"
+                        <button name="action_sale_contract" string="合同" type="object" class="oe_stat_button"
                                 icon="fa-book" groups="odoo_crm.sale_groups">
                         </button>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">

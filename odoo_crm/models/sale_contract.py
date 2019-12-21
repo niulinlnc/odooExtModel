@@ -114,7 +114,7 @@ class CrmSaleContractLine(models.Model):
         return self.env.user.company_id.currency_id.id
 
     currency_id = fields.Many2one('res.currency', '币种', required=True, default=_default_currency)
-    contract_id = fields.Many2one(comodel_name="crm.sale.contract", string="订单合同")
+    contract_id = fields.Many2one(comodel_name="crm.sale.contract", string="订单合同", ondelete='set null')
     product_id = fields.Many2one(comodel_name="product.template", string="产品", required=True)
     price = fields.Float(string=u'价格', digits=(10, 2), required=True)
     number = fields.Float(string="数量", digits=(10, 2), required=True)
@@ -146,6 +146,7 @@ class CrmSaleContractLine(models.Model):
 class CrmContractCashbackPlan(models.Model):
     _name = 'sale.contract.cashback.plan'
     _description = '回款计划'
+    _rec_name = 'code'
 
     def _default_currency(self):
         """

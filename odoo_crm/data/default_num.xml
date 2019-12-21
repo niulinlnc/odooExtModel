@@ -62,5 +62,13 @@ limitations under the License.
             <field name="padding">4</field>
         </record>
 
+        <record id="crm_work_order_number" model="ir.sequence">
+            <field name="name">工单编号规则</field>
+            <field name="code">crm.work.order.code</field>
+            <field name="prefix">WOO.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
     </data>
 </odoo>

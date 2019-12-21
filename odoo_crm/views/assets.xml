@@ -16,7 +16,6 @@
 
     <menuitem name="资金" id="money_root_menu" parent="root_menu" sequence="9"/>
 
-    <menuitem name="工单" id="work_order_root_menu" parent="root_menu" sequence="10"/>
 
     <menuitem name="报表" id="report_root_menu" parent="root_menu" sequence="11"/>
 

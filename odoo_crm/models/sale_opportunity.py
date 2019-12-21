@@ -35,7 +35,6 @@ class SaleOpportunity(models.Model):
     code = fields.Char(string="机会编号", required=True, default='New', track_visibility='onchange')
     name = fields.Char(string="机会名称", required=True, track_visibility='onchange')
     partner_id = fields.Many2one(comodel_name="res.partner", string="客户", required=True, index=True, track_visibility='onchange')
-    # _ids = fields.Many2many(comodel_name="", relation="", column1="", column2="", string="", )
     contact_ids = fields.Many2many("crm.contact.users", "crm_opportunity_and_contract_rel", "opportunity_id", 'contract_id',
                                    string="联系人", domain="[('partner_id','=', partner_id)]")
     state = fields.Selection(string="销售阶段", selection=SALESTATED, default='find', track_visibility='onchange')

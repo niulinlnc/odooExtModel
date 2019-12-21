@@ -30,13 +30,15 @@ Copyright (C) 2019 SuXueFeng GUN
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="next_stated" type="object" class="oe_highlight" string="下一阶段"
-                            attrs="{'invisible': [('c_stated', 'in', ('clinch', 'churn'))]}" confirm="确认进入下一阶段吗？"/>
+                    <button name="next_stated" type="object" class="oe_highlight" string="下一阶段" confirm="确认进入下一阶段吗？"
+                            attrs="{'invisible': ['|',('c_stated', 'in', ('clinch', 'churn')), ('is_crm_pond', '=', True)]}"/>
                     <button name="%(res_partner_return_stated_action)d" type="action" class="oe_highlight" string="阶段变更"
-                            confirm="确认变更该客户的阶段吗？" attrs="{'invisible': [('c_stated', '=', 'find')]}" />
+                            confirm="确认变更该客户的阶段吗？" attrs="{'invisible': ['|',('c_stated', '=', 'find'), ('is_crm_pond', '=', True)]}" />
                     <button name="%(res_partner_crm_churn_action)d" type="action" string="已流失"
-                            attrs="{'invisible': [('c_stated', '=', 'churn')]}"/>
+                            attrs="{'invisible': ['|',('c_stated', '=', 'churn'), ('is_crm_pond', '=', True)]}"/>
                     <button name="create_follow_records" type="object" string="新建跟进记录"/>
+                    <button name="alert_partner_fond_true" type="object" string="回到公海池" attrs="{'invisible': [('is_crm_pond', '=', True)]}"/>
+                    <button name="alert_partner_fond" type="object" string="拾起" attrs="{'invisible': [('is_crm_pond', '=', False)]}"/>
                     <field name="c_stated" widget="statusbar" modifiers="{'readonly': true}"/>
                 </header>
                 <sheet>
@@ -50,7 +52,7 @@ Copyright (C) 2019 SuXueFeng GUN
                         <button name="action_sale_contract" string="合同" type="object" class="oe_stat_button"
                                 icon="fa-book" groups="odoo_crm.sale_groups">
                         </button>
-                        <button name="create_ding_department" string="发票" type="object" class="oe_stat_button"
+                        <button name="action_sale_invoice" string="发票" type="object" class="oe_stat_button"
                                 icon="fa-file-text-o" groups="odoo_crm.sale_groups">
                         </button>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.boss_groups">
@@ -113,6 +115,7 @@ Copyright (C) 2019 SuXueFeng GUN
                         <page string="客户资料" autofocus="autofocus">
                             <group col="2">
                                 <group>
+                                    <field name="is_crm_pond" invisible="1"/>
                                     <field name="c_abbreviation"/>
                                     <field name="c_state"/>
                                     <field name="c_type_id" options="{'no_create_edit': True, 'no_open': True}"/>
@@ -238,9 +241,9 @@ Copyright (C) 2019 SuXueFeng GUN
          <field name="res_model">res.partner</field>
          <field name="view_type">form</field>
          <field name="view_mode">tree,form,kanban</field>
-         <field name="domain">['|', ('customer', '=', True), ('supplier', '=', True)]</field>
+         <field name="domain">[('is_crm_pond', '=', False)]</field>
          <field name="search_view_id" ref="crm_res_partner_search"/>
-         <field name="context">{"search_default_group_by_c_stated":1}</field>
+         <field name="context">{"search_default_group_by_c_stated":1, "default_is_crm_pond": False}</field>
          <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 新建客户
@@ -261,14 +264,17 @@ Copyright (C) 2019 SuXueFeng GUN
         <field name="act_window_id" ref="crm_res_partner_action"/>
     </record>
 
+    <menuitem id="crm_partner_menu" name="客户管理" parent="client_root_ment" sequence="1" action="crm_res_partner_action"/>
+
     <record model="ir.actions.act_window" id="crm_res_partner_pond_action">
          <field name="name">客户公海池</field>
          <field name="type">ir.actions.act_window</field>
          <field name="res_model">res.partner</field>
          <field name="view_type">form</field>
          <field name="view_mode">tree,form,kanban</field>
-         <field name="domain">['|', ('c_principal_ids', '=', False), ('c_collaborator_ids', '=', False)]</field>
+         <field name="domain">[('is_crm_pond', '=', True)]</field>
          <field name="search_view_id" ref="crm_res_partner_search"/>
+         <field name="context">{"default_is_crm_pond": True}</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('odoo_crm.crm_res_partner_view_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('odoo_crm.crm_res_partner_form_view')})]"/>
@@ -279,10 +285,7 @@ Copyright (C) 2019 SuXueFeng GUN
         </field>
     </record>
 
-    <menuitem id="crm_partner_menu" name="全部客户" parent="client_root_ment" sequence="1" action="crm_res_partner_action"/>
-
     <menuitem id="crm_partner_pond_ment" name="客户公海池" parent="client_root_ment" sequence="2" action="crm_res_partner_pond_action"/>
-
 
     <record id="res_partner_stated_word_form_view" model="ir.ui.view">
         <field name="name">阶段工作内容</field>

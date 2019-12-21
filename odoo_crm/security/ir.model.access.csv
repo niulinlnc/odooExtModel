@@ -23,5 +23,6 @@ access_sale_contract_cashback_plan,sale.contract.cashback.plan,model_sale_contra
 access_crm_sale_order_return,crm.sale.order.return,model_crm_sale_order_return,odoo_crm.sale_groups,1,1,1,1
 access_crm_sale_order_return_line,crm.sale.order.return.line,model_crm_sale_order_return_line,odoo_crm.sale_groups,1,1,1,1
 access_crm_sale_invoice,crm.sale.invoice,model_crm_sale_invoice,odoo_crm.sale_groups,1,1,1,1
+access_crm_work_order,crm.work.order,model_crm_work_order,odoo_crm.sale_groups,1,1,1,1
 
 

@@ -44,5 +44,6 @@
         'views/sale_contract.xml',
         'views/sale_order_returns.xml',
         'views/sale_invoice.xml',
+        'views/work_order.xml',
     ],
 }
