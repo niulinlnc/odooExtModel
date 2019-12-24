@@ -56,6 +56,10 @@ class ResPartner(models.Model):
     c_follow_record_ids = fields.One2many(comodel_name="crm.follow.records", inverse_name="partner_id", string="跟进记录")
     c_stated_word_ids = fields.One2many(comodel_name="res.partner.stated.word", inverse_name="partner_id", string="阶段工作")
     is_crm_pond = fields.Boolean(string="是否属于公海池", default=True)
+    c_opportunity_count = fields.Integer(string="机会数量", compute='_compute_c_sale_counts')
+    c_sale_order_count = fields.Integer(string="报价单数量", compute='_compute_c_sale_counts')
+    c_sale_contract_count = fields.Integer(string="合同数量", compute='_compute_c_sale_counts')
+    c_sale_invoice_count = fields.Integer(string="发票数量", compute='_compute_c_sale_counts')
 
     def create_follow_records(self):
         """
@@ -168,6 +172,22 @@ class ResPartner(models.Model):
                 'is_crm_pond': True,
                 'c_principal_ids': False,
             })
+
+    def _compute_c_sale_counts(self):
+        """
+        获取机会、合同、发票的数量
+        :return:
+        """
+        for res in self:
+            domain = [('partner_id', '=', res.id)]
+            c_opportunity_count = self.env['crm.sale.opportunity'].search_count(domain)
+            c_sale_order_count = self.env['crm.sale.order'].search_count(domain)
+            c_sale_contract_count = self.env['crm.sale.contract'].search_count(domain)
+            c_sale_invoice_count = self.env['crm.sale.invoice'].search_count(domain)
+            res.c_opportunity_count = c_opportunity_count
+            res.c_sale_order_count = c_sale_order_count
+            res.c_sale_contract_count = c_sale_contract_count
+            res.c_sale_invoice_count = c_sale_invoice_count
 
 
 class CrmPartnerStatedWord(models.Model):

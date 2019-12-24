@@ -161,7 +161,7 @@
         </field>
     </record>
 
-    <menuitem id="crm_sale_contract_menu" name="订单合同" parent="contract_root_menu" sequence="1" action="crm_sale_contract_action"/>
+    <menuitem id="crm_sale_contract_menu" name="合同" parent="root_menu" sequence="7" action="crm_sale_contract_action"/>
 
 
     <record id="sale_contract_cashback_plan_tree_view" model="ir.ui.view">

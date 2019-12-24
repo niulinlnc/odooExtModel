@@ -27,6 +27,12 @@ class CrmSaleInvoice(models.Model):
         ('03', '地税通用机打发票'),
         ('04', '收据'),
     ]
+    INVOICESTATE = [
+        ('new', '新的'),
+        ('confirm', '已确认'),
+        ('void', '作废'),
+        ('red', '红冲'),
+    ]
 
     active = fields.Boolean(string=u'Active', default=True)
     company_id = fields.Many2one('res.company', '公司', default=lambda self: self.env.user.company_id, index=True)
@@ -41,6 +47,7 @@ class CrmSaleInvoice(models.Model):
     subtotal = fields.Monetary(string="开票金额", digits=(10, 2))
     invoice_type = fields.Selection(string="发票类型", selection=INVOICETYPE, default='00')
     note = fields.Text(string="备注")
+    state = fields.Selection(string="状态", selection=INVOICESTATE, default='new')
     # ---发票信息---
     look_type = fields.Selection(string="抬头类型", selection=[('00', '企业'), ('01', '个人')], default='00')
     invoice_look = fields.Char(string="发票抬头")

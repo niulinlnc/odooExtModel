@@ -21,7 +21,7 @@ class CrmWorkOrder(models.Model):
     ]
 
     active = fields.Boolean(string="归档", default=True, track_visibility='onchange')
-    code = fields.Char(string="工单编号")
+    code = fields.Char(string="工单编号", default='WOO.')
     name = fields.Char(string="工单名称", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="客户", required=True, index=True, track_visibility='onchange')
     contact_id = fields.Many2one(comodel_name="crm.contact.users", string="联系人", required=False, domain="[('partner_id','=', partner_id)]")

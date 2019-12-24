@@ -5,6 +5,11 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
+RETURNSTATE = [
+    ('new', '新的'),
+    ('confirm', '已确认'),
+]
+
 
 class CrmSaleOrderReturn(models.Model):
     _name = 'crm.sale.order.return'
@@ -34,6 +39,7 @@ class CrmSaleOrderReturn(models.Model):
     line_ids = fields.One2many(comodel_name="crm.sale.order.return.line", inverse_name="order_id", string="明细")
     subtotal = fields.Monetary(string="合计金额", digits=(10, 2), store=True, compute='_amount_subtotal')
     note = fields.Text(string="备注")
+    state = fields.Selection(string="状态", selection=RETURNSTATE, default='new')
 
     @api.onchange('line_ids')
     @api.depends('line_ids')

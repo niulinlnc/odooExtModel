@@ -37,23 +37,28 @@ Copyright (C) 2019 SuXueFeng GUN
                     <button name="%(res_partner_crm_churn_action)d" type="action" string="已流失"
                             attrs="{'invisible': ['|',('c_stated', '=', 'churn'), ('is_crm_pond', '=', True)]}"/>
                     <button name="create_follow_records" type="object" string="新建跟进记录"/>
-                    <button name="alert_partner_fond_true" type="object" string="回到公海池" attrs="{'invisible': [('is_crm_pond', '=', True)]}"/>
+                    <button name="alert_partner_fond_true" type="object" string="回到公海池"
+                            attrs="{'invisible': ['|',('is_crm_pond', '=', True),('c_stated', '!=', 'find')]}"/>
                     <button name="alert_partner_fond" type="object" string="拾起" attrs="{'invisible': [('is_crm_pond', '=', False)]}"/>
                     <field name="c_stated" widget="statusbar" modifiers="{'readonly': true}"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_partner_opportunity" string="机会" type="object" class="oe_stat_button"
+                        <button name="action_partner_opportunity" type="object" class="oe_stat_button"
                                 icon="fa-clock-o" groups="odoo_crm.sale_groups">
+                            <field name="c_opportunity_count" widget="statinfo" string="机会"/>
                         </button>
-                        <button name="action_sale_order" string="报价单" type="object" class="oe_stat_button"
+                        <button name="action_sale_order" type="object" class="oe_stat_button"
                                 icon="fa-id-card-o" groups="odoo_crm.sale_groups">
+                            <field name="c_sale_order_count" widget="statinfo" string="报价单"/>
                         </button>
-                        <button name="action_sale_contract" string="合同" type="object" class="oe_stat_button"
+                        <button name="action_sale_contract" type="object" class="oe_stat_button"
                                 icon="fa-book" groups="odoo_crm.sale_groups">
+                            <field name="c_sale_contract_count" widget="statinfo" string="合同"/>
                         </button>
-                        <button name="action_sale_invoice" string="发票" type="object" class="oe_stat_button"
+                        <button name="action_sale_invoice" type="object" class="oe_stat_button"
                                 icon="fa-file-text-o" groups="odoo_crm.sale_groups">
+                            <field name="c_sale_invoice_count" widget="statinfo" string="发票"/>
                         </button>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.boss_groups">
                             <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>

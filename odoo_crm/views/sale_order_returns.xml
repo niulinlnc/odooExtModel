@@ -24,6 +24,7 @@
             <form>
                 <header>
                     <button name="next_stated" type="object" class="oe_highlight" string="确认"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title" name="title">
@@ -62,6 +63,13 @@
                                     <field name="note"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page string="其他">
+                            <group>
+                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                <field name="create_uid" options="{'no_create_edit': True, 'no_open': True}" string="创建人"/>
+                                <field name="create_date" widget="date" string="创建时间"/>
+                            </group>
                         </page>
                     </notebook>
                     <group class="oe_subtotal_footer oe_right" colspan="2">
