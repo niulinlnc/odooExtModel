@@ -37,8 +37,8 @@ class ResPartner(models.Model):
     ]
 
     c_abbreviation = fields.Char(string="客户简称")
-    c_state = fields.Selection(string="客户状态", selection=CUSTOMERSTATE, default='potential', index=True)
-    c_stated = fields.Selection(string="客户阶段", selection=CUSTOMERSTATED, default='find', index=True)
+    c_state = fields.Selection(string="客户状态", selection=CUSTOMERSTATE, default='potential', index=True, track_visibility='onchange')
+    c_stated = fields.Selection(string="客户阶段", selection=CUSTOMERSTATED, default='find', index=True, track_visibility='onchange')
     c_principal_ids = fields.Many2many("res.users", "c_partner_and_principal_rel", string="负责人")
     c_collaborator_ids = fields.Many2many("res.users", "c_partner_and_collaborator_rel", string="协同人")
     c_type_id = fields.Many2one(comodel_name="crm.partner.type", string="客户类型")
@@ -55,7 +55,7 @@ class ResPartner(models.Model):
     c_contact_ids = fields.One2many(comodel_name="crm.contact.users", inverse_name="partner_id", string="联系人")
     c_follow_record_ids = fields.One2many(comodel_name="crm.follow.records", inverse_name="partner_id", string="跟进记录")
     c_stated_word_ids = fields.One2many(comodel_name="res.partner.stated.word", inverse_name="partner_id", string="阶段工作")
-    is_crm_pond = fields.Boolean(string="是否属于公海池", default=True)
+    is_crm_pond = fields.Boolean(string="是否属于公海池", default=True, track_visibility='onchange')
     c_opportunity_count = fields.Integer(string="机会数量", compute='_compute_c_sale_counts')
     c_sale_order_count = fields.Integer(string="报价单数量", compute='_compute_c_sale_counts')
     c_sale_contract_count = fields.Integer(string="合同数量", compute='_compute_c_sale_counts')

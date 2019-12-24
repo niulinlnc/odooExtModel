@@ -24,15 +24,21 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="next_stated" type="object" class="oe_highlight" string="确认合同"/>
-                    <button name="next_stated" type="object" string="创建发票"/>
-                    <button name="next_stated" type="object" string="新建退货退款单"/>
-                    <button name="next_stated" type="object" string="已终止"/>
+                    <button name="confirm_contract" type="object" class="oe_highlight" string="确认合同" confirm="确认合同？" states="sign"/>
+                    <button name="create_invoice" type="object" class="oe_highlight" string="创建发票" states="progress,finish"/>
+                    <button name="create_returns" type="object" string="创建退货退款单" states="progress,finish"/>
+                    <button name="contract_finish" type="object" string="已完成" confirm="确认该合同已经完成了吗？" states="progress"/>
+                    <button name="contract_terminated" type="object" string="已终止" confirm="请确认该合同已经终止了么？" states="progress"/>
+                    <button name="return_sign" type="object" string="退回签约" confirm="确认要退回到初始状态？" states="progress,finish,termination"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="create_ding_department" string="发票" type="object" class="oe_stat_button" icon="fa-file-text-o"/>
+                        <button name="action_sale_invoice" string="发票" type="object" class="oe_stat_button" icon="fa-file-text-o"/>
+                        <button name="action_sale_returns" string="退货退款" type="object" class="oe_stat_button" icon="fa-file"/>
+                        <button name="attachment_image_preview" type="object" class="oe_stat_button" icon="fa-file-text">
+                            <field name="attachment_number" widget="statinfo"/>
+                        </button>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.director_groups">
                             <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                         </button>
@@ -40,7 +46,7 @@
                     <div class="oe_title" name="title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="合同名称..."/>
+                            <field name="name" placeholder="合同名称..." attrs="{'readonly': [('state', '!=', 'sign')]}"/>
                         </h1>
                         <h2>
                             <field name="code" readonly="1"/>
@@ -49,21 +55,21 @@
                     <group col="2">
                         <group>
                             <field name="currency_id" invisible="1"/>
-                            <field name="partner_id" options="{'no_create_edit': True}"/>
+                            <field name="partner_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
                             <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                             <field name="opportunity_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                             <field name="order_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                         <group>
-                            <field name="signatory_id" options="{'no_create_edit': True}"/>
-                            <field name="signing_date"/>
-                            <field name="expiry_date"/>
+                            <field name="signatory_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
+                            <field name="signing_date" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
+                            <field name="expiry_date" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
                             <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                             <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="合同明细" autofocus="autofocus">
+                        <page string="合同明细" autofocus="autofocus" attrs="{'readonly': [('state', '!=', 'sign')]}">
                             <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id}">
                                 <tree editable="bottom" >
                                     <field name="currency_id" invisible="1"/>
@@ -75,7 +81,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="回款计划">
+                        <page string="回款计划" attrs="{'readonly': [('state', '!=', 'sign')]}">
                             <field name="cashback_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id, 'default_partner_id': partner_id}">
                                 <tree editable="bottom" >
                                     <field name="currency_id" invisible="1"/>
@@ -93,14 +99,14 @@
                         <page string="拓展信息">
                             <group col="2">
                                 <group>
-                                    <field name="type_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="type_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
                                     <field name="payment_method_id" options="{'no_create_edit': True, 'no_open': True}"/>
                                     <field name="logistics_id" options="{'no_create_edit': True, 'no_open': True}"/>
                                     <field name="logistics_code"/>
                                     <field name="delivery_status"/>
                                 </group>
                                 <group>
-                                    <field name="company_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="company_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'sign')]}"/>
                                     <field name="create_uid" string="创建人" options="{'no_create_edit': True, 'no_open': True}"/>
                                     <field name="create_date" string="创建时间"/>
                                 </group>

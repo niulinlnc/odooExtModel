@@ -40,7 +40,7 @@
                     <div class="oe_title" name="title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="报价单名称..."/>
+                            <field name="name" placeholder="报价单名称..." attrs="{'readonly': [('state', '!=', 'offer')]}"/>
                         </h1>
                         <h2>
                             <field name="code" readonly="1"/>
@@ -49,20 +49,20 @@
                     <group col="2">
                         <group>
                             <field name="currency_id" invisible="1"/>
-                            <field name="partner_id" options="{'no_create_edit': True}"/>
-                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="opportunity_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="partner_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="opportunity_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
                         </group>
                         <group>
-                            <field name="quote_id" options="{'no_create_edit': True}"/>
-                            <field name="quote_date"/>
-                            <field name="effective_date"/>
+                            <field name="quote_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="quote_date" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="effective_date" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="明细行" autofocus="autofocus">
                             <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}"
-                                   context="{'default_currency_id': currency_id, 'default_order_id': id}">
+                                   context="{'default_currency_id': currency_id, 'default_order_id': id}" attrs="{'readonly': [('state', '!=', 'offer')]}">
                                 <tree editable="bottom" >
                                     <field name="currency_id" invisible="1"/>
                                     <field name="product_id"/>

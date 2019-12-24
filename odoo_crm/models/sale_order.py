@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
     principal_ids = fields.Many2many("res.users", "crm_sale_order_and_res_users_rel", string="负责人", required=True)
     collaborator_ids = fields.Many2many("res.users", "crm_sale_order_and_res_users_rel", string="协同人")
     line_ids = fields.One2many(comodel_name="crm.sale.order.line", inverse_name="order_id", string="明细行")
-    state = fields.Selection(string="状态", selection=SALESTATE, default='offer')
+    state = fields.Selection(string="状态", selection=SALESTATE, default='offer', track_visibility='onchange')
 
     discounted_price = fields.Monetary(string="优惠金额", digits=(10, 2), track_visibility='onchange')
     subtotal = fields.Monetary(string="报价金额", digits=(10, 2), store=True, compute='_amount_subtotal')

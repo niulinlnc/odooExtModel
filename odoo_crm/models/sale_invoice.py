@@ -39,7 +39,7 @@ class CrmSaleInvoice(models.Model):
     currency_id = fields.Many2one('res.currency', '币种', required=True, default=_default_currency)
     code = fields.Char(string="单据编号", required=True, default='New', track_visibility='onchange', index=True)
     invoice_number = fields.Char(string="发票号码", required=True)
-    applicant_id = fields.Many2one(comodel_name="res.users", string="申请人", required=True)
+    applicant_id = fields.Many2one(comodel_name="res.users", string="申请人", required=True, default=lambda self: self.env.user.id)
     partner_id = fields.Many2one("res.partner", string="客户", required=True, index=True, track_visibility='onchange')
     contract_id = fields.Many2one(comodel_name="crm.sale.contract", string="合同", domain="[('partner_id','=', partner_id)]")
     cashback_ids = fields.Many2many(comodel_name="sale.contract.cashback.plan", string="关联回款")
@@ -66,3 +66,24 @@ class CrmSaleInvoice(models.Model):
     def create(self, values):
         values['code'] = self.env['ir.sequence'].sudo().next_by_code('crm.sale.invoice.code')
         return super(CrmSaleInvoice, self).create(values)
+
+    def confirm_sale_invoice(self):
+        """
+        确认销售发票
+        :return:
+        """
+        raise UserError("暂未实现")
+
+    def void_sale_invoice(self):
+        """
+        作废发票
+        :return:
+        """
+        raise UserError("暂未实现")
+
+    def red_sale_invoice(self):
+        """
+        红冲发票
+        :return:
+        """
+        raise UserError("暂未实现")

@@ -25,9 +25,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="create_sale_order" type="object" class="oe_highlight" string="确认"/>
-                    <button name="create_sale_order" type="object" string="作废"/>
-                    <button name="create_sale_order" type="object" string="红冲"/>
+                    <button name="confirm_sale_invoice" type="object" class="oe_highlight" string="确认发票" states="new"/>
+                    <button name="void_sale_invoice" type="object" string="作废" states="confirm"/>
+                    <button name="red_sale_invoice" type="object" string="红冲" states="confirm"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
