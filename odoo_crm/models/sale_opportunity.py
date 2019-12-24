@@ -51,6 +51,9 @@ class SaleOpportunity(models.Model):
     attachment_number = fields.Integer(compute='_compute_attachment_number', string='附件')
     company_id = fields.Many2one('res.company', '公司', default=lambda self: self.env.user.company_id, index=True)
 
+    sale_order_count = fields.Integer(string="报价单数量", compute='_compute_counts')
+    contract_count = fields.Integer(string="合同数量", compute='_compute_counts')
+
     @api.model
     def create(self, values):
         values['code'] = self.env['ir.sequence'].sudo().next_by_code('crm.sale.opportunity.code')
@@ -96,3 +99,42 @@ class SaleOpportunity(models.Model):
         res = self.env.ref('odoo_crm.crm_sale_order_form_view', False)
         result['views'] = [(res and res.id or False, 'form')]
         return result
+
+    def action_sale_contract(self):
+        """
+        跳转至销售合同
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {
+            'default_partner_id': self.partner_id.id,
+            'default_opportunity_ids': [(6, 0, [self.id])],
+            'default_principal_ids': [(6, 0, [self.id])]
+        }
+        result['domain'] = "[('partner_id', '=', %s)]" % (self.partner_id.id)
+        return result
+
+    def create_sale_contract(self):
+        """
+        新建销售合同
+        :return:
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {
+            'default_name': "%s的合同" % self.partner_id.name,
+            'default_partner_id': self.partner_id.id,
+            'default_opportunity_ids': [(6, 0, [self.id])],
+            'default_principal_ids': [(6, 0, [self.id])]
+        }
+        res = self.env.ref('odoo_crm.crm_sale_contract_form_view', False)
+        result['views'] = [(res and res.id or False, 'form')]
+        return result
+
+    def _compute_counts(self):
+        """
+        计算数量
+        :return:
+        """
+        for res in self:
+            domain = [('partner_id', '=', res.partner_id.id)]
+            res.sale_order_count = self.env['crm.sale.order'].search_count(domain)
+            res.contract_count = self.env['crm.sale.contract'].search_count(domain)

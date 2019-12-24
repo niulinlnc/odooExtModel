@@ -24,15 +24,21 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="create_sale_order" type="object" class="oe_highlight" string="新建报价单"/>
-                    <button name="next_stated" type="object" class="oe_highlight" string="新建合同"/>
-                    <button name="%(res_partner_return_stated_action)d" type="action" string="状态变更"/>
+                    <button name="create_sale_order" type="object" class="oe_highlight" string="新建报价单"
+                            states="find,confirm,solve,talk,bid"/>
+                    <button name="create_sale_contract" type="object" class="oe_highlight" string="新建合同"
+                            states="find,confirm,solve,talk,bid,win"/>
+                    <button name="%(crm_sale_opportunity_state_action)d" type="action" string="状态变更"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_sale_order" string="报价单" type="object" class="oe_stat_button" icon="fa-id-card-o"/>
-                        <button name="create_ding_department" string="合同" type="object" class="oe_stat_button" icon="fa-book"/>
+                        <button name="action_sale_order" type="object" class="oe_stat_button" icon="fa-id-card-o">
+                            <field name="sale_order_count" widget="statinfo" string="报价单"/>
+                        </button>
+                        <button name="action_sale_contract" type="object" class="oe_stat_button" icon="fa-book">
+                            <field name="contract_count" widget="statinfo" string="合同"/>
+                        </button>
                         <button name="attachment_image_preview" type="object" class="oe_stat_button" icon="fa-file-text">
                             <field name="attachment_number" widget="statinfo"/>
                         </button>
@@ -49,22 +55,22 @@
                     <group col="2">
                         <group>
                             <field name="code" readonly="1"/>
-                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}"/>
-                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="importance"/>
+                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="importance" attrs="{'readonly': [('state', '!=', 'find')]}"/>
                         </group>
                         <group>
-                            <field name="decision_makers" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="competitors"/>
-                            <field name="product_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <label for="estimated_amount"/>
+                            <field name="decision_makers" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="competitors" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <field name="product_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'find')]}"/>
+                            <label for="estimated_amount" attrs="{'readonly': [('state', '!=', 'find')]}"/>
                             <div class="o_row" name="attendance_days">
-                                <field name="estimated_amount"/>
+                                <field name="estimated_amount" attrs="{'readonly': [('state', '!=', 'find')]}"/>
                                 <span>￥</span>
                             </div>
-                            <field name="estimated_date" widget="date"/>
+                            <field name="estimated_date" widget="date" attrs="{'readonly': [('state', '!=', 'find')]}"/>
                             <field name="create_uid" string="创建人"/>
                         </group>
                     </group>

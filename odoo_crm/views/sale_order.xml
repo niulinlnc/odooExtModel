@@ -24,13 +24,15 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="next_stated" type="object" class="oe_highlight" string="创建合同"/>
-                    <button name="next_stated" type="object" string="已失效"/>
+                    <button name="create_contract" type="object" class="oe_highlight" string="创建合同" states="offer"/>
+                    <button name="order_expired" type="object" string="已失效" confirm="确认已失效?" states="offer"/>
+                    <button name="to_create_contract" type="object" string="已生成合同" states="offer" confirm="确认已经生成了合同？"/>
+                    <button name="return_sale_order" type="object" string="退回报价" states="lapse,contract" confirm="确认回退到报价状态么？"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="create_ding_department" string="合同" type="object" class="oe_stat_button" icon="fa-book"/>
+                        <button name="action_sale_contract" string="合同" type="object" class="oe_stat_button" icon="fa-book"/>
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.director_groups">
                             <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                         </button>

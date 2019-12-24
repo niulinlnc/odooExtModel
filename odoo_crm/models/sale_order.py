@@ -64,6 +64,54 @@ class SaleOrder(models.Model):
                 sum_amout += line.subtotal
             res.subtotal = sum_amout-res.discounted_price
 
+    def to_create_contract(self):
+        self.write({'state': 'contract'})
+
+    def return_sale_order(self):
+        """
+        退回报价单
+        :return:
+        """
+        self.write({'state': 'offer'})
+
+    def create_contract(self):
+        """
+        创建合同
+        :return:
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {
+            'default_name': "%s的合同" % self.partner_id.name,
+            'default_partner_id': self.partner_id.id,
+            'default_opportunity_ids': [(6, 0, [self.id])],
+            'default_order_ids': [(6, 0, [self.id])]
+        }
+        res = self.env.ref('odoo_crm.crm_sale_contract_form_view', False)
+        result['views'] = [(res and res.id or False, 'form')]
+        return result
+
+    def action_sale_contract(self):
+        """
+        跳转到合同
+        :return:
+        """
+        result = self.env.ref('odoo_crm.crm_sale_contract_action').read()[0]
+        result['context'] = {
+            'default_name': "%s的合同" % self.partner_id.name,
+            'default_partner_id': self.partner_id.id,
+            'default_opportunity_ids': [(6, 0, [self.id])],
+            'default_order_ids': [(6, 0, [self.id])]
+        }
+        result['domain'] = "[('partner_id', '=', %s)]" % (self.partner_id.id)
+        return result
+
+    def order_expired(self):
+        """
+        修改订单为失效
+        :return:
+        """
+        self.write({'state': 'lapse'})
+
 
 class SaleOrderLine(models.Model):
     _name = 'crm.sale.order.line'

@@ -22,6 +22,7 @@
         'data/default_num.xml',
 
         'wizard/res_partner.xml',
+        'wizard/sale_opportunity.xml',
 
         'views/assets.xml',
         'views/crm_config.xml',
