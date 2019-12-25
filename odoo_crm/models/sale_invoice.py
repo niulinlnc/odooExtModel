@@ -31,9 +31,9 @@ class CrmSaleInvoice(models.Model):
         ('new', '新的'),
         ('confirm', '已确认'),
         ('void', '作废'),
-        ('red', '红冲'),
     ]
 
+    color = fields.Integer(string="Color")
     active = fields.Boolean(string=u'Active', default=True)
     company_id = fields.Many2one('res.company', '公司', default=lambda self: self.env.user.company_id, index=True)
     currency_id = fields.Many2one('res.currency', '币种', required=True, default=_default_currency)
@@ -61,6 +61,9 @@ class CrmSaleInvoice(models.Model):
     recipient_phone = fields.Char(string="联系电话")
     recipient_postal = fields.Char(string="邮政编码")
     recipient_addr = fields.Char(string="详细地址")
+    parent_id = fields.Many2one(comodel_name="crm.sale.invoice", string="上级发票")
+    red_invoices_ids = fields.One2many(comodel_name="crm.sale.invoice", inverse_name="parent_id", string="红冲发票")
+    is_red_invoice = fields.Boolean(string="是否为红冲发票", default=False)
 
     @api.model
     def create(self, values):
@@ -72,18 +75,30 @@ class CrmSaleInvoice(models.Model):
         确认销售发票
         :return:
         """
-        raise UserError("暂未实现")
+        self.write({'state': 'confirm'})
 
     def void_sale_invoice(self):
         """
         作废发票
         :return:
         """
-        raise UserError("暂未实现")
+        self.write({'state': 'void'})
 
     def red_sale_invoice(self):
         """
         红冲发票
         :return:
         """
-        raise UserError("暂未实现")
+        result = self.env.ref('odoo_crm.crm_sale_invoice_action').read()[0]
+        result['context'] = {
+            'default_state': 'new',
+            'default_partner_id': self.partner_id.id,
+            'default_contract_id': self.contract_id.id,
+            'default_subtotal': - (self.subtotal),
+            'default_invoice_look': self.invoice_look,
+            'default_parent_id': self.id,
+            'default_is_red_invoice': True,
+        }
+        res = self.env.ref('odoo_crm.crm_sale_invoice_view_form', False)
+        result['views'] = [(res and res.id or False, 'form')]
+        return result

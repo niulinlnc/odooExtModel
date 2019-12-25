@@ -58,6 +58,13 @@ class CrmSaleOrderReturn(models.Model):
         values['code'] = self.env['ir.sequence'].sudo().next_by_code('crm.sale.order.return.code')
         return super(CrmSaleOrderReturn, self).create(values)
 
+    def confirm_sale_return(self):
+        """
+        确认退货
+        :return:
+        """
+        self.write({'state': 'confirm'})
+
 
 class CrmSaleOrderReturnLine(models.Model):
     _name = 'crm.sale.order.return.line'

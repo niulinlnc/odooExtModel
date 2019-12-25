@@ -23,14 +23,14 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="next_stated" type="object" class="oe_highlight" string="确认"/>
+                    <button name="confirm_sale_return" type="object" class="oe_highlight" string="确认" states="new" confirm="确认退货退款?"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title" name="title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="名称..."/>
+                            <field name="name" placeholder="名称..." attrs="{'readonly': [('state', '!=', 'new')]}"/>
                         </h1>
                         <h2>
                             <field name="code" readonly="1"/>
@@ -39,19 +39,20 @@
                     <group col="2">
                         <group>
                             <field name="currency_id" invisible="1"/>
-                            <field name="partner_id" options="{'no_create_edit': True}"/>
-                            <field name="contract_id" options="{'no_create_edit': True}"/>
-                            <field name="signatory_id" options="{'no_create_edit': True}"/>
-                            <field name="signing_date" widget="date"/>
+                            <field name="partner_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="contract_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="signatory_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="signing_date" widget="date" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                         </group>
                         <group>
-                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                             <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="明细" autofocus="autofocus">
-                            <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id}">
+                            <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id}"
+                                   attrs="{'readonly': [('state', '!=', 'new')]}">
                                 <tree editable="bottom" >
                                     <field name="currency_id" invisible="1"/>
                                     <field name="product_id"/>
@@ -66,7 +67,7 @@
                         </page>
                         <page string="其他">
                             <group>
-                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                                 <field name="create_uid" options="{'no_create_edit': True, 'no_open': True}" string="创建人"/>
                                 <field name="create_date" widget="date" string="创建时间"/>
                             </group>
@@ -76,7 +77,7 @@
                         <div class="oe_subtotal_footer_separator">
                             <label for="subtotal"/>
                         </div>
-                        <field name="subtotal" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="subtotal" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                     </group>
                     <field name="note" class="oe_inline" placeholder="可以在此输入订单备注消息..."/>
                     <div class="oe_clear"/>

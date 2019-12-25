@@ -14,6 +14,7 @@
                 <field name="invoice_date"/>
                 <field name="subtotal"/>
                 <field name="invoice_type"/>
+                <field name="state"/>
                 <field name="company_id"/>
             </tree>
         </field>
@@ -25,9 +26,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="confirm_sale_invoice" type="object" class="oe_highlight" string="确认发票" states="new"/>
-                    <button name="void_sale_invoice" type="object" string="作废" states="confirm"/>
-                    <button name="red_sale_invoice" type="object" string="红冲" states="confirm"/>
+                    <button name="confirm_sale_invoice" type="object" class="oe_highlight" string="确认发票" states="new" confirm="确认发票信息无误，是否继续？"/>
+                    <button name="void_sale_invoice" type="object" string="作废" states="confirm" confirm="确认作废该发票吗？"/>
+                    <button name="red_sale_invoice" type="object" string="红冲" states="confirm" confirm="确认红冲该发票吗？"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -44,29 +45,29 @@
                     </div>
                     <group col="2">
                         <group>
-                            <field name="invoice_number" placeholder="请输入发票号码..."/>
-                            <field name="applicant_id" options="{'no_create_edit': True, 'no_open': True}"/>
-                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}"/>
-                            <field name="contract_id" options="{'no_create_edit': True, 'no_open': True}"/>
-                            <field name="cashback_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="invoice_number" placeholder="请输入发票号码..." attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="applicant_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="contract_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="cashback_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                         </group>
                         <group>
-                            <field name="invoice_date"/>
-                            <field name="subtotal"/>
-                            <field name="invoice_type"/>
+                            <field name="invoice_date" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="subtotal" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="invoice_type" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="开票">
                             <group>
                                 <group string="发票信息">
-                                    <field name="look_type"/>
-                                    <field name="invoice_look"/>
-                                    <field name="tax_number"/>
-                                    <field name="look_phone"/>
-                                    <field name="look_addr"/>
-                                    <field name="look_bank"/>
-                                    <field name="look_bank_number"/>
+                                    <field name="look_type" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="invoice_look" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="tax_number" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="look_phone" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="look_addr" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="look_bank" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                    <field name="look_bank_number" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                                 </group>
                                 <group string="寄送信息">
                                     <field name="recipient"/>
@@ -76,9 +77,23 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="红冲发票">
+                            <field name="red_invoices_ids">
+                                <tree create="0" edit="0" delete="0">
+                                    <field name="code"/>
+                                    <field name="invoice_number"/>
+                                    <field name="applicant_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="contract_id"/>
+                                    <field name="invoice_date"/>
+                                    <field name="subtotal"/>
+                                    <field name="invoice_type"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="其他">
                             <group>
-                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
                                 <field name="create_uid" options="{'no_create_edit': True, 'no_open': True}" string="创建人"/>
                                 <field name="create_date" widget="date" string="创建时间"/>
                             </group>
