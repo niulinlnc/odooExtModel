@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng  GUN
+-->
+<odoo>
+    <data noupdate="1">
+        <record id="odoo_books_type_1" model="odoo.books.type">
+            <field name="name">运维实施</field>
+        </record>
+        <record id="odoo_books_type_2" model="odoo.books.type">
+            <field name="name">杂志</field>
+        </record>
+         <record id="odoo_books_type_3" model="odoo.books.type">
+            <field name="name">时政</field>
+        </record>
+         <record id="odoo_books_type_4" model="odoo.books.type">
+            <field name="name">财经</field>
+        </record>
+         <record id="odoo_books_type_5" model="odoo.books.type">
+            <field name="name">科技</field>
+        </record>
+         <record id="odoo_books_type_6" model="odoo.books.type">
+            <field name="name">开发</field>
+        </record>
+         <record id="odoo_books_type_7" model="odoo.books.type">
+            <field name="name">地质</field>
+        </record>
+         <record id="odoo_books_type_8" model="odoo.books.type">
+            <field name="name">历史</field>
+        </record>
+         <record id="odoo_books_type_9" model="odoo.books.type">
+            <field name="name">文学</field>
+        </record>
+         <record id="odoo_books_type_10" model="odoo.books.type">
+            <field name="name">其他</field>
+        </record>
+
+    </data>
+</odoo>

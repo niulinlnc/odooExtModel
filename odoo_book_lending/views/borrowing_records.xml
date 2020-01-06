@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="book_borrowing_records_tree_view" model="ir.ui.view">
+        <field name="name">借还记录</field>
+        <field name="model">book.borrowing.records</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" create="0" edit="0" delete="0" decoration-success="state in ('ing')" decoration-info="state == 'out'" decoration-danger="state == 'oth'">
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="book_id"/>
+                <field name="borrow_number"/>
+                <field name="borrow_time"/>
+                <field name="return_number"/>
+                <field name="return_user"/>
+                <field name="return_time"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="book_borrowing_records_form_view" model="ir.ui.view">
+        <field name="name">借还记录</field>
+        <field name="model">book.borrowing.records</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <header>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <label for="code" class="oe_edit_only"/>
+                        <h1>
+                            <field name="code" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="book_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="borrow_number"/>
+                            <field name="user_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="borrow_time"/>
+                            <field name="notes" placeholder="请添加图书描述..."/>
+                        </group>
+                        <group>
+                            <field name="return_user"/>
+                            <field name="return_time"/>
+                            <field name="return_number"/>
+                            <field name="return_notes" placeholder="请添加图书描述..."/>
+                            <field name="company_id" options="{'no_create_edit': True, 'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="book_borrowing_records_calendar" model="ir.ui.view">
+        <field name="name">book.borrowing.records.calendar</field>
+        <field name="model">book.borrowing.records</field>
+        <field name="arch" type="xml">
+            <calendar string="借还记录" date_start="borrow_time" color="user_id">
+                <field name="user_id"/>
+                <field name="book_id"/>
+                <field name="borrow_number"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="book_borrowing_records_pivot">
+        <field name="name">book.borrowing.records.pivot</field>
+        <field name="model">book.borrowing.records</field>
+        <field name="arch" type="xml">
+            <pivot string="借还记录">
+                <field name="borrow_time" type="row"/>
+                <field name="type_id" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="borrow_number" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="book_borrowing_records_action">
+        <field name="name">借还记录</field>
+        <field name="res_model">book.borrowing.records</field>
+        <field name="view_mode">tree,form,calendar,pivot,graph,activity</field>
+        <field name="context">{"search_default_domain_my":1, 'search_default_domain_not_ing': 1}</field>
+    </record>
+
+    <record model="ir.ui.view" id="book_borrowing_records_search">
+        <field name="model">book.borrowing.records</field>
+        <field name="arch" type="xml">
+            <search string="借还记录">
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="book_id"/>
+                <field name="borrow_number"/>
+                <field name="borrow_time"/>
+                <field name="return_user"/>
+                <field name="return_time"/>
+                <field name="state"/>
+                <separator/>
+                    <filter string="我的借还" name="domain_my" domain="[('user_id', '=', uid)]"/>
+                    <filter string="未归还" name="domain_not_ing" domain="[('state', 'in', ('out', 'oth'))]"/>
+                    <filter string="已归还" name="domain_ing" domain="[('state', '=', 'ing')]"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_state" string="状态" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="book_borrowing_records_menu" name="借还记录" parent="root_menu" sequence="3" action="book_borrowing_records_action"/>
+
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="odoo_books_groups">
+        <field name="name">图书借阅</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record id="user_groups" model="res.groups">
+        <field name="name">用户</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="odoo_book_lending.odoo_books_groups"/>
+        <field name="users" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="manage_groups" model="res.groups">
+        <field name="name">管理员</field>
+        <field name="implied_ids" eval="[(4, ref('odoo_book_lending.user_groups'))]"/>
+        <field name="category_id" ref="odoo_book_lending.odoo_books_groups"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>
