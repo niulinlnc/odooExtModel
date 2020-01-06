@@ -94,6 +94,7 @@
     </record>
 
     <record model="ir.ui.view" id="book_borrowing_records_search">
+        <field name="name">book.borrowing.records.search</field>
         <field name="model">book.borrowing.records</field>
         <field name="arch" type="xml">
             <search string="借还记录">

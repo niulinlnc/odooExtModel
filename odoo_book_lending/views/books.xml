@@ -157,6 +157,7 @@
     </record>
 
     <record model="ir.ui.view" id="odoo_books_search">
+        <field name="name">odoo.books.search</field>
         <field name="model">odoo.books</field>
         <field name="arch" type="xml">
             <search string="图书">
@@ -171,7 +172,7 @@
             </search>
             <separator/>
             <group expand="0" string="分组">
-                <filter name="group_by_type_id" string="类型" context="{'group_by':'type_id'}"/>
+                <filter name="group_by_type_id" string="类型" context="{'group_by': 'type_id'}"/>
             </group>
         </field>
     </record>
