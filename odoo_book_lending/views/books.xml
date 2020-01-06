@@ -156,11 +156,10 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="odoo_books_search">
-        <field name="name">odoo.books.search</field>
+    <record model="ir.ui.view" id="odoo_books_search_view">
         <field name="model">odoo.books</field>
         <field name="arch" type="xml">
-            <search string="图书">
+            <search>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="type_id"/>
@@ -168,12 +167,13 @@
                 <field name="version"/>
                 <field name="price"/>
                 <field name="number"/>
+                <field name="remaining_amount"/>
                 <field name="user_id"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_type_id" string="类型" context="{'group_by':'type_id'}"/>
+                </group>
             </search>
-            <separator/>
-            <group expand="0" string="分组">
-                <filter name="group_by_type_id" string="类型" context="{'group_by': 'type_id'}"/>
-            </group>
         </field>
     </record>
 
