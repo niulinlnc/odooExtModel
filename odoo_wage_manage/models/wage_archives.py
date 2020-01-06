@@ -37,6 +37,7 @@ class EmployeeWageArchives(models.Model):
     code = fields.Char(string=u'档案编号', default='New', index=True)
     company_id = fields.Many2one('res.company', '公司', default=lambda self: self.env.user.company_id, index=True)
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', index=True, track_visibility='onchange')
+    image = fields.Binary(string="Image")
     employee_type = fields.Selection(string=u'员工类型', selection=EMPLOYEESTATUS, default='formal', required=True)
     employee_code = fields.Char(string='员工工号')
     department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True)
@@ -50,6 +51,7 @@ class EmployeeWageArchives(models.Model):
     bank_account_number = fields.Char(string='银行卡号')
     accountBank = fields.Char(string='开户行')
     line_ids = fields.One2many(comodel_name='wage.archives.line', inverse_name='archives_id', string=u'薪资结构')
+    amount_total = fields.Float(string=u'合计', digits=(10, 2), compute='_compute_amount_total')
     notes = fields.Text(string=u'备注')
 
     @api.model
@@ -86,6 +88,7 @@ class EmployeeWageArchives(models.Model):
             if len(res.line_ids) < 1:
                 self.create_all_structure()
             if res.employee_id:
+                res.image = res.employee_id.image
                 res.department_id = res.employee_id.department_id.id if res.employee_id.department_id else False
                 res.job_id = res.employee_id.job_id.id if res.employee_id.job_id else False
                 if res.employee_id.bank_account_id:
@@ -100,7 +103,10 @@ class EmployeeWageArchives(models.Model):
         :return:
         """
         for res in self:
-            roster = self.env['dingding.employee.roster'].search([('emp_id', '=', res.employee_id.id)], limit=1)
+            try:
+                roster = self.env['dingtalk.employee.roster'].search([('emp_id', '=', res.employee_id.id)], limit=1)
+            except Exception as e:
+                raise UserError("钉钉花名册读取失败！")
             if not roster:
                 raise UserError("没有在钉钉花名册中发现该员工信息，请确保花名册为最新！")
             res.department_id = roster.mainDept.id
@@ -160,6 +166,19 @@ class EmployeeWageArchives(models.Model):
             return self.trial_period_salary
         else:
             return 0
+
+    def _compute_amount_total(self):
+        """
+        计算合计
+        """
+        for res in self:
+            if res.employee_type == 'probation':
+                amount_total = res.trial_period_salary
+            else:
+                amount_total = res.base_wage
+            for line in res.line_ids:
+                amount_total += line.wage_amount
+            res.amount_total = amount_total
 
 
 class EmployeeWageArchivesLine(models.Model):

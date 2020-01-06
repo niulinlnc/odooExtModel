@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record model="ir.ui.view" id="employee_monthly_insured_report_pivot">
+		<field name="name">employee.monthly.insured.report.pivot</field>
+		<field name="model">employee.monthly.insured.report</field>
+		<field name="arch" type="xml">
+			<pivot string="员工账单汇总" disable_linking="True">
+				<field name="company_id" type="row" />
+				<field name="monthly_date" type="row" />
+				<field name="department_id" type="row" />
+				<field name="employee_id" type="row" />
+<!--				<field name="date_code" type="col" />-->
+				<field name="company_sum" type="measure" />
+				<field name="public_company_sum" type="measure" />
+				<field name="personal_sum" type="measure" />
+				<field name="public_personal_sum" type="measure" />
+			</pivot>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="employee_monthly_insured_report_pivot_search">
+		<field name="name">employee.monthly.insured.report.search</field>
+		<field name="model">employee.monthly.insured.report</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="company_id" />
+				<field name="employee_id" />
+				<field name="department_id" />
+				<field name="monthly_date" />
+				<field name="date_code" />
+				<separator/>
+                <filter string="近三月内" name="domain_3month" domain="[('monthly_date','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('monthly_date','&gt;=', (context_today()-relativedelta(months=3)).strftime('%Y-%m-%d') )]"/>
+                <filter string="近半年内" name="domain_6month" domain="[('monthly_date','&lt;=', datetime.date.today().strftime('%Y-%m-%d')),('monthly_date','&gt;=', (context_today()-relativedelta(months=6)).strftime('%Y-%m-%d') )]"/>
+                <filter string="当前年内" name="domain_year" domain="[('monthly_date','&lt;=', time.strftime('%%Y-12-31')),('monthly_date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <separator/>
+                <group expand="0" string="分类">
+                    <filter name="group_by_date_code" string="期间" context="{'group_by':'date_code'}"/>
+                    <filter name="group_by_employee_id" string="员工" context="{'group_by':'employee_id'}"/>
+                    <filter name="group_by_company_id" string="公司" context="{'group_by':'company_id'}"/>
+                </group>
+			</search>
+		</field>
+	</record>
+
+	<record id="employee_monthly_insured_report_action" model="ir.actions.act_window">
+		<field name="name">员工月账单汇总表</field>
+		<field name="res_model">employee.monthly.insured.report</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">pivot</field>
+		<field name="context">{'search_default_domain_year': True, }</field>
+	</record>
+
+	<menuitem name="员工月账单汇总表" id="employee_monthly_insured_report_menu" parent="report_menu"
+			  action="employee_monthly_insured_report_action" groups="odoo_social_security.manage_groups" sequence="1" />
+
+</odoo>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crm_sale_order_tree_view" model="ir.ui.view">
+        <field name="name">报价单</field>
+        <field name="model">crm.sale.order</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'contract'" decoration-info="state == 'offer'" decoration-muted="state == 'lapse'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="quote_id"/>
+                <field name="quote_date"/>
+                <field name="discounted_price" sum="discounted_price"/>
+                <field name="subtotal" sum="subtotal"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="crm_sale_order_form_view" model="ir.ui.view">
+        <field name="name">报价单</field>
+        <field name="model">crm.sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="create_contract" type="object" class="oe_highlight" string="创建合同" states="offer"/>
+                    <button name="order_expired" type="object" string="已失效" confirm="确认已失效?" states="offer"/>
+                    <button name="to_create_contract" type="object" string="已生成合同" states="offer" confirm="确认已经生成了合同？"/>
+                    <button name="return_sale_order" type="object" string="退回报价" states="lapse,contract" confirm="确认回退到报价状态么？"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_sale_contract" string="合同" type="object" class="oe_stat_button" icon="fa-book"/>
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.director_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="报价单名称..." attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                        </h1>
+                        <h2>
+                            <field name="code" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="partner_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="contact_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="opportunity_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                        </group>
+                        <group>
+                            <field name="quote_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="quote_date" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                            <field name="effective_date" attrs="{'readonly': [('state', '!=', 'offer')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="明细行" autofocus="autofocus">
+                            <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}"
+                                   context="{'default_currency_id': currency_id, 'default_order_id': id}" attrs="{'readonly': [('state', '!=', 'offer')]}">
+                                <tree editable="bottom" >
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="number"/>
+                                    <field name="discount"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <div class="oe_subtotal_footer_separator">
+                                    <label for="discounted_price"/>
+                                </div>
+                                <field name="discounted_price" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator">
+                                    <label for="subtotal"/>
+                                </div>
+                                <field name="subtotal" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <field name="note" class="oe_inline" placeholder="可以在此输入订单备注消息..."/>
+                            <div class="oe_clear"/>
+                        </page>
+                        <page string="其他">
+                            <group>
+                                <group>
+                                    <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                                    <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                                </group>
+                                <group>
+                                    <field name="company_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="create_uid" string="创建人" options="{'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="create_date" string="创建时间"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm_sale_order_action">
+        <field name="name">报价单</field>
+        <field name="res_model">crm.sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的报价单
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="crm_sale_order_search">
+        <field name="model">crm.sale.order</field>
+        <field name="arch" type="xml">
+            <search string="报价单">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="quote_id"/>
+                <field name="quote_date"/>
+                <field name="discounted_price" sum="discounted_price"/>
+                <field name="subtotal" sum="subtotal"/>
+                <field name="state"/>
+                <separator/>
+                    <filter string="我创建的" name="domain_my" domain="[('create_uid', '=', uid)]"/>
+                    <filter string="我负责的" name="domain_principal" domain="[('principal_ids', 'in', uid)]"/>
+                    <filter string="我协同的" name="domain_collaborator" domain="[('collaborator_ids', 'in', uid)]"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_state" string="阶段" context="{'group_by':'state'}"/>
+                    <filter name="group_by_partner_id" string="客户" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="sale_order_menu" name="报价单" parent="root_menu" sequence="6" action="crm_sale_order_action"/>
+
+</odoo>

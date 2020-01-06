@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoo_books_tree_view" model="ir.ui.view">
+        <field name="name">图书</field>
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="type_id"/>
+                <field name="author"/>
+                <field name="version"/>
+                <field name="price"/>
+                <field name="number"/>
+                <field name="remaining_amount"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="odoo_books_form_view" model="ir.ui.view">
+        <field name="name">图书</field>
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="%(borrow_books_tran_action)d" type="action" class="oe_highlight" string="借阅图书"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="compute_amount" type="object" class="oe_stat_button" icon="fa-align-justify">
+                            <field name="remaining_amount" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [80, 80]}'/>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="图书名称..."/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="author"/>
+                            <field name="version"/>
+                        </group>
+                        <group>
+                            <field name="number"/>
+                            <field name="price"/>
+                            <field name="user_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="company_id" options="{'no_create_edit': True, 'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="图书描述">
+                            <field name="notes" placeholder="请添加图书描述..." widget="html"/>
+                        </page>
+                        <page string="借阅记录">
+                            <field name="record_ids" readonly="1">
+                                <tree create="0" edit="0" delete="0">
+                                    <field name="code"/>
+                                    <field name="user_id"/>
+                                    <field name="book_id"/>
+                                    <field name="borrow_number"/>
+                                    <field name="borrow_time"/>
+                                    <field name="return_number"/>
+                                    <field name="return_time"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="odoo_books_view_kanban" model="ir.ui.view">
+        <field name="name">odoo.books.views.kanban</field>
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="id"/>
+                <field name="image"/>
+                <field name="type_id"/>
+                <field name="author"/>
+                <field name="version"/>
+                <field name="price"/>
+                <field name="number"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('odoo.books', 'image', record.id.raw_value)" alt="封面图"
+                                    class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="code"/>
+                                </p>
+                                <div class="oe_module_action" t-if="!selection_mode">
+                                    <span>剩余数量：<field name="remaining_amount"/></span>
+<!--                                    <button name="%(borrow_books_tran_action)d" type="action" class="btn btn-primary btn-sm">借阅图书</button>-->
+                                    <button name="%(borrow_books_tran_action)d" type="action" class="btn btn-sm btn-secondary float-right">借阅图书</button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="odoo_books_calendar" model="ir.ui.view">
+        <field name="name">odoo.books.calendar</field>
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <calendar string="图书" date_start="create_date" color="type_id">
+                <field name="type_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="odoo_books_pivot">
+        <field name="name">odoo.books.pivot</field>
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <pivot string="图书">
+                <field name="type_id" type="row"/>
+                <field name="number" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odoo_books_action">
+        <field name="name">图书</field>
+        <field name="res_model">odoo.books</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的图书
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="odoo_books_search_view">
+        <field name="model">odoo.books</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="type_id"/>
+                <field name="author"/>
+                <field name="version"/>
+                <field name="price"/>
+                <field name="number"/>
+                <field name="remaining_amount"/>
+                <field name="user_id"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_type_id" string="类型" context="{'group_by':'type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="odoo_books_menu" name="图书" parent="root_menu" sequence="2" action="odoo_books_action"/>
+
+</odoo>

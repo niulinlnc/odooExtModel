@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright (C) 2019 SuXueFeng GNU
+-->
+<odoo>
+
+    <record model="ir.module.category" id="social_security_category">
+        <field name="name">社保管理</field>
+        <field name="description">社保管理</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="user_groups" model="res.groups">
+        <field name="name">员工</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="social_security_category"/>
+        <field name="users" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="manage_groups" model="res.groups">
+        <field name="name">社保主管</field>
+        <field name="implied_ids" eval="[(4, ref('odoo_social_security.user_groups'))]"/>
+        <field name="category_id" ref="social_security_category"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>

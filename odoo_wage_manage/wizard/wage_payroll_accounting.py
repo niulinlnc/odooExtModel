@@ -24,7 +24,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
     _name = 'wage.payroll.accounting.transient'
     _description = "薪资计算"
 
-    wage_date = fields.Date(string=u'核算月份', required=True)
+    wage_date = fields.Date(string=u'核算月份', required=True, default=fields.date.today())
     date_code = fields.Char(string='期间代码')
     emp_ids = fields.Many2many('hr.employee', string=u'员工')
     all_emp = fields.Boolean(string=u'全部员工?')
@@ -38,6 +38,8 @@ class WagePayrollAccountingTransient(models.TransientModel):
         if self.all_emp:
             employees = self.env['hr.employee'].search([])
             self.emp_ids = [(6, 0, employees.ids)]
+        else:
+            self.emp_ids = False
 
     @api.onchange('wage_date')
     def _alter_date_code(self):
@@ -50,7 +52,6 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 wage_date = str(res.wage_date)
                 res.date_code = "{}/{}".format(wage_date[:4], wage_date[5:7])
 
-    @api.multi
     def compute_payroll_accounting(self):
         """
         计算薪资
@@ -65,7 +66,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
         rules = self.env['wage.calculate.salary.rules'].search([], limit=1)
         if not rules:
             raise UserError("请先配置一个薪资计算规则！")
-        for emp in self.emp_ids.with_progress(msg="开始计算薪资"):
+        for emp in self.emp_ids:
             payroll_data = {
                 'wage_date': self.wage_date,
                 'date_code': date_code,
@@ -74,8 +75,8 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 'job_id': emp.job_id.id if emp.job_id else False,
                 'attendance_days': attendance_days,
             }
-            # 获取员工薪资合同
-            archives = self.env['wage.archives'].search([('employee_id', '=', emp.id)], limit=1)
+            # 获取员工薪资档案
+            archives = self.env['wage.archives'].search([('employee_id', '=', emp.id), ('employee_type', '!=', 'stop')], limit=1)
             base_wage = performance_amount_sum = structure_amount_sum = 0      # 基本工资,绩效合计,薪资结构合计金额
             structure_ids = list()
             performance_ids = list()
@@ -90,15 +91,17 @@ class WagePayrollAccountingTransient(models.TransientModel):
             if performance:
                 performance_ids, performance_amount_sum = performance.get_emp_performance_list()
             # 获取社保月结账单
+            statement_ids = provident_ids = False
             domain = [('employee_id', '=', emp.id), ('date_code', '=', date_code)]
-            statements = self.env['wage.insured.monthly.statement'].search(domain, limit=1)
+            statements = self.env['insured.monthly.statement'].search(domain, limit=1)
             if statements:
-                statement_ids = statements.get_employee_monthly_statement_line()
+                statement_ids, provident_ids = statements.get_employee_all_list()
             payroll_data.update({
                 'base_wage': base_wage,  # 基本工资
                 'structure_ids': structure_ids,  # 薪资结构
                 'performance_ids': performance_ids,   # 绩效列表
-                'statement_ids': statement_ids,   # 社保公积金
+                'statement_ids': statement_ids or False,   # 社保
+                'provident_ids': provident_ids or False,   # 公积金
             })
             # 获取员工考勤统计表
             domain = [('employee_id', '=', emp.id), ('attend_code', '=', date_code)]
@@ -135,7 +138,7 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 overtime_amount_sum = work_overtime+weekend_overtime+holiday_overtime
                 attendance_amount_sum = late_attendance+notsigned_attendance+early_attendance
             # 计算应发工资
-            # 应发工资=基本工资+薪资结构+ 绩效合计-缺勤扣款合计+加班费合计-打卡扣款合计
+            # 应发工资=基本工资+薪资结构+绩效合计-缺勤扣款合计+加班费合计-打卡扣款合计
             pay_wage = base_wage+structure_amount_sum+performance_amount_sum-absence_amount_sum+overtime_amount_sum-attendance_amount_sum
             payroll_data.update({'pay_wage': pay_wage})
             payroll_data = self._compute_employee_tax(pay_wage, payroll_data, emp, date_code)
@@ -145,14 +148,16 @@ class WagePayrollAccountingTransient(models.TransientModel):
             if not payrolls:
                 self.env['wage.payroll.accounting'].create(payroll_data)
             else:
-                payrolls.write({
-                    'structure_ids': [(2, payrolls.structure_ids.ids)],
-                    'performance_ids': [(2, payrolls.performance_ids.ids)],
-                    'statement_ids': [(2, payrolls.statement_ids.ids)],
-                })
-                payrolls.write(payroll_data)
-        action = self.env.ref('odoo_wage_manage.wage_payroll_accounting_action')
-        return action.read()[0]
+                if payrolls.state == 'draft':
+                    payrolls.write({
+                        'structure_ids': [(2, payrolls.structure_ids.ids)],
+                        'performance_ids': [(2, payrolls.performance_ids.ids)],
+                        'statement_ids': [(2, payrolls.statement_ids.ids)],
+                    })
+                    payrolls.write(payroll_data)
+                else:
+                    raise UserError("核算单:({})已不是待审核确认阶段，请先反审核后再重新计算！".format(payrolls[0].name))
+        return {'type': 'ir.actions.act_window_close'}
 
     # 计算个税
     @api.model
@@ -323,7 +328,6 @@ class PayrollAccountingToPayslipTransient(models.TransientModel):
                 start_date = str(res.start_date)
                 res.date_code = "{}/{}".format(start_date[:4], start_date[5:7])
 
-    @api.multi
     def create_employee_payslip(self):
         """
         生成工资条
@@ -332,7 +336,7 @@ class PayrollAccountingToPayslipTransient(models.TransientModel):
         self.ensure_one()
         start_date = str(self.start_date)
         date_code = "{}/{}".format(start_date[:4], start_date[5:7])
-        for emp in self.emp_ids.with_progress(msg="开始生成工资条"):
+        for emp in self.emp_ids:
             payroll_data = {
                 'start_date': self.start_date,
                 'end_date': self.end_date,
@@ -355,7 +359,6 @@ class PayrollAccountingToPayslipTransient(models.TransientModel):
                     'this_months_tax': payroll.this_months_tax,  # 本月个税
                     'pay_wage': payroll.pay_wage,  # 应发工资
                     'real_wage': payroll.real_wage,  # 实发工资
-                    'statement_sum': payroll.statement_sum,  # 社保个人合计
                     'structure_sum': payroll.structure_sum,  # 薪资项目合计
                 })
             # 创建工资单
@@ -389,7 +392,6 @@ class SendPayrollAccountingToPayslipEmailTransient(models.TransientModel):
                 wage_date = str(res.wage_date)
                 res.date_code = "{}/{}".format(wage_date[:4], wage_date[5:7])
 
-    @api.multi
     def send_email_now(self):
         """
         批量发送核算明细至员工email,注意不是立即发送，通过邮件：EMail队列管理器进行发送
@@ -402,7 +404,7 @@ class SendPayrollAccountingToPayslipEmailTransient(models.TransientModel):
         wage_date = str(self.wage_date)
         date_code = "{}/{}".format(wage_date[:4], wage_date[5:7])
         payrolls = self.env['wage.payroll.accounting'].sudo().search([('date_code', '=', date_code)])
-        for payroll in payrolls.with_progress(msg="开始发送Emial"):
+        for payroll in payrolls:
             if payroll.employee_id.work_email:
                 logging.info("email至%s" % payroll.name)
                 template_id.sudo().with_context(lang=self.env.context.get('lang')).send_mail(payroll.id, force_send=False)

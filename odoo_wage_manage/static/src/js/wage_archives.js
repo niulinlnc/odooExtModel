@@ -21,6 +21,8 @@ odoo.define('odoo.wage.archives.tree.button', function (require) {
     let ListController = require('web.ListController');
     let ListView = require('web.ListView');
     let viewRegistry = require('web.view_registry');
+    let KanbanController = require('web.KanbanController');
+    let KanbanView = require('web.KanbanView');
 
     let OdooWageArchivesViewController = ListController.extend({
         buttons_template: 'OdooWageManageListView.wage_archives_buttons',
@@ -35,7 +37,14 @@ odoo.define('odoo.wage.archives.tree.button', function (require) {
                         target: 'new',
                         views: [[false, 'form']],
                         context: [],
-                    });
+                    },{
+                        on_reverse_breadcrumb: function () {
+                            self.reload();
+                        },
+                          on_close: function () {
+                            self.reload();
+                        }
+                     });
                 });
             }
         }
@@ -48,4 +57,44 @@ odoo.define('odoo.wage.archives.tree.button', function (require) {
     });
 
     viewRegistry.add('wage_archives_js_class', OdooWageArchivesManageListView);
+
+
+    let OdooWageArchivesKanbanController = KanbanController.extend({
+        renderButtons: function ($node) {
+            let $buttons = this._super.apply(this, arguments);
+            let tree_model = this.modelName;
+            if (tree_model == 'wage.archives') {
+                let but = "<button type=\"button\" class=\"btn btn-secondary\">初始化档案</button>";
+                let button2 = $(but).click(this.proxy('getWageArchivesTemBut'));
+                this.$buttons.append(button2);
+            }
+            return $buttons;
+        },
+        getWageArchivesTemBut: function () {
+            var self = this;
+            this.do_action({
+                type: 'ir.actions.act_window',
+                res_model: 'wage.archives.transient',
+                target: 'new',
+                views: [[false, 'form']],
+                context: [],
+            },{
+                on_reverse_breadcrumb: function () {
+                    self.reload();
+                },
+                  on_close: function () {
+                    self.reload();
+                }
+            });
+        },
+    });
+
+    let OdooWageArchivesTemplateKanbanView = KanbanView.extend({
+        config: _.extend({}, KanbanView.prototype.config, {
+            Controller: OdooWageArchivesKanbanController,
+        }),
+    });
+
+    viewRegistry.add('wage_archives_kanban_js_class', OdooWageArchivesTemplateKanbanView);
+
 });

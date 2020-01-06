@@ -26,6 +26,8 @@ class WageSpecialAdditionalDeduction(models.Model):
     _order = 'id'
     _rec_name = 'employee_id'
 
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(string="状态", selection=[('00', '待计算'), ('01', '已计算')], default='00')
     employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', required=True, index=True)
     start_date = fields.Date(string=u'税款所属期起', required=True, index=True)
     end_date = fields.Date(string=u'税款所属期止', required=True, index=True)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+
+     <record id="crm_sale_opportunity_state_form_view" model="ir.ui.view">
+        <field name="name">机会状态变更</field>
+        <field name="model">crm.sale.opportunity.state</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="state" widget="radio" options="{'horizontal': true}"/>
+                    <field name="note"/>
+                </group>
+                <footer>
+                    <button string="确认" name="commit_state" type="object" class="oe_highlight"/>
+                    <button string="取消" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="crm_sale_opportunity_state_action" model="ir.actions.act_window">
+        <field name="name">机会状态变更</field>
+        <field name="res_model">crm.sale.opportunity.state</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

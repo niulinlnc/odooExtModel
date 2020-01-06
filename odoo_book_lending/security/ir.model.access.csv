@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odoo_books_type_user_groups,odoo.books.type.user.groups,model_odoo_books_type,odoo_book_lending.user_groups,1,0,0,0
+access_odoo_books_type,odoo.books.type,model_odoo_books_type,odoo_book_lending.manage_groups,1,1,1,1
+access_odoo_books_user_groups,odoo.books.user.groups,model_odoo_books,odoo_book_lending.user_groups,1,0,0,0
+access_odoo_books,odoo.books,model_odoo_books,odoo_book_lending.manage_groups,1,1,1,1
+access_book_borrowing_records_user_group,book.borrowing.records.user.group,model_book_borrowing_records,odoo_book_lending.user_groups,1,1,1,0
+access_book_borrowing_records,book.borrowing.records,model_book_borrowing_records,odoo_book_lending.manage_groups,1,1,1,1
+
+access_books_pool_report,books.pool.report,model_books_pool_report,odoo_book_lending.manage_groups,1,1,1,1
+
+
+

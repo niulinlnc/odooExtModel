@@ -59,7 +59,7 @@ class WageEmployeeTaxDetailsTransient(models.TransientModel):
         self.ensure_one()
         year = str(self.start_date)[:4]
         line_list = self._get_detail_line()
-        for emp in self.emp_ids.with_progress(msg="初始化员工个税"):
+        for emp in self.emp_ids:
             detail_data = {
                 'employee_id': emp.id,
                 'start_date': self.start_date,
@@ -71,8 +71,7 @@ class WageEmployeeTaxDetailsTransient(models.TransientModel):
             details = self.env['wage.employee.tax.details'].sudo().search(domain)
             if not details:
                 self.env['wage.employee.tax.details'].create(detail_data)
-        action = self.env.ref('odoo_wage_manage.wage_employee_tax_details_action')
-        return action.read()[0]
+        return {'type': 'ir.actions.act_window_close'}
 
     @api.model
     def _get_detail_line(self):

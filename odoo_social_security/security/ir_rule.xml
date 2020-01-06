@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+
+        <!--社保月结账单-->
+        <record id="insured_monthly_statement_user_groups_ir_rule" model="ir.rule">
+            <field name="name">员工-社保月结账单过滤规则</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_monthly_statement"/>
+            <field name="domain_force">[('employee_id.user_id','=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('odoo_social_security.user_groups'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="insured_monthly_statement_manages_groups_rule" model="ir.rule">
+            <field name="name">社保主管-社保月结账单过滤规则</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_monthly_statement"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('odoo_social_security.manage_groups'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!--参保员工-->
+        <record id="insured_scheme_employee_user_groups_ir_rule" model="ir.rule">
+            <field name="name">员工-参保员工过滤规则</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_scheme_employee"/>
+            <field name="domain_force">[('employee_id.user_id','=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('odoo_social_security.user_groups'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="insured_scheme_employee_manages_groups_rule" model="ir.rule">
+            <field name="name">社保主管-参保员工过滤规则</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_scheme_employee"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('odoo_social_security.manage_groups'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+
+        <!-- 多公司过滤 -->
+        <record id="insured_monthly_statement_company_rule" model="ir.rule">
+            <field name="name">社保月结账单多公司过滤</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_monthly_statement"/>
+            <field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="insured_scheme_employee_company_rule" model="ir.rule">
+            <field name="name">参保员工多公司过滤</field>
+            <field name="model_id" ref="odoo_social_security.model_insured_scheme_employee"/>
+            <field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

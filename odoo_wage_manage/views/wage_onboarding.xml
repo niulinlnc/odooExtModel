@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 步骤 -->
+    <template id="wage_rule_onboarding_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">计薪规则</t>
+            <t t-set="description">创建一个计算薪资的规则.</t>
+            <t t-set="done_icon" t-value="'fa-star'" />
+            <t t-set="done_text">已完成!</t>
+            <t t-set="btn_text">创建规则</t>
+            <t t-set="method" t-value="'action_wage_rule_layout'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('wage_rule_state')" />
+        </t>
+    </template>
+    <template id="wage_emp_archive_onboarding_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">员工薪资档案</t>
+            <t t-set="description">初始化所有员工工资档案信息.</t>
+            <t t-set="done_icon" t-value="'fa-star'" />
+            <t t-set="done_text">已完成!</t>
+            <t t-set="btn_text">初始档案</t>
+            <t t-set="method" t-value="'action_wage_emp_archive_layout'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('wage_emp_archive_state')" />
+        </t>
+    </template>
+     <template id="wage_taxdetail_onboarding_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">个税明细</t>
+            <t t-set="description">初始化员工年度个税明细.</t>
+            <t t-set="done_icon" t-value="'fa-star'" />
+            <t t-set="done_text">已完成!</t>
+            <t t-set="btn_text">初始化</t>
+            <t t-set="method" t-value="'action_wage_taxdetail_layout'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('wage_taxdetail_state')" />
+        </t>
+    </template>
+    <template id="wage_annal_onboarding_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">考勤/绩效明细</t>
+            <t t-set="description">录入员工考勤和绩效明细.</t>
+            <t t-set="done_icon" t-value="'fa-star'" />
+            <t t-set="done_text">已完成!</t>
+            <t t-set="btn_text">录入</t>
+            <t t-set="method" t-value="'action_wage_annal_layout'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('wage_annal_state')" />
+        </t>
+    </template>
+    <template id="wage_accounting_onboarding_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">薪资计算</t>
+            <t t-set="description">根据档案以及考勤绩效计算员工薪资明细.</t>
+            <t t-set="done_icon" t-value="'fa-star'" />
+            <t t-set="done_text">已完成!</t>
+            <t t-set="btn_text">计算</t>
+            <t t-set="method" t-value="'action_wage_accounting_layout'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('wage_accounting_state')" />
+        </t>
+    </template>
+
+    <template id="wage_manage_onboarding_panel" name="wage.manage.onboarding.panel">
+        <t t-call="base.onboarding_container">
+            <t t-set="classes" t-value="'o_onboarding_violet'" />
+            <t t-set="bg_image" t-value="'/odoo_wage_manage/static/src/img/wage_image.png'"/>
+            <t t-set="close_method" t-value="'action_close_wage_manage_state_onboarding'" />
+            <t t-set="close_model" t-value="'res.company'" />
+            <t t-call="odoo_wage_manage.wage_rule_onboarding_step" name="wage_rule_onboarding_step" />
+            <t t-call="odoo_wage_manage.wage_emp_archive_onboarding_step" name="wage_emp_archive_onboarding_step" />
+            <t t-call="odoo_wage_manage.wage_taxdetail_onboarding_step" name="wage_taxdetail_onboarding_step" />
+            <t t-call="odoo_wage_manage.wage_annal_onboarding_step" name="wage_annal_onboarding_step" />
+            <t t-call="odoo_wage_manage.wage_accounting_onboarding_step" name="wage_accounting_onboarding_step" />
+        </t>
+    </template>
+
+    <record id="action_wage_calculate_salary_rules_layout" model="ir.actions.act_window">
+        <field name="name">计薪规则</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wage.calculate.salary.rules</field>
+        <field name="view_mode">form</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="wage_calculate_salary_rules_form_view" />
+        <field name="target">new</field>
+    </record>
+
+<!--    <record model="ir.actions.act_window" id="action_insured_scheme_employee_layout">-->
+<!--        <field name="name">参保员工</field>-->
+<!--        <field name="res_model">insured.scheme.employee</field>-->
+<!--        <field name="view_mode">kanban,tree,form</field>-->
+<!--        <field name="context">{'search_default_group_by_state': False}</field>-->
+<!--    </record>-->
+<!--    <record model="ir.actions.act_window" id="action_insured_monthly_statement_layout">-->
+<!--        <field name="name">月结账单</field>-->
+<!--        <field name="res_model">insured.monthly.statement</field>-->
+<!--        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>-->
+<!--        <field name="context">{'search_default_group_by_date_code': False, 'search_default_domain_year': True, }</field>-->
+<!--    </record>-->
+<!--    <record model="ir.actions.act_window" id="action_insured_monthly_report_layout">-->
+<!--        <field name="name">月结报表</field>-->
+<!--        <field name="res_model">employee.monthly.insured.report</field>-->
+<!--        <field name="view_mode">pivot</field>-->
+<!--        <field name="context">{'search_default_domain_year': True, }</field>-->
+<!--    </record>-->
+
+</odoo>

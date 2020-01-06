@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+
+    <record id="insured_scheme_insurance_tree_view" model="ir.ui.view">
+        <field name="name">社保种类</field>
+        <field name="model">insured.scheme.insurance</field>
+        <field name="arch" type="xml">
+            <tree default_order="id">
+                <field name="name"/>
+                <field name="base_number"/>
+                <field name="company_number"/>
+                <field name="personal_number"/>
+                <field name="company_fixed_number" sum="company_fixed_number"/>
+                <field name="personal_fixed_number" sum="personal_fixed_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="insured_scheme_insurance_form_view" model="ir.ui.view">
+        <field name="name">社保种类</field>
+        <field name="model">insured.scheme.insurance</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" required="1"/>
+                    <field name="base_number"/>
+                    <field name="company_number"/>
+                    <field name="company_fixed_number"/>
+                    <field name="personal_number"/>
+                    <field name="personal_fixed_number"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="insured_scheme_insurance_action">
+        <field name="name">社保种类</field>
+        <field name="res_model">insured.scheme.insurance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="insured_scheme_insurance_search">
+        <field name="model">insured.scheme.insurance</field>
+        <field name="arch" type="xml">
+            <search string="社保种类">
+                <field name="name"/>
+                <field name="base_number"/>
+                <field name="company_number"/>
+                <field name="personal_number"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="insured_scheme_insurance_menu" name="社保种类" parent="configure_menu" sequence="2" action="insured_scheme_insurance_action"/>
+
+    <record id="provident_fund_kind_tree_view" model="ir.ui.view">
+        <field name="name">公积金</field>
+        <field name="model">provident.fund.kind</field>
+        <field name="arch" type="xml">
+            <tree default_order="id">
+                <field name="name"/>
+                <field name="base_number"/>
+                <field name="company_number"/>
+                <field name="company_fixed_number" sum="company_fixed_number"/>
+                <field name="personal_number"/>
+                <field name="personal_fixed_number" sum="personal_fixed_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="provident_fund_kind_form_view" model="ir.ui.view">
+        <field name="name">公积金</field>
+        <field name="model">provident.fund.kind</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" required="1"/>
+                    <field name="base_number"/>
+                    <field name="company_number"/>
+                    <field name="personal_number"/>
+                    <field name="company_fixed_number"/>
+                    <field name="personal_fixed_number"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="provident_fund_kind_action">
+        <field name="name">公积金</field>
+        <field name="res_model">provident.fund.kind</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="provident_fund_kind_menu" name="公积金种类" parent="configure_menu" sequence="3" action="provident_fund_kind_action"/>
+
+
+    <record id="insured_scheme_tree_view" model="ir.ui.view">
+        <field name="name">参保方案</field>
+        <field name="model">insured.scheme</field>
+        <field name="arch" type="xml">
+            <tree default_order="id">
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="country_state_id"/>
+                <field name="line_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="insured_scheme_form_view" model="ir.ui.view">
+        <field name="name">参保方案</field>
+        <field name="model">insured.scheme</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" confirm="确认归档本记录，你想继续吗？"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h2>
+                            <field name="name" required="1" placeholder="例如：成都社保唯一标准、成都公积金10+10"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="country_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="country_state_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="社保方案">
+                            <field name="line_ids">
+                                <tree editable="bottom" default_order="sequence">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="insurance_id" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                                    <field name="ttype"/>
+                                    <field name="base_number"/>
+                                    <field name="company_number"/>
+                                    <field name="personal_number"/>
+                                    <field name="company_fixed_number"/>
+                                    <field name="personal_fixed_number"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="公积金方案">
+                            <field name="provident_ids">
+                                <tree editable="bottom" default_order="sequence">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="insurance_id"/>
+                                    <field name="ttype"/>
+                                    <field name="base_number"/>
+                                    <field name="company_number"/>
+                                    <field name="personal_number"/>
+                                    <field name="company_fixed_number"/>
+                                    <field name="personal_fixed_number"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group string="备注">
+                        <field name="notes" nolabel="1" placeholder="可以填写备注信息..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="insured_scheme_action">
+        <field name="name">参保方案</field>
+        <field name="res_model">insured.scheme</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="insured_scheme_search">
+        <field name="model">insured.scheme</field>
+        <field name="arch" type="xml">
+            <search string="参保方案">
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="country_state_id"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="insured_scheme_menu" name="参保方案" parent="root_menu" sequence="6" action="insured_scheme_action" groups="odoo_social_security.manage_groups"/>
+
+</odoo>

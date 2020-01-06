@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crm_sale_order_return_tree_view" model="ir.ui.view">
+        <field name="name">退货退款</field>
+        <field name="model">crm.sale.order.return</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="signatory_id"/>
+                <field name="signing_date"/>
+                <field name="subtotal" sum="subtotal"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="crm_sale_order_return_form_view" model="ir.ui.view">
+        <field name="name">退货退款</field>
+        <field name="model">crm.sale.order.return</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="confirm_sale_return" type="object" class="oe_highlight" string="确认" states="new" confirm="确认退货退款?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="名称..." attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        </h1>
+                        <h2>
+                            <field name="code" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="partner_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="contract_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="signatory_id" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="signing_date" widget="date" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        </group>
+                        <group>
+                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="明细" autofocus="autofocus">
+                            <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}" context="{'default_currency_id': currency_id, 'default_contract_id': id}"
+                                   attrs="{'readonly': [('state', '!=', 'new')]}">
+                                <tree editable="bottom" >
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="number"/>
+                                    <field name="discount"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                    <field name="return_amout" widget="monetary"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="其他">
+                            <group>
+                                <field name="company_id" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                <field name="create_uid" options="{'no_create_edit': True, 'no_open': True}" string="创建人"/>
+                                <field name="create_date" widget="date" string="创建时间"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right" colspan="2">
+                        <div class="oe_subtotal_footer_separator">
+                            <label for="subtotal"/>
+                        </div>
+                        <field name="subtotal" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                    </group>
+                    <field name="note" class="oe_inline" placeholder="可以在此输入订单备注消息..."/>
+                    <div class="oe_clear"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm_sale_order_return_action">
+        <field name="name">退货退款</field>
+        <field name="res_model">crm.sale.order.return</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的退货退款单据
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="crm_sale_order_return_search">
+        <field name="model">crm.sale.order.return</field>
+        <field name="arch" type="xml">
+            <search string="退货退款">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="contract_id"/>
+                <field name="signatory_id"/>
+                <field name="signing_date"/>
+                <field name="subtotal" sum="subtotal"/>
+                <separator/>
+                    <filter string="我创建的" name="domain_my" domain="[('create_uid', '=', uid)]"/>
+                    <filter string="我负责的" name="domain_principal" domain="[('principal_ids', 'in', uid)]"/>
+                    <filter string="我协同的" name="domain_collaborator" domain="[('collaborator_ids', 'in', uid)]"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_partner_id" string="客户" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="crm_sale_order_return_menu" name="退货退款" parent="money_root_menu" sequence="2" action="crm_sale_order_return_action"/>
+
+</odoo>

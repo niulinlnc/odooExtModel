@@ -28,7 +28,7 @@ limitations under the License.
                     </group>
                 </group>
                 <group>
-                    <field name="emp_ids" widget="many2many_tags" placeholder="选择员工..."  required="1"/>
+                    <field name="emp_ids" widget="many2many_tags" placeholder="选择员工..."  required="1" options='{"no_edit": "1","no_create": "1"}'/>
                 </group>
                 <footer>
                     <button string="立即计算" name="compute_payroll_accounting" type="object" class="oe_highlight"/>

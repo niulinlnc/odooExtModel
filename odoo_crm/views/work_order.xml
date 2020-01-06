@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crm_work_order_tree_view" model="ir.ui.view">
+        <field name="name">工单管理</field>
+        <field name="model">crm.work.order</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="contact_id"/>
+                <field name="contract_id"/>
+                <field name="phone"/>
+                <field name="address"/>
+                <field name="service_fee"/>
+                <field name="level"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="crm_work_order_view_form" model="ir.ui.view">
+        <field name="name">工单管理</field>
+        <field name="model">crm.work.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="create_sale_order" type="object" class="oe_highlight" string="接受"/>
+                    <button name="create_sale_order" type="object" string="关闭"/>
+                    <button name="create_sale_order" type="object" string="重启"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_crm.director_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="请输入名称..."/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="partner_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="contact_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="opportunity_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="contract_id" options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="principal_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="collaborator_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="address"/>
+                            <field name="service_fee"/>
+                            <field name="order_date"/>
+                            <field name="level"/>
+                        </group>
+                    </group>
+                    <group string="备注">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm_work_order_action">
+        <field name="name">工单管理</field>
+        <field name="res_model">crm.work.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的工单
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="crm_work_order_menu" name="工单" parent="root_menu" sequence="10" action="crm_work_order_action"/>
+
+</odoo>

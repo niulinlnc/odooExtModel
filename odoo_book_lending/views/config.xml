@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+
+    <record id="odoo_books_type_tree_view" model="ir.ui.view">
+        <field name="name">图书类型</field>
+        <field name="model">odoo.books.type</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odoo_books_type_action">
+        <field name="name">图书类型</field>
+        <field name="res_model">odoo.books.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="odoo_books_type_menu" name="图书类型" parent="configure_menu" sequence="1" action="odoo_books_type_action"/>
+
+</odoo>

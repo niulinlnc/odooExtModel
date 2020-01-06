@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+    <data noupdate="1">
+
+        <record id="odoo_books_number" model="ir.sequence">
+            <field name="name">图书管理编号规则</field>
+            <field name="code">odoo.books.code</field>
+            <field name="prefix">OB.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="book_borrowing_records_number" model="ir.sequence">
+            <field name="name">图书借还记录编号规则</field>
+            <field name="code">book.borrowing.records.code</field>
+            <field name="prefix">BBR.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
+    </data>
+</odoo>

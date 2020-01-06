@@ -55,7 +55,7 @@ class WageArchivesTransient(models.TransientModel):
                 'wage_amount': line.wage_amount,
             }))
         # 遍历所选员工
-        for emp in self.emp_ids.with_progress(msg="批量初始化档案"):
+        for emp in self.emp_ids:
             logging.info(">>>生成员工：'%s' 档案" % emp.name)
             archives_data = {
                 'employee_id': emp.id,
@@ -73,8 +73,7 @@ class WageArchivesTransient(models.TransientModel):
                 archives.write({'line_ids': [(2, archives.line_ids.ids)]})
                 archives.write(archives_data)
         logging.info(">>>End批量初始化档案")
-        action = self.env.ref('odoo_wage_manage.wage_archives_action')
-        return action.read()[0]
+        return {'type': 'ir.actions.act_window_close'}
 
     @api.model
     def get_info_by_dingding_hrm(self, archives_data, emp):
@@ -82,7 +81,7 @@ class WageArchivesTransient(models.TransientModel):
         从钉钉花名册中获取员工信息
         :return:
         """
-        roster = self.env['dingding.employee.roster'].sudo().search([('emp_id', '=', emp.id)], limit=1)
+        roster = self.env['dingtalk.employee.roster'].sudo().search([('emp_id', '=', emp.id)], limit=1)
         if not roster:
             return archives_data
         archives_data.update({

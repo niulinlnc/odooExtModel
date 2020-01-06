@@ -4,19 +4,16 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###################################################################################
+
+import datetime
 import logging
-
-from werkzeug.urls import url_encode
-
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -32,16 +29,20 @@ class WagePayrollAccounting(models.Model):
     @api.model
     def _get_default_company(self):
         return self.env.user.company_id
-
-    active = fields.Boolean('Active', default=True)
-    name = fields.Char(string='名称')
-    wage_date = fields.Date(string=u'核算月份', required=True)
-    date_code = fields.Char(string='期间代码', index=True)
-    company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True)
-    employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', required=True, index=True)
-    department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True)
-    job_id = fields.Many2one(comodel_name='hr.job', string=u'在职岗位', index=True)
-    employee_code = fields.Char(string='员工工号')
+    PAYROLLSTATE = [('draft', '待确认'), ('confirm', '已确认')]
+    
+    active = fields.Boolean('Active', default=True, track_visibility='onchange')
+    name = fields.Char(string='名称', track_visibility='onchange')
+    wage_date = fields.Date(string=u'核算月份', required=True, track_visibility='onchange')
+    date_code = fields.Char(string='期间代码', index=True, track_visibility='onchange')
+    company_id = fields.Many2one('res.company', '公司', default=_get_default_company, index=True, required=True, track_visibility='onchange')
+    employee_id = fields.Many2one(comodel_name='hr.employee', string=u'员工', required=True, index=True, track_visibility='onchange')
+    department_id = fields.Many2one(comodel_name='hr.department', string=u'部门', index=True, track_visibility='onchange')
+    job_id = fields.Many2one(comodel_name='hr.job', string=u'在职岗位', index=True, track_visibility='onchange')
+    employee_code = fields.Char(string='员工工号', track_visibility='onchange')
+    state = fields.Selection(string="核算状态", selection=PAYROLLSTATE, default='draft', track_visibility='onchange')
+    review_id = fields.Many2one(comodel_name="res.users", string="审核人", track_visibility='onchange')
+    review_time = fields.Datetime(string="审核时间", track_visibility='onchange')
     # 基本+缺勤
     base_wage = fields.Float(string='基本工资', track_visibility='onchange', digits=(10, 2))
     structure_ids = fields.One2many('wage.payroll.accounting.structure', 'accounting_id', string=u'薪资项目')
@@ -64,8 +65,8 @@ class WagePayrollAccounting(models.Model):
     early_attendance = fields.Float(string=u'早退扣款', digits=(10, 2))
     attendance_sum = fields.Float(string=u'打卡扣款合计', digits=(10, 2), compute='_compute_amount_sum')
     # 社保公积金
-    statement_ids = fields.One2many('wage.payroll.accounting.monthly.statement.line', 'accounting_id', string=u'社保公积金')
-    statement_sum = fields.Float(string=u'社保个人合计', digits=(10, 2), compute='_compute_amount_sum')
+    statement_ids = fields.One2many('wage.insured.monthly.statement.line', 'accounting_id', string=u'社保明细')
+    provident_ids = fields.One2many('wage.insured.monthly.provident.line', 'accounting_id', string=u'公积金明细')
     # 个税
     cumulative_expenditure_deduction = fields.Float(string=u'累计子女教育抵扣总额', digits=(10, 2))
     cumulative_home_loan_interest_deduction = fields.Float(string=u'累计住房贷款利息抵扣总额', digits=(10, 2))
@@ -80,10 +81,9 @@ class WagePayrollAccounting(models.Model):
     this_months_tax = fields.Float(string=u'本月个税', digits=(10, 2))
     cumulative_tax = fields.Float(string=u'累计个税', digits=(10, 2))
     # 小计
-    pay_wage = fields.Float(string=u'应发工资', digits=(10, 2))
-    real_wage = fields.Float(string=u'实发工资', digits=(10, 2))
+    pay_wage = fields.Float(string=u'应发工资', digits=(10, 2), track_visibility='onchange')
+    real_wage = fields.Float(string=u'实发工资', digits=(10, 2), track_visibility='onchange')
     notes = fields.Text(string=u'备注')
-    email_state = fields.Boolean(string=u'邮件状态', default=False)
 
     @api.onchange('wage_date')
     @api.constrains('wage_date')
@@ -138,20 +138,14 @@ class WagePayrollAccounting(models.Model):
             structure_sum = 0
             for structure in res.structure_ids:
                 structure_sum += structure.wage_amount
-            # 社保个人合计
-            statement_sum = 0
-            for statement in res.statement_ids:
-                statement_sum += statement.pension_pay
             res.update({
                 'absence_sum': absence_sum,
                 'performance_sum': performance_sum,
                 'overtime_sum': overtime_sum,
                 'attendance_sum': attendance_sum,
                 'structure_sum': structure_sum,
-                'statement_sum': statement_sum,
             })
 
-    @api.multi
     def action_send_employee_email(self):
         """
         发送email
@@ -163,7 +157,48 @@ class WagePayrollAccounting(models.Model):
         template_id = self.env.ref('odoo_wage_manage.wage_payroll_accounting_email_template', raise_if_not_found=False)
         if template_id:
             template_id.sudo().with_context(lang=self.env.context.get('lang')).send_mail(self.id, force_send=True)
-            self.email_state = True
+
+    def confirmation_audit(self):
+        """
+        审核核算结果
+        :return:
+        """
+        for res in self:
+            res.write({'state': 'confirm', 'review_id': self.env.user.id, 'review_time': datetime.datetime.now()})
+            # 将绩效、考勤、专项附加扣除信息状态设为已计算
+            domain = [('employee_id', '=', res.employee_id.id), ('performance_code', '=', res.date_code)]
+            performance = self.env['wage.employee.performance.manage'].search(domain)
+            if performance:
+                performance.write({'state': '01'})
+            domain = [('employee_id', '=', res.employee_id.id), ('attend_code', '=', res.date_code)]
+            attendance = self.env['wage.employee.attendance.annal'].search(domain)
+            if attendance:
+                attendance.write({'state': '01'})
+            domain = [('employee_id', '=', res.employee_id.id), ('date_code', '=', res.date_code)]
+            deduction = self.env['wage.special.additional.deduction'].search(domain)
+            if deduction:
+                deduction.write({'state': '01'})
+
+    def return_confirmation_audit(self):
+        """
+        反审核
+        :return:
+        """
+        for res in self:
+            res.write({'state': 'draft'})
+            # 将绩效、考勤、专项附加扣除信息状态设为待计算
+            domain = [('employee_id', '=', res.employee_id.id), ('performance_code', '=', res.date_code)]
+            performance = self.env['wage.employee.performance.manage'].search(domain)
+            if performance:
+                performance.write({'state': '00'})
+            domain = [('employee_id', '=', res.employee_id.id), ('attend_code', '=', res.date_code)]
+            attendance = self.env['wage.employee.attendance.annal'].search(domain)
+            if attendance:
+                attendance.write({'state': '00'})
+            domain = [('employee_id', '=', res.employee_id.id), ('date_code', '=', res.date_code)]
+            deduction = self.env['wage.special.additional.deduction'].search(domain)
+            if deduction:
+                deduction.write({'state': '00'})
 
 
 class WagePayrollAccountingLine(models.Model):
@@ -187,15 +222,27 @@ class WagePayrollAccountingPerformanceLine(models.Model):
     wage_amount = fields.Float(string=u'绩效金额')
 
 
-class WagePayrollMonthlyStatementLine(models.Model):
-    _description = '社保公积金列表'
-    _name = 'wage.payroll.accounting.monthly.statement.line'
+class WageInsuredMonthlyStatementLine(models.Model):
+    _description = '社保明细'
+    _name = 'wage.insured.monthly.statement.line'
 
     sequence = fields.Integer(string=u'序号')
-    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算')
-    insurance_id = fields.Many2one(comodel_name='wage.insured.scheme.insurance', string=u'险种', required=True)
+    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算', ondelete='cascade')
+    insurance_id = fields.Many2one(comodel_name='insured.scheme.insurance', string=u'社保种类', required=True)
     base_number = fields.Float(string=u'险种基数', digits=(10, 2))
-    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 4))
-    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 4))
+    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 2))
+    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 2))
+
+
+class WageInsuredMonthlyProvidentLine(models.Model):
+    _description = '公积金明细'
+    _name = 'wage.insured.monthly.provident.line'
+
+    sequence = fields.Integer(string=u'序号')
+    accounting_id = fields.Many2one(comodel_name='wage.payroll.accounting', string=u'薪资核算', ondelete='cascade')
+    insurance_id = fields.Many2one(comodel_name='provident.fund.kind', string=u'公积金种类', required=True)
+    base_number = fields.Float(string=u'基数', digits=(10, 2))
+    company_pay = fields.Float(string=u'公司缴纳', digits=(10, 2))
+    pension_pay = fields.Float(string=u'个人缴纳', digits=(10, 2))
 
 

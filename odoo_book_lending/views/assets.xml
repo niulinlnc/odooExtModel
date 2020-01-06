@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem name="图书借阅" id="root_menu" web_icon="odoo_book_lending,static/description/icon.png" sequence="21"/>
+
+    <menuitem name="借阅" id="borrow_menu" parent="root_menu" sequence="30"/>
+
+    <menuitem name="报表" id="report_menu" parent="root_menu" sequence="90"/>
+
+    <menuitem name="设置" id="configure_menu" parent="root_menu" sequence="100"/>
+
+</odoo>
