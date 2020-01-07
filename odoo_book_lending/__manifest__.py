@@ -22,12 +22,14 @@
         'data/default_num.xml',
         'data/config.xml',
         'views/assets.xml',
-        'wizard/borrow_books.xml',
         'wizard/return_books.xml',
 
         'views/config.xml',
         'views/books.xml',
         'views/borrowing_records.xml',
+        'views/borrow_apply.xml',
         'views/books_pool_report.xml',
+        'views/books_apply.xml',
+        'views/books_purchase.xml',
     ],
 }

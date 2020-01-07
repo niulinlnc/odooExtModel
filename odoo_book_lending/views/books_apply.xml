@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoo_books_apply_tree_view" model="ir.ui.view">
+        <field name="name">图书申请</field>
+        <field name="model">odoo.books.apply</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="book_name"/>
+                <field name="type_id"/>
+                <field name="author"/>
+                <field name="version"/>
+                <field name="user_id"/>
+                <field name="apply_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="odoo_books_apply_form_view" model="ir.ui.view">
+        <field name="name">图书申请</field>
+        <field name="model">odoo.books.apply</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="confirm_apply" type="object" class="oe_highlight" string="提交申请" states="draft" confirm="确认提交申请吗？"/>
+                    <button name="confirm_purchase" type="object" class="oe_highlight" string="确认采购" states="confirm"
+                            confirm="确认批准该请求并进行采购吗？" groups="odoo_book_lending.manage_groups"/>
+                    <button name="return_draft" type="object" string="退回" confirm="确认回退该申请？" states="confirm"/>
+                    <button name="close_apply" type="object" string="作废" confirm="确认作废本申请？" states="draft,confirm"/>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="申请标题..." attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="book_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="author" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="version" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="purchase_id" attrs="{'invisible': [('state', '!=', 'purchase')],'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="notes" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="user_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="apply_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" options="{'no_create_edit': True, 'no_create': True}" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="请添加图书描述..." widget="html" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="odoo_books_apply_action">
+        <field name="name">图书申请</field>
+        <field name="res_model">odoo.books.apply</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的图书申请
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="odoo_books_apply_search_view">
+        <field name="model">odoo.books.apply</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="book_name"/>
+                <field name="type_id"/>
+                <field name="author"/>
+                <field name="version"/>
+                <field name="user_id"/>
+                <field name="apply_date"/>
+                <field name="state"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_state" string="状态" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="odoo_books_apply_menu" name="图书申请" parent="root_menu" sequence="31" action="odoo_books_apply_action"/>
+
+</odoo>

@@ -38,6 +38,6 @@ Copyright (C) 2019 SuXueFeng GUN
         <field name="target">new</field>
     </record>
 
-    <menuitem id="return_books_tran_menu" name="归还图书" parent="borrow_menu" sequence="2" action="return_books_tran_action"/>
+    <menuitem id="return_books_tran_menu" name="归还图书" parent="borrow_menu" sequence="2" action="return_books_tran_action" groups="odoo_book_lending.manage_groups"/>
 
 </odoo>

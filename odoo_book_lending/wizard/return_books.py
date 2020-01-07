@@ -12,10 +12,8 @@ _logger = logging.getLogger(__name__)
 
 class ReturnBooksTran(models.TransientModel):
     _name = 'return.books.tran'
-    _description = "归还图书"
 
-    record_id = fields.Many2one(comodel_name="book.borrowing.records", string="借阅记录",
-                                domain=lambda self: [('user_id', '=', self.env.user.id), ('state', '!=', 'ing')])
+    record_id = fields.Many2one(comodel_name="book.borrowing.records", string="借阅记录")
     book_id = fields.Many2one(comodel_name="odoo.books", string="图书")
     borrow_number = fields.Integer(string="归还数量", required=True, default=1)
     user_id = fields.Many2one(comodel_name="res.users", string="归还人", default=lambda self: self.env.user.id)
