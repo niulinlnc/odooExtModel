@@ -30,6 +30,7 @@ class BooksBorrowingRecords(models.Model):
     return_time = fields.Datetime(string="归还时间", track_visibility='onchange')
     notes = fields.Text(string="借阅备注")
     return_notes = fields.Text(string="归还备注")
+    apply_id = fields.Many2one(comodel_name="odoo.borrow.apply", string="借阅申请")
 
     @api.model
     def create(self, values):

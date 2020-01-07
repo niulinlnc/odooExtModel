@@ -48,6 +48,7 @@
                             <field name="return_time"/>
                             <field name="return_number"/>
                             <field name="return_notes" placeholder="请添加图书描述..."/>
+                            <field name="apply_id"/>
                             <field name="company_id" options="{'no_create_edit': True, 'no_create': True}" groups="base.group_multi_company"/>
                         </group>
                     </group>

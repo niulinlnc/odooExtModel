@@ -69,6 +69,7 @@ class BorrowApply(models.Model):
                     'borrow_time': res.apply_time,
                     'return_time': line.return_time,
                     'notes': line.note,
+                    'apply_id': res.id,
                 })
 
     def close_apply(self):
