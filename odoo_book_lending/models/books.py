@@ -51,3 +51,25 @@ class Books(models.Model):
                 return_num += record.return_number
             res.remaining_amount = res.number - borrow_num + return_num
 
+    def action_borrow_apply_from(self):
+        """
+        借阅图书申请
+        :return:
+        """
+        self.ensure_one()
+        result = self.env.ref('odoo_book_lending.odoo_borrow_apply_action').read()[0]
+        line_list = list()
+        line_list.append({
+            'book_id': self.id,
+            'code': self.code,
+            'type_id': self.type_id.id,
+            'number': 1,
+        })
+        result['context'] = {
+            'default_name': '{}的借阅申请'.format(self.env.user.name),
+            'default_state': 'draft',
+            'default_line_ids': line_list,
+        }
+        res = self.env.ref('odoo_book_lending.odoo_borrow_apply_form_view', False)
+        result['views'] = [(res and res.id or False, 'form')]
+        return result

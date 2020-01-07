@@ -25,7 +25,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="%(borrow_books_tran_action)d" type="action" class="oe_highlight" string="借阅图书"/>
+                    <button name="action_borrow_apply_from" type="object" class="oe_highlight" string="借阅图书"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -112,9 +112,8 @@
                                     <field name="code"/>
                                 </p>
                                 <div class="oe_module_action" t-if="!selection_mode">
-                                    <span>剩余数量：<field name="remaining_amount"/></span>
-<!--                                    <button name="%(borrow_books_tran_action)d" type="action" class="btn btn-primary btn-sm">借阅图书</button>-->
-                                    <button name="%(borrow_books_tran_action)d" type="action" class="btn btn-sm btn-secondary float-right">借阅图书</button>
+                                    <span>可用：<field name="remaining_amount"/></span>
+                                    <button name="action_borrow_apply_from" type="object" class="btn btn-sm btn-secondary float-right">借阅图书</button>
                                 </div>
                             </div>
                         </div>

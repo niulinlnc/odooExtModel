@@ -31,6 +31,24 @@
 			<field name="perm_create" eval="True"/>
 			<field name="perm_unlink" eval="True"/>
 		 </record>
+		<record id="odoo_books_purchase_company_rule" model="ir.rule">
+			<field name="name">图书采购多公司过滤</field>
+			<field name="model_id" ref="model_odoo_books_purchase"/>
+			<field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+			<field name="perm_read" eval="True"/>
+			<field name="perm_write" eval="True"/>
+			<field name="perm_create" eval="True"/>
+			<field name="perm_unlink" eval="True"/>
+		 </record>
+		<record id="odoo_borrow_apply_company_rule" model="ir.rule">
+			<field name="name">借阅申请多公司过滤</field>
+			<field name="model_id" ref="model_odoo_borrow_apply"/>
+			<field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+			<field name="perm_read" eval="True"/>
+			<field name="perm_write" eval="True"/>
+			<field name="perm_create" eval="True"/>
+			<field name="perm_unlink" eval="True"/>
+		 </record>
 
 		<record id="odoo_books_apply_user_group_rule" model="ir.rule">
 			<field name="name">图书申请:用户记录规则</field>
@@ -41,6 +59,18 @@
 		<record id="odoo_books_apply_groups_rule" model="ir.rule">
 			<field name="name">图书申请:管理员记录规则</field>
 			<field name="model_id" ref="model_odoo_books_apply"/>
+			<field name="groups" eval="[(4, ref('odoo_book_lending.manage_groups'))]"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+		</record>
+		<record id="odoo_borrow_apply_user_group_rule" model="ir.rule">
+			<field name="name">借阅申请:用户记录规则</field>
+			<field name="model_id" ref="model_odoo_borrow_apply"/>
+			<field name="domain_force">[('user_id', 'in', [user.id])]</field>
+			<field name="groups" eval="[(4, ref('odoo_book_lending.user_groups'))]"/>
+		</record>
+		<record id="odoo_borrow_apply_groups_rule" model="ir.rule">
+			<field name="name">借阅申请:管理员记录规则</field>
+			<field name="model_id" ref="model_odoo_borrow_apply"/>
 			<field name="groups" eval="[(4, ref('odoo_book_lending.manage_groups'))]"/>
 			<field name="domain_force">[(1,'=',1)]</field>
 		</record>

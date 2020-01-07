@@ -36,6 +36,12 @@ Copyright (C) 2019 SuXueFeng GUN
             <field name="suffix"/>
             <field name="padding">4</field>
         </record>
-
+        <record id="odoo_borrow_apply_number" model="ir.sequence">
+            <field name="name">借阅申请编号规则</field>
+            <field name="code">odoo.borrow.apply.code</field>
+            <field name="prefix">OBA.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
     </data>
 </odoo>

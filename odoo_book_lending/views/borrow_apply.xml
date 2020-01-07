@@ -1,65 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="odoo_books_purchase_tree_view" model="ir.ui.view">
-        <field name="name">图书采购</field>
-        <field name="model">odoo.books.purchase</field>
+    <record id="odoo_borrow_apply_tree_view" model="ir.ui.view">
+        <field name="name">借阅申请</field>
+        <field name="model">odoo.borrow.apply</field>
         <field name="arch" type="xml">
             <tree default_order="id desc">
                 <field name="code"/>
                 <field name="name"/>
                 <field name="user_id"/>
-                <field name="purchase_date"/>
+                <field name="apply_time"/>
+                <field name="notes"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
 
-    <record id="odoo_books_purchase_form_view" model="ir.ui.view">
-        <field name="name">图书采购</field>
-        <field name="model">odoo.books.purchase</field>
+    <record id="odoo_borrow_apply_form_view" model="ir.ui.view">
+        <field name="name">借阅申请</field>
+        <field name="model">odoo.borrow.apply</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="submit_purchase" type="object" class="oe_highlight" string="确认采购" states="draft" confirm="确认进行采购吗？"/>
-                    <button name="confirm_purchase" type="object" class="oe_highlight" string="采购入库" states="purchase" confirm="确认完成本次采购，并将图书信息添加到图书中？"/>
-                    <button name="return_draft" type="object" string="退回" confirm="确认回退？" states="purchase"/>
-                    <button name="close_apply" type="object" string="作废" confirm="确认作废本？" states="purchase"/>
+                    <button name="submit_apply" type="object" class="oe_highlight" string="提交申请" states="draft" confirm="确认提交本次申请吗？"/>
+                    <button name="confirm_applye" type="object" class="oe_highlight" string="确认申请" states="confirm" confirm="确认通过本次申请吗？"/>
+                    <button name="close_apply" type="object" string="取消申请" confirm="确认取消申请？" states="confirm"/>
+                    <button name="return_draft" type="object" string="退回" confirm="确认回退？" states="confirm"/>
                     <field name="state" widget="statusbar" readonly="1"/>
                 </header>
                 <sheet>
                     <div class="oe_title" name="title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="采购标题..." attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="name" placeholder="申请的标题..." attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </h1>
                     </div>
                     <group col="2">
                         <group>
                             <field name="code" readonly="1"/>
                             <field name="user_id" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="purchase_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="apply_time" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="company_id" options="{'no_create_edit': True, 'no_create': True}" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="采购列表">
+                        <page string="申请列表">
                             <field name="line_ids" options="{'no_create_edit': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}">
                                 <tree editable="bottom" >
-                                    <field name="book_id"/>
-                                    <field name="code" placeholder="填写编号时即更新图书库存数!"/>
+                                    <field name="book_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="code"/>
                                     <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
-                                    <field name="author"/>
-                                    <field name="version"/>
                                     <field name="number"/>
-                                    <field name="price"/>
-                                    <field name="book_time"/>
+                                    <field name="return_time"/>
+                                    <field name="note"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                     <group>
-                        <field name="notes" placeholder="请添加备注..." nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="notes" placeholder="请添加说明..." nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -72,9 +71,9 @@
     </record>
 
 
-    <record model="ir.actions.act_window" id="odoo_books_purchase_action">
-        <field name="name">图书采购</field>
-        <field name="res_model">odoo.books.purchase</field>
+    <record model="ir.actions.act_window" id="odoo_borrow_apply_action">
+        <field name="name">借阅申请</field>
+        <field name="res_model">odoo.borrow.apply</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -83,14 +82,14 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="odoo_books_purchase_search_view">
-        <field name="model">odoo.books.purchase</field>
+    <record model="ir.ui.view" id="odoo_borrow_apply_search_view">
+        <field name="model">odoo.borrow.apply</field>
         <field name="arch" type="xml">
             <search>
                 <field name="code"/>
                 <field name="name"/>
                 <field name="user_id"/>
-                <field name="purchase_date"/>
+                <field name="apply_time"/>
                 <field name="state"/>
                 <separator/>
                 <group expand="0" string="分组">
@@ -100,6 +99,6 @@
         </field>
     </record>
 
-    <menuitem id="odoo_books_purchase_menu" name="图书采购" parent="root_menu" sequence="32" action="odoo_books_purchase_action"/>
+    <menuitem id="odoo_borrow_apply_menu" name="借阅申请" parent="borrow_menu" sequence="1" action="odoo_borrow_apply_action"/>
 
 </odoo>

@@ -12,5 +12,8 @@ access_odoo_books_purchase_user_groups,odoo.books.purchase.user.group,model_odoo
 access_odoo_books_purchase,odoo.books.purchase,model_odoo_books_purchase,odoo_book_lending.manage_groups,1,1,1,1
 access_odoo_books_purchase_line,odoo.books.purchase.line,model_odoo_books_purchase_line,odoo_book_lending.user_groups,1,1,1,1
 
+access_odoo_borrow_apply,odoo.borrow.apply,model_odoo_borrow_apply,odoo_book_lending.user_groups,1,1,1,1
+access_odoo_borrow_apply_line,odoo.borrow.apply.line,model_odoo_borrow_apply_line,odoo_book_lending.user_groups,1,1,1,1
+
 
 
