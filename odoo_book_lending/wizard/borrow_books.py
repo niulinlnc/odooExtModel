@@ -12,7 +12,6 @@ _logger = logging.getLogger(__name__)
 
 class BorrowBooksTran(models.TransientModel):
     _name = 'borrow.books.tran'
-    _description = "借阅图书"
 
     book_id = fields.Many2one(comodel_name="odoo.books", string="图书", required=True, index=True, ondelete='cascade')
     borrow_number = fields.Integer(string="数量", required=True, default=1)

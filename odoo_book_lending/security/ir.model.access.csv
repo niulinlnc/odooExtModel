@@ -7,6 +7,10 @@ access_book_borrowing_records_user_group,book.borrowing.records.user.group,model
 access_book_borrowing_records,book.borrowing.records,model_book_borrowing_records,odoo_book_lending.manage_groups,1,1,1,1
 
 access_books_pool_report,books.pool.report,model_books_pool_report,odoo_book_lending.manage_groups,1,1,1,1
+access_odoo_books_apply_user_groups,odoo.books.apply.user.group,model_odoo_books_apply,odoo_book_lending.user_groups,1,1,1,1
+access_odoo_books_purchase_user_groups,odoo.books.purchase.user.group,model_odoo_books_purchase,odoo_book_lending.user_groups,1,0,0,0
+access_odoo_books_purchase,odoo.books.purchase,model_odoo_books_purchase,odoo_book_lending.manage_groups,1,1,1,1
+access_odoo_books_purchase_line,odoo.books.purchase.line,model_odoo_books_purchase_line,odoo_book_lending.user_groups,1,1,1,1
 
 
 

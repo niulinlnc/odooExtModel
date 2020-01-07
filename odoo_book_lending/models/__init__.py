@@ -7,3 +7,5 @@ from . import config
 from . import books
 from . import borrowing_records
 from . import books_pool_report
+from . import books_apply
+from . import books_purchase

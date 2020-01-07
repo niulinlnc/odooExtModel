@@ -29,5 +29,7 @@
         'views/books.xml',
         'views/borrowing_records.xml',
         'views/books_pool_report.xml',
+        'views/books_apply.xml',
+        'views/books_purchase.xml',
     ],
 }

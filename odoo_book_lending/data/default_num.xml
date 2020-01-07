@@ -21,5 +21,21 @@ Copyright (C) 2019 SuXueFeng GUN
             <field name="padding">4</field>
         </record>
 
+        <record id="odoo_books_apply_number" model="ir.sequence">
+            <field name="name">图书申请编号规则</field>
+            <field name="code">odoo.books.apply.code</field>
+            <field name="prefix">SQ.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="odoo_books_purchase_number" model="ir.sequence">
+            <field name="name">图书采购编号规则</field>
+            <field name="code">odoo.books.purchase.code</field>
+            <field name="prefix">CG.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
     </data>
 </odoo>
