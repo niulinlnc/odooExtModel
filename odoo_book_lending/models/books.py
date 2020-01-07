@@ -67,7 +67,6 @@ class Books(models.Model):
         })
         result['context'] = {
             'default_name': '{}的借阅申请'.format(self.env.user.name),
-            'default_state': 'draft',
             'default_line_ids': line_list,
         }
         res = self.env.ref('odoo_book_lending.odoo_borrow_apply_form_view', False)
