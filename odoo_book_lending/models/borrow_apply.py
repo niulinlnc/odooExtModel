@@ -88,6 +88,12 @@ class BorrowApply(models.Model):
         for res in self:
             res.write({'state': 'draft'})
 
+    def unlink(self):
+        for res in self:
+            if res.state != 'draft':
+                raise UserWarning("非草稿单据不允许删除！")
+        return super(BorrowApply, self).unlink()
+
 
 class BorrowApplyLine(models.Model):
     _name = 'odoo.borrow.apply.line'
