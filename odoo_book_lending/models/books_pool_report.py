@@ -14,7 +14,6 @@ class BooksPoolReport(models.Model):
     borrow_time = fields.Datetime(string="借阅时间")
     user_id = fields.Many2one(comodel_name="res.users", string="借阅人")
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self.env.cr, 'books_pool_report')
         self.env.cr.execute("""CREATE VIEW books_pool_report AS (
