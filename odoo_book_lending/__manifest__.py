@@ -9,7 +9,7 @@
     'author': "SuXueFeng",
     'website': "https://www.sxfblog.com",
     'category': 'book',
-    'version': '12.0.1',
+    'version': '13.0.0.1',
     'depends': ['base', 'mail'],
     'installable': True,
     'application': True,
