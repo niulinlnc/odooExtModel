@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoo_meal_product_tree_view" model="ir.ui.view">
+        <field name="name">菜品</field>
+        <field name="model">odoo.meal.product</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="partner_id"/>
+                <field name="price"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="odoo_meal_product_form_view" model="ir.ui.view">
+        <field name="name">菜品</field>
+        <field name="model">odoo.meal.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="odoo_book_meal.manage_groups">
+                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                        </button>
+                    </div>
+                    <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [80, 80]}'/>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="输入名称..."/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="price"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="标签..."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="描述说明">
+                            <field name="notes" placeholder="请添加描述..." widget="html"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="odoo_meal_product_view_kanban" model="ir.ui.view">
+        <field name="name">菜品看板</field>
+        <field name="model">odoo.meal.product</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban">
+                <field name="id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="partner_id"/>
+                <field name="price"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette oe_kanban_global_click">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('odoo.meal.product', 'image', record.id.raw_value)" alt="封面图"
+                                    class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="type_id"/>
+                                </p>
+                                <div class="oe_module_action" t-if="!selection_mode">
+                                    <div class="text-muted float-left">
+                                        <field name="price"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odoo_meal_product_action">
+        <field name="name">菜品</field>
+        <field name="res_model">odoo.meal.product</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="context">{'search_default_group_by_type_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建一个新的菜品
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="odoo_meal_product_search_view">
+        <field name="model">odoo.meal.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="partner_id"/>
+                <field name="price"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_type_id" string="类型" context="{'group_by':'type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="odoo_meal_product_menu" name="菜品" parent="root_menu" sequence="5" action="odoo_meal_product_action"/>
+
+</odoo>

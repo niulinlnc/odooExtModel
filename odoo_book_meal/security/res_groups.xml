@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="odoo_meal_groups">
+        <field name="name">员工订餐</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record id="user_groups" model="res.groups">
+        <field name="name">员工</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="odoo_book_meal.odoo_meal_groups"/>
+        <field name="users" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="manage_groups" model="res.groups">
+        <field name="name">经理</field>
+        <field name="implied_ids" eval="[(4, ref('odoo_book_meal.user_groups'))]"/>
+        <field name="category_id" ref="odoo_book_meal.odoo_meal_groups"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>

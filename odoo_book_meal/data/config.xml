@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng  GUN
+-->
+<odoo>
+    <data noupdate="1">
+
+        <record id="odoo_meal_type_1" model="odoo.meal.type">
+            <field name="name">主食</field>
+        </record>
+        <record id="odoo_meal_type_2" model="odoo.meal.type">
+            <field name="name">素菜</field>
+        </record>
+        <record id="odoo_meal_type_3" model="odoo.meal.type">
+            <field name="name">荤菜</field>
+        </record>
+        <record id="odoo_meal_type_4" model="odoo.meal.type">
+            <field name="name">饮料</field>
+        </record>
+
+        <record id="odoo_meal_alert_01" model="odoo.meal.alert">
+            <field name="alert_type">days</field>
+            <field name="message">欢迎使用Odoo订餐系统~</field>
+        </record>
+
+    </data>
+</odoo>

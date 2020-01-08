@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+    <data noupdate="1">
+
+        <record id="odoo_meal_products_number" model="ir.sequence">
+            <field name="name">食谱编号规则</field>
+            <field name="code">meal.product.code</field>
+            <field name="prefix">M.%(year)s%(month)s</field>
+            <field name="suffix"/>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="odoo_meal_order_number" model="ir.sequence">
+            <field name="name">订餐单据编号规则</field>
+            <field name="code">odoo.meal.order.code</field>
+            <field name="prefix">DM.%(year)s%(month)s%(day)s</field>
+            <field name="suffix"/>
+            <field name="padding">4</field>
+        </record>
+
+    </data>
+</odoo>
