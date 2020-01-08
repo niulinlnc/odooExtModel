@@ -16,7 +16,7 @@ class BorrowApply(models.Model):
     APPLYSTATE = [
         ('draft', '草稿'),
         ('confirm', '管理确认'),
-        ('ok', '申请完成'),
+        ('ok', '已批准'),
         ('close', '取消'),
     ]
 
