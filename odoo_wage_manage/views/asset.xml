@@ -3,13 +3,12 @@
 
     <template id="odoo_wage_manage_asset" name="Odoo Wage Manage Asset" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/odoo_wage_manage/static/src/js/wage_archives.js"></script>
             <script type="text/javascript" src="/odoo_wage_manage/static/src/js/wage_payroll_accounting.js"></script>
             <script type="text/javascript" src="/odoo_wage_manage/static/src/js/wage_employee_tax_details.js"></script>
         </xpath>
     </template>
 
-    <menuitem name="薪酬" id="odoo_wage_manage.main_menu" web_icon="odoo_wage_manage,static/description/icon.png" sequence="18" groups="user_groups"/>
+    <menuitem name="薪资" id="odoo_wage_manage.main_menu" web_icon="odoo_wage_manage,static/description/icon.png" sequence="18" groups="user_groups"/>
 
     <menuitem name="统计" id="wage_statistics_menu" parent="odoo_wage_manage.main_menu" sequence="10"/>
 

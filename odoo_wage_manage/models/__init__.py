@@ -15,7 +15,7 @@
 ###################################################################################
 
 from . import wage_structure
-from . import wage_archives
+from . import hr_contract
 from . import wage_calculate_salary_rules
 from . import wage_special_additional_deduction
 from . import wage_statistics_annal

@@ -15,22 +15,6 @@ limitations under the License.
 -->
 <template id="template" xml:space="preserve">
 
-    <t t-name="OdooWageManageListView.wage_archives_but">
-        <button type="button" class="btn btn-secondary batch_initialization_wage_archives_file">
-            初始化档案
-        </button>
-    </t>
-    <t t-extend="ListView.buttons" t-name="OdooWageManageListView.wage_archives_buttons">
-        <t t-jquery="button.o_list_button_add" t-operation="after">
-            <t t-js="ctx">
-                if (window.odoo._modules.indexOf("base_import") >= 0) {
-                    r.push(context.engine.tools.call(context, 'ImportView.import_button', dict));
-                };
-            </t>
-            <t t-call="OdooWageManageListView.wage_archives_but"/>
-        </t>
-    </t>
-
     <t t-name="OdooWageManageListView.wage_payroll_accounting_but">
         <button type="button" class="btn btn-primary wage_payroll_accounting_but_class">
             薪资计算

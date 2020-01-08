@@ -217,10 +217,23 @@
         </field>
     </record>
 
+    <record id="wage_payroll_accounting_onboarding_view" model="ir.ui.view">
+        <field name="name">薪资核算</field>
+        <field name="model">wage.payroll.accounting</field>
+        <field name="inherit_id" ref="wage_payroll_accounting_tree_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="banner_route">/wage/wage_manage_onboarding_panel</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="wage_payroll_accounting_action">
         <field name="name">薪资核算</field>
         <field name="res_model">wage.payroll.accounting</field>
         <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="wage_payroll_accounting_onboarding_view"/>
         <field name="context">{'search_default_group_by_date_code': True}</field>
     </record>
 

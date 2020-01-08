@@ -75,16 +75,16 @@ class WagePayrollAccountingTransient(models.TransientModel):
                 'job_id': emp.job_id.id if emp.job_id else False,
                 'attendance_days': attendance_days,
             }
-            # 获取员工薪资档案
-            archives = self.env['wage.archives'].search([('employee_id', '=', emp.id), ('employee_type', '!=', 'stop')], limit=1)
+            # 获取员工薪资合同
+            contract = self.env['hr.contract'].search([('employee_id', '=', emp.id), ('state', '=', 'open')], limit=1)
             base_wage = performance_amount_sum = structure_amount_sum = 0      # 基本工资,绩效合计,薪资结构合计金额
             structure_ids = list()
             performance_ids = list()
             statement_ids = list()
-            if archives:
+            if contract:
                 # 读取薪资档案中员工薪资结构数据
-                structure_ids, structure_amount_sum = archives.get_employee_wage_structure()
-                base_wage = archives.get_employee_salary()
+                structure_ids, structure_amount_sum = contract.get_employee_wage_structure()
+                base_wage = contract.wage
             # 获取绩效列表
             domain = [('employee_id', '=', emp.id), ('performance_code', '=', date_code)]
             performance = self.env['wage.employee.performance.manage'].search(domain, limit=1)

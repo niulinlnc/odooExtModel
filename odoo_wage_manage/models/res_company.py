@@ -16,7 +16,6 @@ class ResCompany(models.Model):
     wage_manage_done_state = fields.Selection(SOCIALSTATE, string="社保进度完成情况", default='not_done')
 
     wage_rule_state = fields.Selection(SOCIALSTATE, string="薪资方案完成情况", default='not_done')
-    wage_emp_archive_state = fields.Selection(SOCIALSTATE, string="员工档案完成情况", default='not_done')
     wage_taxdetail_state = fields.Selection(SOCIALSTATE, string="个税明细完成情况", default='not_done')
     wage_annal_state = fields.Selection(SOCIALSTATE, string="薪资统计完成情况", default='not_done')
     wage_accounting_state = fields.Selection(SOCIALSTATE, string="薪资计算完成情况", default='not_done')
@@ -29,7 +28,6 @@ class ResCompany(models.Model):
     def get_and_update_wage_quotation_onboarding_state(self):
         steps = [
             'wage_rule_state',
-            'wage_emp_archive_state',
             'wage_taxdetail_state',
             'wage_annal_state',
             'wage_accounting_state',
@@ -39,11 +37,6 @@ class ResCompany(models.Model):
     @api.model
     def action_wage_rule_layout(self):
         action = self.env.ref('odoo_wage_manage.action_wage_calculate_salary_rules_layout').read()[0]
-        return action
-
-    @api.model
-    def action_wage_emp_archive_layout(self):
-        action = self.env.ref('odoo_wage_manage.wage_archives_transient_action').read()[0]
         return action
 
     @api.model
