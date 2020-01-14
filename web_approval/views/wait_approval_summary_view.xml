@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id='view_wait_approval_summary_kanban' model='ir.ui.view'>
+            <field name='name'>wait.approval.summary kanban</field>
+            <field name='model'>wait.approval.summary</field>
+            <field name='arch' type='xml'>
+                <kanban create="0">
+                    <field name='model_id'/>
+                    <field name='wait_approval_count'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div>
+                                    <span style="font-size:16px;display:inline-block">
+                                        <field name='model_id'/>
+                                    </span>
+                                    <span class="badge badge-pill">
+                                        <field name='wait_approval_count'/>
+                                    </span>
+                                </div>
+                                <div>
+                                    <button type="object" class="btn btn-primary pull-right btn-sm" name="to_approval">查看并处理</button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <menuitem id='menu_wait_approval_summary_main' name='我的审批' sequence='10' parent="menu_approval_root"/>
+
+    </data>
+
+    <data>
+        <record model="ir.actions.server" id="wait_approval_summary_action_running">
+            <field name="name">待审批单据</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_wait_approval_summary"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.summary_action('running', '待审批单据')
+            </field>
+        </record>
+        <menuitem id='menu_wait_approval_summary_action_running'
+                  name='待审批单据'
+                  action='wait_approval_summary_action_running'
+                  parent="menu_wait_approval_summary_main" sequence='20'/>
+    </data>
+    <data>
+        <record model="ir.actions.server" id="wait_approval_summary_action_complete">
+            <field name="name">审批完成单据</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_wait_approval_summary"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.summary_action('complete', '审批完成单据')
+            </field>
+        </record>
+        <menuitem id='menu_wait_approval_summary_action_complete'
+                  name='审批完成单据'
+                  action='wait_approval_summary_action_complete'
+                  parent="menu_wait_approval_summary_main" sequence='30'/>
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="increase_type_before" model="increase.type">
+            <field name="name">前加签</field>
+            <field name="code">before</field>
+        </record>
+
+        <record id="increase_type_after" model="increase.type">
+            <field name="name">后加签</field>
+            <field name="code">after</field>
+        </record>
+
+    </data>
+</odoo>

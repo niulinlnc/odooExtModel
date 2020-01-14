@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="mail.channel" id="mail_channel_approval">
+            <field name="name">审批沟通</field>
+            <!--<field name="group_ids" eval="[(4, ref('warehouse.group_warehouse'))]"/>-->
+            <field name="description">审批沟通</field>
+            <field name="public">public</field>
+        </record>
+    </data>
+</odoo>

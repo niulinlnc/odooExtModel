@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id='view_approval_copy_for_summary_kanban' model='ir.ui.view'>
+            <field name='name'>approval.copy_for.summary kanban</field>
+            <field name='model'>approval.copy_for.summary</field>
+            <field name='arch' type='xml'>
+                <kanban create="0">
+                    <field name='model_id'/>
+                    <field name='copy_for_count'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div>
+                                    <span style="font-size:16px;display:inline-block">
+                                        <field name='model_id'/>
+                                    </span>
+                                    <span class="badge badge-pill">
+                                        <field name='copy_for_count'/>
+                                    </span>
+                                </div>
+                                <div>
+                                    <button type="object" class="btn btn-primary pull-right btn-sm" name="to_approval">查看</button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id='approval_copy_for_summary_action' model='ir.actions.act_window'>
+            <field name='name'>抄送单据</field>
+            <field name='res_model'>approval.copy_for.summary</field>
+            <field name='view_mode'>kanban</field>
+            <field name="context">{'approval_supper': 1}</field>
+        </record>
+
+
+        <menuitem id='menu_approval_copy_for_summary_action' name='抄送单据' action='approval_copy_for_summary_action'
+                  parent="menu_approval_root" sequence='20'/>
+
+
+    </data>
+</odoo>

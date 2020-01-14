@@ -1,0 +1,153 @@
+.o_thread_composer.approval_composer {
+  background-color: #FFFFFF;
+}
+
+/*没有审批内容*/
+.o_thread_composer {
+  .o_view_nocontent {
+    position: relative;
+    top: 0;
+  }
+}
+
+/*审批*/
+.approval_info {
+  color: #333;
+  // Title
+  .title {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ced4da;
+    text-align: center;
+
+    span {
+      position: relative;
+      top: 10px;
+      padding: 0 10px;
+      //font-size: 125%;
+      background-color: #ffffff;
+
+      span{
+        position: static;
+        padding: 0;
+      }
+    }
+  }
+
+  //审批行
+  .approval_info_row {
+    display: flex;
+    //padding: 0 15px;
+    margin-bottom: 10px;
+
+    // 审批行左边
+    .approval_info_left {
+      flex: 1 1 30%;
+      display: flex;
+      padding-right: 5px;
+
+      .circle {
+        flex: 0 0 auto;
+        width: 16px;
+        height: 16px;
+        background-color: #c1c1c1;
+        border-radius: 50%;
+        margin-right: 5px
+      }
+      .node_name {
+        flex: 1 1 auto;
+        line-height: 16px;
+      }
+    }
+
+    // 审批行右边
+    .approval_info_right {
+      flex: 1 1 70%;
+      .approval_swap {
+        .card {
+          .card-body {
+            color: #666666;
+          }
+        }
+
+      }
+    }
+
+    // 审批提交
+    .commit {
+      flex: 1 1 100%;
+      text-align: center;
+      color: #CCCCCC;
+    }
+
+  }
+
+  .approval_info_row.active{
+    .approval_info_left {
+      .circle {
+        background-color: #428bca;
+      }
+    }
+  }
+  .approval_info_row.turn_to {
+    color: #999;
+    .approval_info_left {
+      .circle {
+        background-color: #999;
+      }
+    }
+
+  }
+
+  .approval_info_row.refuse {
+    color: red;
+    .approval_info_left {
+      .circle {
+        background-color: red;
+      }
+    }
+
+  }
+
+  // 沟通Header
+  .card-header {
+    padding: 0;
+  }
+  .card-body {
+    padding: 0.5rem 1.25rem;
+  }
+}
+
+
+
+/*沟通*/
+.approval_swap {
+  .swap-item {
+    border-bottom: 1px solid #ced4da;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .swap-title {
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
+    .swap-content {
+      padding-left: 1rem;
+      div{
+        span{
+          display: inline-block;
+          p{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+  .swap-item:first-child {
+    padding-top: 0;
+  }
+  .swap-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+

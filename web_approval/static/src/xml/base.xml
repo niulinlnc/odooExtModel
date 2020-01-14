@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <t t-extend="mail.chatter.Buttons">
+        <t t-jquery=".o_chatter_button_new_message" t-operation="before">
+            <button type="button" class="btn btn-link o_chatter_button_approval o_hidden">
+                审批信息
+            </button>
+        </t>
+    </t>
+
+    <!--没有审批信息-->
+    <div t-name="approval.no_approval" class="o_view_nocontent">
+        <div class="o_nocontent_help">
+            <p class="o_view_nocontent_smiling_face">
+                <t t-raw="approvalInfo.approvalState"/>
+            </p>
+        </div>
+    </div>
+
+    <!--审批按钮-->
+    <t t-name="approval.buttons">
+        <button type="button" class="btn btn-sm btn-primary btn-approval"
+                t-att-data-res_model="approval_info.res_model"
+                t-att-data-res_id="approval_info.res_id"
+                t-att-data-wait_approval_id="approval_info.wait_approval_id">
+            审批
+        </button>
+        <button type="button" class="btn btn-sm btn-link btn-swap"
+                t-att-data-res_model="approval_info.res_model"
+                t-att-data-res_id="approval_info.res_id"
+                t-att-data-wait_approval_id="approval_info.wait_approval_id">
+            沟通
+        </button>
+    </t>
+
+    <!--代签按钮-->
+    <t t-name="approval.turn.buttons">
+        <t t-if="approval_info.isMine">
+            <button type="button" class="btn btn-sm btn-link btn-turn-to" t-if="approval_info.canTurnTo"
+                    t-att-data-res_model="approval_info.res_model"
+                    t-att-data-res_id="approval_info.res_id"
+                    t-att-data-wait_approval_id="approval_info.wait_approval_id">
+                代签
+            </button>
+            <button type="button" class="btn btn-sm btn-link btn-increase" t-if="approval_info.allowIncrease"
+                    t-att-data-res_model="approval_info.res_model"
+                    t-att-data-res_id="approval_info.res_id"
+                    t-att-data-wait_approval_id="approval_info.wait_approval_id">
+                加签
+            </button>
+        </t>
+    </t>
+
+
+    <!--沟通项-->
+    <t t-name="approval.swap.item.content">
+        <div>
+            <span t-esc="swap_item.userName"/>
+            <span><t t-esc="swap_item.date"/>：</span>
+            <span t-raw="swap_item.content"/>
+        </div>
+    </t>
+    <t t-name="approval.swap.item">
+        <div class="swap-item">
+            <div class="swap-title">
+                <span t-esc="swap.title.user1"/>
+                <i class="fa fa-arrows-h"/>
+                <span t-esc="swap.title.user2"/>
+                <span>：</span>
+            </div>
+            <div class="swap-content">
+                <t t-foreach="swap.items" t-as="swap_item">
+                    <t t-call="approval.swap.item.content"/>
+                </t>
+            </div>
+        </div>
+    </t>
+    <!--沟通-->
+    <t t-name="approval.swap">
+
+        <t t-set="containerId" t-value="'approvalSwap' + swapCount"/>
+        <t t-set="headerId" t-value="'swapHeading' + swapCount"/>
+        <t t-set="collapseId" t-value="'swapCollapse' + swapCount"/>
+
+        <div t-att-id="containerId" class="approval_swap">
+            <div class="card">
+
+                <div class="card-header" t-att-id="headerId">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" t-att-data-target="'#' + collapseId" aria-expanded="false" t-att-aria-controls="collapseId">
+                            沟通
+                        </button>
+                    </h5>
+                </div>
+
+                <div t-att-id="collapseId" class="collapse" t-att-aria-labelledby="headerId" t-att-data-parent="'#' + containerId">
+                    <div class="card-body">
+                        <t t-foreach="swaps" t-as="swap">
+                            <t t-call="approval.swap.item"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </t>
+
+    <!--审批项节点-->
+    <div t-name="approval.item.node" class="approval_info_left">
+        <div class="circle"/>
+        <div class="node_name">
+            <t t-esc="approval_info.nodeName"/>
+        </div>
+    </div>
+
+    <div t-name="approval.title" class="approval_title">
+        <span t-esc="approval.userName"/>
+        <span t-esc="approval.approvalDate"/>
+        <span t-esc="approvalActionType[approval_info.actionType]"/>
+    </div>
+
+    <!--待审批 只显示节点信息和代签按钮-->
+    <div t-name="approval.item.active" class="approval_info_row">
+        <t t-call="approval.item.node"/>
+        <div class="approval_info_right">
+            <t t-if="approvalInfo.approvalState !== '暂停审批'">
+                <t t-call="approval.turn.buttons"/>
+            </t>
+        </div>
+    </div>
+
+    <!--正在审批 显示审批按钮、沟通按钮和代签按钮-->
+    <div t-name="approval.item.running" class="approval_info_row active">
+        <t t-call="approval.item.node"/>
+        <div class="approval_info_right">
+            <t t-if="approvalInfo.approvalState !== '暂停审批'">
+                <t t-call="approval.buttons" t-if="approval_info.isMine"/>
+                <t t-call="approval.turn.buttons"/>
+            </t>
+            <!--沟通-->
+            <t t-call="approval.swap" t-if="swaps.length > 0"/>
+        </div>
+    </div>
+
+    <!--提交-->
+    <div t-name="approval.item.commit" class="approval_info_row">
+        <div class="commit">
+            <t t-esc="approval.idea"/>
+        </div>
+    </div>
+
+    <!--同意-->
+    <div t-name="approval.item.accept" class="approval_info_row active">
+        <t t-call="approval.item.node"/>
+        <div class="approval_info_right">
+            <!--审批头-->
+            <t t-call="approval.title"/>
+
+            <!--审批内容-->
+            <div class="approval_content" t-if="approval.idea">
+                <span t-esc="approval.idea"/>
+            </div>
+            <!--抄送-->
+            <div class="copy_for" t-if="approval.copyFor">
+                抄送：<span t-esc="approval.copyFor"/>
+            </div>
+
+            <!--沟通-->
+            <t t-call="approval.swap" t-if="swaps.length > 0"/>
+        </div>
+    </div>
+
+    <!--驳回-->
+    <div t-name="approval.item.refuse" class="approval_info_row refuse">
+        <t t-call="approval.item.node"/>
+
+        <div class="approval_info_right">
+            <t t-call="approval.title"/>
+
+            <div class="approval_content" t-if="approval.idea">
+                <span t-esc="approval.idea"/>
+            </div>
+            <div class="refuse_to">
+                驳回到：<span t-esc="approval_info.refuseNode"/>
+            </div>
+
+            <!--沟通-->
+            <t t-call="approval.swap" t-if="swaps.length > 0"/>
+        </div>
+    </div>
+
+    <!--代签-->
+    <div t-name="approval.item.turn_to" class="approval_info_row turn_to">
+        <t t-call="approval.item.node"/>
+        <div class="approval_info_right">
+            <div>
+                <span t-esc="approval_info.turnToNode"/>
+            </div>
+            <!--审批内容-->
+            <div class="approval_content" t-if="approval.idea">
+                <span t-esc="approval.idea"/>
+            </div>
+            <!--沟通-->
+            <t t-call="approval.swap" t-if="swaps.length > 0"/>
+        </div>
+
+    </div>
+
+    <!--跳过-->
+    <div t-name="approval.item.jump" class="approval_info_row active">
+        <t t-call="approval.item.node"/>
+        <div class="approval_info_right">
+        </div>
+    </div>
+
+
+    <!--审批项-->
+    <t t-name="approval.item">
+        <t t-set="approval" t-value="approval_info.approval"/>
+        <t t-set="swaps" t-value="approval.swap || []"/>
+
+        <!--待审批-->
+        <t t-if="approval_info.state === 'active'">
+            <t t-call="approval.item.active"/>
+        </t>
+        <!--正在审批-->
+        <t t-if="approval_info.state === 'running'">
+            <t t-call="approval.item.running"/>
+        </t>
+        <!--审批完成-->
+        <t t-if="approval_info.state === 'complete'">
+            <t t-call="approval.item.commit" t-if="approval_info.actionType === 'commit'"/>
+            <t t-call="approval.item.accept" t-if="approval_info.actionType === 'accept'"/>
+            <t t-call="approval.item.refuse" t-if="approval_info.actionType === 'refuse'"/>
+            <t t-call="approval.item.turn_to" t-if="approval_info.actionType === 'turn_to'"/>
+            <t t-call="approval.item.jump" t-if="!approval_info.actionType"/>
+        </t>
+
+    </t>
+
+    <div t-name="approval.info" class="approval_info">
+        <t t-set="approvalActionType" t-value="{'accept': '同意', 'refuse': '驳回'}"/>
+        <t t-set="swapCount" t-value="0"/>
+
+        <!--审批状态-->
+        <div class="title">
+            <span><t t-raw="approvalInfo.approvalState"/></span>
+        </div>
+
+        <t t-foreach="approvalInfo.approvalInfos" t-as="approval_info">
+            <t t-call="approval.item"/>
+            <t t-set="swapCount" t-value="swapCount + 1"/>
+        </t>
+
+    </div>
+
+    <div t-name="approval.Composer" class="o_thread_composer approval_composer">
+        <div class="o_composer_container">
+            <!--审批状态-->
+            <t t-set="approvalInfo" t-value="widget.approvalInfo"/>
+            <t t-if="approvalInfo.approvalInfos.length === 0">
+                <t t-call="approval.no_approval"/>
+            </t>
+            <t t-else="">
+                <!--审批信息-->
+                <t t-call="approval.info"/>
+            </t>
+
+        </div>
+    </div>
+
+</templates>

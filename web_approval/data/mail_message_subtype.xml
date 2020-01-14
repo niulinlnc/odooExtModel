@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="mail.message.subtype" id="mail_message_subtype_approval">
+            <field name="name">审批</field>
+            <field name="default">False</field>
+            <field name="description">审批消息专用，其他消息请不要使用。</field>
+        </record>
+    </data>
+</odoo>

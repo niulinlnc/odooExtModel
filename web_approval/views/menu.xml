@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <menuitem name="审批流程"
+            id="menu_approval_root"
+            web_icon="web_approval,static/description/icon.png"
+            sequence="40"/>
+
+        <menuitem name="流程配置" id="menu_approval_flow_main"
+            parent="menu_approval_root" sequence="100"/>
+
+    </data>
+</odoo>

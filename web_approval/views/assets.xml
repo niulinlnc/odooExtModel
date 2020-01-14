@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_backend" name="approval assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/web_approval/static/src/css/form.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_approval/static/src/css/diagram.scss"/>
+
+            <script type="text/javascript" src="/web_approval/static/src/js/fields/abstract_field.js"/>
+
+            <script type="text/javascript" src="/web_approval/static/src/js/views/basic/basic_model.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/views/form/controller.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/views/form/renderer.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/chatter.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/approval_flow.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/mail_window_manager.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/mail_manager.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/thread_window.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/dm_chat.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/discuss.js"/>
+            <script type="text/javascript" src="/web_approval/static/src/js/basic_composer.js"/>
+
+
+            <script type="text/javascript" src="/web_approval/static/src/js/fields/approval_state.js"/>
+
+            <script type="text/javascript" src="/web_approval/static/src/js/lib/go.js"/>
+
+
+
+            <!--<script type="text/javascript" src="/web_approval/static/src/js/view/controller.js" />-->
+            <!--<script type="text/javascript" src="/web_approval/static/src/js/view/model.js" />-->
+            <!--<script type="text/javascript" src="/web_approval/static/src/js/view/renderer.js" />-->
+            <!--<script type="text/javascript" src="/web_approval/static/src/js/view/view.js" />-->
+
+            <!--<link rel="stylesheet" type="text/scss" href="/web_cohort/static/src/scss/web_cohort.scss" />-->
+        </xpath>
+        <!--<xpath expr="//link[last()]" position="after">-->
+            <!--<link rel="stylesheet" type="text/scss" href="/web_approval/static/src/css/form.less"/>-->
+        <!--</xpath>-->
+    </template>
+
+
+</odoo>

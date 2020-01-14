@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_dispatch_approval_user_wizard_form" model="ir.ui.view">
+            <field name="name">dispatch.approval.user.wizard form</field>
+            <field name="model">dispatch.approval.user.wizard</field>
+            <field name="arch" type="xml">
+                <form string="审批用户">
+                    <field name="line_ids"/>
+                    <footer>
+                        <button string="确认" name="button_ok" type="object" class="btn-primary"/>
+                        <button string="取消" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_dispatch_approval_user_wizard_line_tree" model="ir.ui.view">
+            <field name="name">dispatch.approval.user.wizard.line tree</field>
+            <field name="model">dispatch.approval.user.wizard.line</field>
+            <field name="arch" type="xml">
+                <tree string="审批用户" editable="bottom" create="false" delete="false">
+                    <field name="node_id" options="{'no_open': 1, 'no_create': 1}" invisible="1"/>
+                    <field name="user_id_domain" invisible="1"/>
+                    <field name="node_name" readonly="1"/>
+                    <field name="node_type" readonly="1"/>
+                    <field name="user_id" required="1" options="{'no_open': 1, 'no_create': 1}" context="{'user_id_domain': user_id_domain, 'approval_supper': 1}"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

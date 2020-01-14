@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-extend="mail.discuss.Sidebar">
+        <t t-jquery="div.o_mail_discuss_sidebar" t-operation="append">
+
+
+            <t t-set="type" t-value="'swap'"/>
+            <t t-set="disableAddThread" t-value="true"/>
+            <t t-set="displayStatus" t-value="true"/>
+            <t t-call="mail.discuss.SidebarTitle">
+                <t t-set="title">审批沟通</t>
+            </t>
+
+            <t t-call="mail.discuss.SidebarItems">
+                <t t-set="displayHash" t-value="false"/>
+            </t>
+
+        </t>
+    </t>
+
+    <!--禁止删除编辑审批通道-->
+    <t t-extend="mail.discuss.SidebarItems">
+        <t t-jquery="span[t-attf-class*='o_mail_channel_settings']" t-operation="replace">
+                <span t-attf-class="fa fa-cog o_mail_channel_settings" t-if="type != 'swap'"
+                      title="Channel settings" role="img" aria-label="Channel settings" t-att-data-thread-id="thread.getID()"/>
+        </t>
+        <t t-jquery="span[t-attf-class*='o_mail_partner_unpin']" t-operation="replace">
+            <t t-if="type != 'swap'">
+                <span t-if="!thread.isGroupBasedSubscription()" t-attf-class="fa fa-times o_mail_partner_unpin #{counter ? 'd-none' : ''}"
+                      title="Leave this channel" role="img" aria-label="Leave this channel" t-att-data-thread-id="thread.getID()"/>
+            </t>
+        </t>
+    </t>
+</templates>

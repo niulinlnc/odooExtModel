@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="approval_turn_to_wizard_form" model="ir.ui.view">
+            <field name="name">approval.turn.to.wizard.form</field>
+            <field name="model">approval.turn.to.wizard</field>
+            <field name="arch" type="xml">
+                <form string="代签向导">
+                    <group>
+                        <group>
+                            <field name="user_id" options="{'no_create':1, 'no_open':1}" required="1" context="{'approval_supper': 1}" domain="[('share', '=', False), ('id', '!=', current_uid)]"/>
+                            <field name="current_uid" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="idea"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="button_ok" type="object" string="确认" class="oe_highlight"/>
+                        <button string="取消" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

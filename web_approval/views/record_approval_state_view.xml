@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id='view_record_approval_state_tree' model='ir.ui.view'>
+            <field name='name'>record.approval.state tree</field>
+            <field name='model'>record.approval.state</field>
+            <field name='arch' type='xml'>
+                <tree string="记录审批状态" create="0" delete="0" edit="0">
+                    <field name="model_name"/>
+                    <field name="res_id"/>
+                    <field name="approval_state"/>
+                    <field name="is_commit_approval" widget="checkbox"/>
+                    <field name="commit_user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_record_approval_state_search" model="ir.ui.view">
+            <field name="name">record.approval.state search</field>
+            <field name="model">record.approval.state</field>
+            <field name="arch" type="xml">
+                <search string="节点">
+                    <field name="model"/>
+                    <field name="res_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="单据" name="model" domain="[]" context="{'group_by':'model'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id='action_record_approval_state' model='ir.actions.act_window'>
+            <field name='name'>记录审批状态</field>
+            <field name='res_model'>record.approval.state</field>
+            <field name='view_type'>form</field>
+            <field name='view_mode'>tree</field>
+        </record>
+
+
+        <menuitem id='menu_action_record_approval_state' name='记录审批状态' action='action_record_approval_state'
+                  groups="group_approval_config"
+                  parent="menu_approval_root" sequence='300'/>
+    </data>
+</odoo>

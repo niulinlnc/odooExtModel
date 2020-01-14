@@ -1,0 +1,29 @@
+.diagramContainer{
+    height: 300px;
+    display: none;
+    margin-top: 15px;
+}
+
+#infoBoxHolder {
+    z-index: 300;
+    position: absolute;
+    display: none;
+}
+
+#infoBox {
+    border: 1px solid #999;
+    padding: 8px;
+    background-color: whitesmoke;
+    opacity: 1;
+    position: relative;
+    width: auto;
+}
+
+#infoBox:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
