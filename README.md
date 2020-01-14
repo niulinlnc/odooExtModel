@@ -13,7 +13,7 @@
 | odoo_performance_manage | 绩效管理 | odoo绩效管理模块                                        |
 | odoo_social_security    | 社保管理 | 实现管理员工每月社保的管理，生成月结账单、报表          |
 | odoo_wage_manage        | 薪资管理 |                                                         |
-|                         |          |                                                         |
+| web_approval            | 工作流引擎| 配置审批流程                                  |
 |                         |          |                                                         |
 
 适用于odoo12EE/CE
