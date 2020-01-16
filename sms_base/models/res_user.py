@@ -5,6 +5,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.exceptions import AccessDenied
 from odoo.http import request
+import re
 
 _logger = logging.getLogger(__name__)
 
@@ -56,7 +57,9 @@ class ResUsers(models.Model):
         :return:
         """
         result = request.env['ir.config_parameter'].sudo().get_param('sms_base.sms_phone_login')
-        if result:
+        phone_pat = re.compile("^(13\d|14[5|7]|15\d|166|17[3|6|7]|18\d)\d{8}$")
+        # 判断是否开启手机号登录并且是否为账号是否为手机
+        if result and re.search(phone_pat, login):
             user = request.env['res.users'].sudo().search([('user_phone', '=', login)], limit=1)
             return super(ResUsers, cls).authenticate(db, user.login, password, user_agent_env)
         return super(ResUsers, cls).authenticate(db, login, password, user_agent_env)

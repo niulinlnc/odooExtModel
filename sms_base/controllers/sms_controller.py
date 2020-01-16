@@ -111,6 +111,10 @@ class OAuthController(Controller):
         :param user_phone:
         :return:
         """
+        if request.session.uid:
+            request.session.uid = False
+        if request.session.login:
+            request.session.login = False
         ensure_db()
         dbname = request.session.db
         if not http.db_filter([dbname]):
@@ -129,7 +133,10 @@ class OAuthController(Controller):
             except AttributeError:
                 return json.dumps({'state': False, 'msg': "未在数据库'%s'上安装auth_signup：oauth注册已取消" % (dbname)})
             except AccessDenied:
-                return json.dumps({'state': False, 'msg': "访问被拒绝，在存在有效会话的情况下重定向到主页，而未设置Cookie"})
+                _logger.info('>>>SMS-OAuth2: 访问被拒绝，在存在有效会话的情况下重定向到主页，而未设置Cookie')
+                url = "/web/login?oauth_error=3"
+                redirect = werkzeug.utils.redirect(url, 303)
+                redirect.autocorrect_location_header = False
+                return redirect
             except Exception as e:
                 return json.dumps({'state': False, 'msg': "OAuth2: %s" % str(e)})
-
