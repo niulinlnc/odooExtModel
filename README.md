@@ -14,6 +14,7 @@
 | odoo_social_security    | 社保管理 | 实现管理员工每月社保的管理，生成月结账单、报表          |
 | odoo_wage_manage        | 薪资管理 |                                                         |
 | web_approval            | 工作流引擎| 配置审批流程                                  |
-|                         |          |                                                         |
+| sms_base                | 短信基础  | 用于短信登录和通知的基础模块                               |
+| sms_aliyun              | 阿里云短信| 使短信模块支持阿里云服务商                        |
 
 适用于odoo12EE/CE
