@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_template_tree_view" model="ir.ui.view">
+        <field name="name">短信模板</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="signature_id"/>
+                <field name="code"/>
+                <field name="ttype"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sms_template_form_view" model="ir.ui.view">
+        <field name="name">短信模板</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="name" placeholder="模板名称..."/>
+                            <field name="partner_id"/>
+                            <field name="signature_id"/>
+                        </group>
+                        <group>
+                            <field name="code"/>
+                            <field name="timeout" attrs="{'invisible': [('ttype', '!=', 'code')]}"/>
+                            <field name="ttype"/>
+                        </group>
+                    </group>
+                    <div name="description">
+                            <div class="alert alert-info oe_edit_only" role="alert">
+                                <h3>提示：</h3>
+                                <p>在你的服务提供商中找到短信模板并将对应的值配置到此表中...</p>
+                            </div>
+                        </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="sms_template_action">
+        <field name="name">短信模板</field>
+        <field name="res_model">sms.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sms_template_menu" name="短信模板" parent="main_menu" sequence="5" action="sms_template_action"/>
+
+</odoo>

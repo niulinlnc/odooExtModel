@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_signature_tree_view" model="ir.ui.view">
+        <field name="name">签名管理</field>
+        <field name="model">sms.signature</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" decoration-info="state == '01'" decoration-danger="state == '00'">
+                <field name="name"/>
+                <field name="ttype"/>
+                <field name="source"/>
+                <field name="remark"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sms_signature_form_view" model="ir.ui.view">
+        <field name="name">签名管理</field>
+        <field name="model">sms.signature</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="confirm_apply" type="object" class="oe_highlight" string="应用签名" states="00"/>
+                    <button name="return_draft" type="object" string="取消应用" states="01"/>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="name" placeholder="签名名称..."/>
+                            <field name="ttype"/>
+                            <field name="source"/>
+                            <field name="remark" placeholder="详细描述您的业务使用场景，申请工信部备案网站的全称或简称请在此处填写域名，长度不超过200个字符"/>
+                        </group>
+                        <div name="description">
+                            <div class="alert alert-success" role="alert">
+                                <h3>填写提示：</h3>
+                                <ui>
+                                    <li>若签名／模版内容侵犯到第三方权益必须获得第三方真实授权，无须添加【】、()、[]符号，签名发送会自带【】符号，避免重复</li>
+                                    <li>不能使用个人姓名作为短信签名</li>
+                                    <li>不同服务商的签名要求不一致，请按照服务商要求进行填写...</li>
+                                </ui>
+                            </div>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="sms_signature_action">
+        <field name="name">签名管理</field>
+        <field name="res_model">sms.signature</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sms_signature_menu" name="签名管理" parent="main_menu" sequence="4" action="sms_signature_action"/>
+
+</odoo>

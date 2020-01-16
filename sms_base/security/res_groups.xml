@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.module.category" id="sms_base_groups">
+			<field name="name">SMS短信应用</field>
+			<field name="visible" eval="0" />
+		</record>
+
+		<record id="manage_groups" model="res.groups">
+			<field name="name">管理员</field>
+			<field name="category_id" ref="sms_base.sms_base_groups"/>
+			<field name="users" eval="[(4, ref('base.user_admin'))]"/>
+		</record>
+
+	</data>
+</odoo>
