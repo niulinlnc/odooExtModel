@@ -57,3 +57,45 @@ class SmsPartner(models.Model):
                     return {"state": False, 'msg': "发送验证码失败,Error:{}".format(str(e))}
             return {"state": False, 'msg': message}
         return super(SmsPartner, self).send_message_code(user, phone)
+
+    def send_registration_message(self, user, phone):
+        """
+        新用户创建成功后发送通知短信：
+        短信参数为两个参数，分别为账号和密码
+        短信模板： 《您的账号已创建成功。账号：${username}，初始密码：${pwd}，请及时修改初始密码。》
+        :param user:  创建的系统用户
+        :param phone: 用户手机号码
+        :return:
+        """
+        if self.code == 'aliyun':
+            _logger.info(">>>{}-正在使用阿里云短信发送新用户通知短信<<<".format(phone))
+            client = AcsClient(self.app_id, self.app_key, 'default')
+            com_request = CommonRequest()
+            com_request.set_accept_format('json')
+            com_request.set_domain("dysmsapi.aliyuncs.com")
+            com_request.set_method('POST')
+            com_request.set_protocol_type('https')
+            com_request.set_version('2017-05-25')
+            com_request.set_action_name('SendSms')
+            com_request.add_query_param('PhoneNumbers', phone)
+            param_data = {
+                'username': phone,
+                'pwd': phone
+            }
+            param_json = json.dumps(param_data)
+            com_request.add_query_param('TemplateParam', param_json)
+            templates = self.env['sms.template'].search([('partner_id', '=', self.id), ('ttype', '=', 'new_user')])
+            if templates:
+                for template in templates:
+                    com_request.add_query_param('SignName', template.signature_id.name)
+                    com_request.add_query_param('TemplateCode', templates.code)
+                    try:
+                        cli_response = client.do_action_with_exception(com_request)
+                        cli_res = json.loads(str(cli_response, encoding='utf-8'))
+                        logging.info(">>>新用户通知结果: {}".format(cli_res))
+                        if cli_res['Code'] == 'OK':
+                            # 创建发送记录
+                            return True
+                    except Exception as e:
+                        _logger.info(">>>新用户通知异常:{}".format(str(e)))
+        return super(SmsPartner, self).send_registration_message(user, phone)

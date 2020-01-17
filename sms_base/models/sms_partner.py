@@ -49,6 +49,17 @@ class SmsPartner(models.Model):
         """
         return {"state": False, 'msg': "无法通过错误的供应商发送验证码."}
 
+    def send_registration_message(self, user, phone):
+        """
+        新用户创建成功后发送通知短信：
+        短信参数为两个参数，分别为账号和密码
+        可参照 阿里云短信模块的发送代码
+        :param user:  创建的系统用户
+        :param phone: 用户手机号码
+        :return:
+        """
+        pass
+
     def create_verification_record(self, user, phone, sid, code, template):
         """
         创建发送手机号码验证码记录

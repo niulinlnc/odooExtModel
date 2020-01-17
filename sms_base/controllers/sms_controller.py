@@ -42,30 +42,36 @@ class OAuthController(Controller):
         if not user_phone:
             return json.dumps({'state': False, 'msg': "手机号码不能为空！"})
         _logger.info("手机号码:{}正在尝试发送验证码".format(user_phone))
+        # 获取服务商
+        partners = self.get_partners_priority()
+        if not partners:
+            return json.dumps({"state": False, 'msg': "系统未找到可用的短信服务商，请联系管理员维护！"})
         # 验证员工是否有此手机号
         domain = [('user_phone', '=', user_phone)]
-        users = request.env['res.users'].sudo().search(domain, limit=1)
-        if not users:
+        user = request.env['res.users'].sudo().search(domain, limit=1)
+        if not user:
             # 判断系统是否允许自动注册
             sms_auto_login = request.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_auto_login')
             if not sms_auto_login:
                 return json.dumps({'state': False, 'msg': "抱歉，您的手机号未注册，请联系管理员完善信息！"})
             # 创建用户
-            users = request.env['res.users'].sudo().create_user_by_sms_login(user_phone)
-        # 发送验证码
-        return json.dumps(self.send_sms(users, user_phone))
+            user = request.env['res.users'].sudo().create_user_by_sms_login(user_phone)
+            # 发送通知短信
+            partners.sudo().send_registration_message(user, user_phone)
+        # 使用服务商的发送验证码函数
+        result = partners.sudo().send_message_code(user, user_phone)
+        if result.get('state'):
+            return json.dumps({"state": True, 'msg': "验证码已发送，请注意查收短信！"})
+        return json.dumps({"state": False, 'msg': result.get('msg')})
 
-    def send_sms(self, user, phone):
+    def get_partners_priority(self):
         """
-        发送验证码
-        :param user: 系统用户
-        :param phone: 手机号码
+        获取优先级高的运营服务商
         :return:
         """
-        # 读取短信服务商
         partners = request.env['sms.partner'].sudo().search([])
         if not partners:
-            return {"state": False, 'msg': "系统未找到可用的短信服务商，请联系管理员维护！"}
+            return False
         # 判断优先级
         partners_priority = None
         priority = 0
@@ -73,11 +79,7 @@ class OAuthController(Controller):
             if partner.priority > priority:
                 priority = partner.priority
                 partners_priority = partner
-        # 使用服务商的发送验证码函数
-        result = partners_priority.sudo().send_message_code(user, phone)
-        if result.get('state'):
-            return {"state": True, 'msg': "验证码已发送，请注意查收短信！"}
-        return {"state": False, 'msg': result.get('msg')}
+        return partners_priority
 
     @http.route('/web/sms/user/login', type='http', auth="public", website=True, sitemap=False)
     def web_sms_user_login(self, **kw):

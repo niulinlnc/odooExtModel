@@ -11,9 +11,10 @@ class SmsTemplate(models.Model):
     _name = 'sms.template'
 
     TEMPLATETYPE = [
-        ('code', '验证码'),
+        ('code', '发送验证码'),
+        ('new_user', '新用户通知'),
+        ('up_pwd', '修改密码通知'),
         ('notice', '消息通知'),
-        ('promote', '推广短信'),
     ]
 
     name = fields.Char(string="模板名称", required=True, index=True)
@@ -21,6 +22,6 @@ class SmsTemplate(models.Model):
     signature_id = fields.Many2one(comodel_name="sms.signature", string="短信签名", required=True, domain="[('state', '=', '01')]", ondelete='cascade')
     code = fields.Char(string="模板代码", required=True)
     timeout = fields.Integer(string="有效时长(分钟)", default=30)
-    ttype = fields.Selection(string="模板类型", selection=TEMPLATETYPE, required=True, default='notice')
+    ttype = fields.Selection(string="模板用于", selection=TEMPLATETYPE, required=True, default='code')
 
 
