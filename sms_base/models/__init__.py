@@ -6,3 +6,4 @@ from . import sms_partner
 from . import sms_signature
 from . import sms_template
 from . import verification_record
+from . import new_user_groups

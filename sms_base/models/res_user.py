@@ -58,7 +58,7 @@ class ResUsers(models.Model):
         """
         result = request.env['ir.config_parameter'].sudo().get_param('sms_base.sms_phone_login')
         phone_pat = re.compile("^(13\d|14[5|7]|15\d|166|17[3|6|7]|18\d)\d{8}$")
-        # 判断是否开启手机号登录并且是否为账号是否为手机
+        # 判断是否开启手机号登录并且账号是否为手机
         if result and re.search(phone_pat, login):
             user = request.env['res.users'].sudo().search([('user_phone', '=', login)], limit=1)
             return super(ResUsers, cls).authenticate(db, user.login, password, user_agent_env)
@@ -174,7 +174,13 @@ class ResUsers(models.Model):
             "password": phone,
             "name": phone,
             'email': phone,
-            'groups_id': self.env.ref('base.group_user')
         }
+        # 初始新用户权限
+        sms_group_id = self.env['ir.config_parameter'].sudo().get_param('sms_base.sms_group_id')
+        groups = self.env['new.user.groups'].sudo().browse(sms_group_id)
+        if not groups:
+            values['groups_id'] = self.env.ref('base.group_user')
+        else:
+            values['groups_id'] = [(6, 0, groups.ids)]
         user = self.sudo().create(values)
         return user

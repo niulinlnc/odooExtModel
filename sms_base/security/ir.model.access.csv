@@ -3,4 +3,5 @@ access_sms_partner,sms_partner,model_sms_partner,base.group_user,1,1,1,1
 access_sms_signature,sms.signature,model_sms_signature,base.group_user,1,1,1,1
 access_sms_template,sms.template,model_sms_template,base.group_user,1,1,1,1
 access_sms_verification_record,sms.verification.record,model_sms_verification_record,base.group_user,1,0,0,0
+access_new_user_groups,new.user.groups,model_new_user_groups,base.group_user,1,1,1,1
 

@@ -22,6 +22,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('sms_auto_login', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">
+                                    新用户权限
+                                </span>
+                                <div class="text-muted">
+                                    创建新用户时的默认权限，请谨慎分配！
+                                </div>
+                                <div class="text-muted">
+                                    <field name="sms_group_id"/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
                                 <field name="sms_update_pwd"/>

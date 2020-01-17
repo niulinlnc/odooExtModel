@@ -24,5 +24,6 @@
         'views/sms_template.xml',
         'views/verification_record.xml',
         'views/web_templates.xml',
+        'views/new_user_groups.xml',
     ]
 }
