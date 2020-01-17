@@ -79,7 +79,7 @@ class SmsPartner(models.Model):
             com_request.set_action_name('SendSms')
             com_request.add_query_param('PhoneNumbers', phone)
             param_data = {
-                'username': phone,
+                'username': user.login,
                 'pwd': phone
             }
             param_json = json.dumps(param_data)
@@ -95,6 +95,7 @@ class SmsPartner(models.Model):
                         logging.info(">>>新用户通知结果: {}".format(cli_res))
                         if cli_res['Code'] == 'OK':
                             # 创建发送记录
+                            rec = self.create_send_record(user, phone, template, 'new_user')
                             return True
                     except Exception as e:
                         _logger.info(">>>新用户通知异常:{}".format(str(e)))

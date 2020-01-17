@@ -81,4 +81,24 @@ class SmsPartner(models.Model):
         })
         return True
 
+    def create_send_record(self, user, phone, template, ttype):
+        """
+        创建短信发送记录（不含验证码）
+        :param user:  系统用户
+        :param phone: 手机号码
+        :param template: 短信模板
+        :param ttype: 类型
+        :return:
+        """
+        self.env['sms.send.record'].sudo().create({
+            'partner_id': template.partner_id.id,
+            'template_id': template.id,
+            'signature_id': template.signature_id.id,
+            'code': template.code,
+            'user_id': user.id,
+            'phone': phone,
+            'ttype': ttype,
+        })
+        return True
+
 

@@ -5,7 +5,7 @@
         <field name="name">验证码记录</field>
         <field name="model">sms.verification.record</field>
         <field name="arch" type="xml">
-            <tree default_order="id desc" editable="top">
+            <tree default_order="id desc">
                 <field name="sid"/>
                 <field name="partner_id"/>
                 <field name="template_id"/>
@@ -52,5 +52,52 @@
     </record>
 
     <menuitem id="sms_verification_record_menu" name="验证码记录" parent="record_menu" sequence="1" action="sms_verification_record_action"/>
+
+
+    <record id="sms_send_record_tree_view" model="ir.ui.view">
+        <field name="name">发送记录</field>
+        <field name="model">sms.send.record</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="create_date"/>
+                <field name="partner_id"/>
+                <field name="signature_id"/>
+                <field name="template_id"/>
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="phone"/>
+                <field name="ttype"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="sms_send_record_action">
+        <field name="name">发送记录</field>
+        <field name="res_model">sms.send.record</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_group_by_ttype': True}</field>
+    </record>
+
+    <record model="ir.ui.view" id="sms_send_record_search">
+        <field name="model">sms.send.record</field>
+        <field name="arch" type="xml">
+            <search string="发送记录">
+                <field name="create_date"/>
+                <field name="partner_id"/>
+                <field name="signature_id"/>
+                <field name="template_id"/>
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="phone"/>
+                <field name="ttype"/>
+                <separator/>
+                <group expand="0" string="分组">
+                    <filter name="group_by_ttype" string="类别" context="{'group_by':'ttype'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="sms_send_record_menu" name="发送记录" parent="record_menu" sequence="1" action="sms_send_record_action"/>
 
 </odoo>

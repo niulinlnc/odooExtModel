@@ -29,3 +29,24 @@ class SmsVerificationRecord(models.Model):
         values['end_time'] = datetime.datetime.now() + datetime.timedelta(minutes=values['timeout'])
         return super(SmsVerificationRecord, self).create(values)
 
+
+class SmsSendRecord(models.Model):
+    _name = 'sms.send.record'
+    _description = '发送记录'
+    _rec_name = 'create_date'
+    _order = 'id'
+
+    TEMPLATETYPE = [
+        ('new_user', '新用户通知'),
+        ('up_pwd', '修改密码通知'),
+        ('notice', '消息通知'),
+    ]
+
+    create_date = fields.Datetime(string="创建时间", default=fields.Datetime.now, index=True)
+    partner_id = fields.Many2one(comodel_name="sms.partner", string="服务商", index=True, ondelete='cascade')
+    signature_id = fields.Many2one(comodel_name="sms.signature", string="短信签名", ondelete='cascade', index=True)
+    template_id = fields.Many2one(comodel_name='sms.template', string=u'模板', ondelete='cascade', index=True)
+    code = fields.Char(string="模板代码", index=True)
+    user_id = fields.Many2one(comodel_name='res.users', string=u'系统用户', index=True)
+    phone = fields.Char(string="手机号码", index=True)
+    ttype = fields.Selection(string="用于", selection=TEMPLATETYPE, default='code')
