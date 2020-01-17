@@ -56,7 +56,7 @@ class ResUsers(models.Model):
         :param user_agent_env:
         :return:
         """
-        result = request.env['ir.config_parameter'].sudo().get_param('sms_base.sms_phone_login')
+        result = request.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_phone_login')
         phone_pat = re.compile("^(13\d|14[5|7]|15\d|166|17[3|6|7]|18\d)\d{8}$")
         # 判断是否开启手机号登录并且账号是否为手机
         if result and re.search(phone_pat, login):
@@ -176,11 +176,11 @@ class ResUsers(models.Model):
             'email': phone,
         }
         # 初始新用户权限
-        sms_group_id = self.env['ir.config_parameter'].sudo().get_param('sms_base.sms_group_id')
-        groups = self.env['new.user.groups'].sudo().browse(sms_group_id)
+        sms_group_id = self.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_group_id')
+        groups = self.env['new.user.groups'].sudo().search([('id', '=', sms_group_id)], limit=1)
         if not groups:
             values['groups_id'] = self.env.ref('base.group_user')
         else:
-            values['groups_id'] = [(6, 0, groups.ids)]
+            values['groups_id'] = [(6, 0, groups.groups_ids.ids)]
         user = self.sudo().create(values)
         return user

@@ -47,7 +47,7 @@ class OAuthController(Controller):
         users = request.env['res.users'].sudo().search(domain, limit=1)
         if not users:
             # 判断系统是否允许自动注册
-            sms_auto_login = request.env['ir.config_parameter'].sudo().get_param('sms_base.sms_auto_login')
+            sms_auto_login = request.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_auto_login')
             if not sms_auto_login:
                 return json.dumps({'state': False, 'msg': "抱歉，您的手机号未注册，请联系管理员完善信息！"})
             # 创建用户
