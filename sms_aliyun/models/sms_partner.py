@@ -12,11 +12,12 @@ _logger = logging.getLogger(__name__)
 class SmsPartner(models.Model):
     _inherit = 'sms.partner'
 
-    def send_message_code(self, user, phone):
+    def send_message_code(self, user, phone, ttype):
         """
         重写发送验证码方法
         :param user: 系统用户
         :param phone: 手机号码
+        :param ttype: 消息类型
         :return:
         """
         if self.code == 'aliyun':
@@ -49,7 +50,7 @@ class SmsPartner(models.Model):
                     logging.info("ali-sms-result: {}".format(cli_res))
                     if cli_res['Code'] == 'OK':
                         # 创建验证码记录
-                        rec = self.create_verification_record(user, phone, cli_res['RequestId'], param_data['code'], template)
+                        rec = self.create_verification_record(user, phone, cli_res['RequestId'], param_data['code'], template, ttype)
                         return {"state": True}
                     else:
                         message = cli_res['Message']

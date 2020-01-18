@@ -39,12 +39,30 @@ class SmsPartner(models.Model):
             numbers += ch
         return numbers
 
-    def send_message_code(self, user, phone):
+    def get_partners_priority(self):
+        """
+        返回优先级高的运营服务商
+        :return:
+        """
+        partners = self.search([])
+        if not partners:
+            return False
+        # 判断优先级
+        partners_priority = None
+        priority = 0
+        for partner in partners:
+            if partner.priority > priority:
+                priority = partner.priority
+                partners_priority = partner
+        return partners_priority
+
+    def send_message_code(self, user, phone, ttype):
         """
         发送短信验证码, 加载其他服务商时自行重写本方法来实现服务商的发送短信代码
         可参照 阿里云短信模块的发送代码
         :param user: 系统用户
         :param phone: 手机号码
+        :param ttype: 消息类型
         :return:
         """
         return {"state": False, 'msg': "无法通过错误的供应商发送验证码."}
@@ -60,7 +78,7 @@ class SmsPartner(models.Model):
         """
         pass
 
-    def create_verification_record(self, user, phone, sid, code, template):
+    def create_verification_record(self, user, phone, sid, code, template, ttype):
         """
         创建发送手机号码验证码记录
         :param user: 系统用户
@@ -68,6 +86,7 @@ class SmsPartner(models.Model):
         :param sid: 返回的唯一标识
         :param code: 验证码
         :param template: 短信模板
+        :param ttype: 消息类型（用户注册、修改密码等）
         :return:
         """
         self.env['sms.verification.record'].sudo().create({
@@ -77,6 +96,7 @@ class SmsPartner(models.Model):
             'phone': phone,
             'sid': sid,
             'code': code,
+            'ttype': ttype,
             'timeout': template.timeout,
         })
         return True

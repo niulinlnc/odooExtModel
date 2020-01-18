@@ -43,7 +43,7 @@ class OAuthController(Controller):
             return json.dumps({'state': False, 'msg': "手机号码不能为空！"})
         _logger.info("手机号码:{}正在尝试发送验证码".format(user_phone))
         # 获取服务商
-        partners = self.get_partners_priority()
+        partners = request.env['sms.partner'].sudo().get_partners_priority()
         if not partners:
             return json.dumps({"state": False, 'msg': "系统未找到可用的短信服务商，请联系管理员维护！"})
         # 验证员工是否有此手机号
@@ -59,27 +59,10 @@ class OAuthController(Controller):
             # 发送通知短信
             partners.sudo().send_registration_message(user, user_phone)
         # 使用服务商的发送验证码函数
-        result = partners.sudo().send_message_code(user, user_phone)
+        result = partners.sudo().send_message_code(user, user_phone, 'login')
         if result.get('state'):
             return json.dumps({"state": True, 'msg': "验证码已发送，请注意查收短信！"})
         return json.dumps({"state": False, 'msg': result.get('msg')})
-
-    def get_partners_priority(self):
-        """
-        获取优先级高的运营服务商
-        :return:
-        """
-        partners = request.env['sms.partner'].sudo().search([])
-        if not partners:
-            return False
-        # 判断优先级
-        partners_priority = None
-        priority = 0
-        for partner in partners:
-            if partner.priority > priority:
-                priority = partner.priority
-                partners_priority = partner
-        return partners_priority
 
     @http.route('/web/sms/user/login', type='http', auth="public", website=True, sitemap=False)
     def web_sms_user_login(self, **kw):
@@ -94,7 +77,7 @@ class OAuthController(Controller):
         if not user_phone or not code:
             return json.dumps({'state': False, 'msg': "手机号和验证码不正确！"})
         # 检查验证码和登录手机有效性
-        domain = [('phone', '=', user_phone), ('code', '=', code)]
+        domain = [('phone', '=', user_phone), ('code', '=', code), ('state', '=', 'normal')]
         records = request.env['sms.verification.record'].sudo().search(domain)
         if not records:
             return json.dumps({'state': False, 'msg': "验证码不存在,请重新输入！"})

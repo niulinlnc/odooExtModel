@@ -13,6 +13,11 @@ class SmsVerificationRecord(models.Model):
     _rec_name = 'sid'
     _order = 'id'
 
+    RECORDTYPE = [
+        ('login', '用户登录/注册'),
+        ('passwd', '用户修改密码'),
+    ]
+
     partner_id = fields.Many2one(comodel_name='sms.partner', string=u'服务商', ondelete='cascade', index=True)
     template_id = fields.Many2one(comodel_name='sms.template', string=u'模板', ondelete='cascade', index=True)
     user_id = fields.Many2one(comodel_name='res.users', string=u'用户', index=True)
@@ -23,7 +28,8 @@ class SmsVerificationRecord(models.Model):
     end_time = fields.Datetime(string=u'截至时间')
     timeout = fields.Integer(string='有效时长(分钟)', default=30)
     state = fields.Selection(string=u'状态', selection=[('normal', '未验证'), ('invalid', '已验证'), ], default='normal')
-
+    ttype = fields.Selection(string="消息类型", selection=RECORDTYPE)
+    
     @api.model
     def create(self, values):
         values['end_time'] = datetime.datetime.now() + datetime.timedelta(minutes=values['timeout'])
