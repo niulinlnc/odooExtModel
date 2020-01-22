@@ -20,6 +20,7 @@ class SmsSignature(models.Model):
     ]
 
     name = fields.Char(string="签名名称", required=True, help="无须添加【】、()、[]符号，签名发送会自带【】符号，避免重复", index=True)
+    partner_id = fields.Many2one(comodel_name="sms.partner", string="服务商", index=True, ondelete='cascade')
     ttype = fields.Selection(string="适用场景", selection=[('code', '验证码'), ('message', '通知/通用')], required=True, default='code')
     source = fields.Selection(string="来源", selection=SMSSOURCE, default='1')
     remark = fields.Text(string="签名说明")

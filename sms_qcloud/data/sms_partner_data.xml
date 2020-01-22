@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="sms_partner_data" model="sms.partner">
+            <field name="name">腾讯云短信</field>
+            <field name="code">qcloud</field>
+            <field name="image" type="base64" file="sms_qcloud/static/description/icon.png"/>
+            <field name="app_id">替换为你的app_id</field>
+            <field name="app_key">demo</field>
+        </record>
+
+    </data>
+</odoo>

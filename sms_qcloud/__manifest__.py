@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': "阿里云短信",
-    'summary': """使用阿里云短信发送短信消息""",
-    'description': """ 使用阿里云短信发送短信消息 """,
+    'name': "腾讯云短信",
+    'summary': """拓展sms使其可使用腾讯云短信的发信功能""",
+    'description': """ 拓展sms使其可使用腾讯云短信的发信功能 """,
     'author': "SuXueFeng",
     'website': "https://www.sxfblog.com",
     'category': 'SMS',

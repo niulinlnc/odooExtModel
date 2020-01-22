@@ -57,7 +57,7 @@ class SmsPartner(models.Model):
                 except Exception as e:
                     return {"state": False, 'msg': "发送验证码失败,Error:{}".format(str(e))}
             return {"state": False, 'msg': message}
-        return super(SmsPartner, self).send_message_code(user, phone)
+        return super(SmsPartner, self).send_message_code(user, phone, ttype)
 
     def send_registration_message(self, user, phone):
         """
