@@ -8,6 +8,7 @@
             <tree default_order="id desc">
                 <field name="name"/>
                 <field name="code"/>
+                <field name="image" widget="image" width="20px" height="20px"/>
                 <field name="type_id"/>
                 <field name="author"/>
                 <field name="version"/>
