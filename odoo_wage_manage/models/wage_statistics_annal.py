@@ -72,7 +72,7 @@ class WageEmpAttendanceAnnal(models.Model):
             if res.employee_id:
                 res.job_id = res.employee_id.job_id.id
                 res.department_id = res.employee_id.department_id.id
-                res.employee_number = res.employee_id.din_jobnumber
+                # res.employee_number = res.employee_id.din_jobnumber
 
 
 class WageEmployeePerformance(models.Model):
@@ -128,7 +128,7 @@ class WageEmployeePerformance(models.Model):
             if res.employee_id:
                 res.job_id = res.employee_id.job_id.id
                 res.department_id = res.employee_id.department_id.id
-                res.employee_number = res.employee_id.din_jobnumber
+                # res.employee_number = res.employee_id.din_jobnumber
 
     @api.multi
     def get_emp_performance_list(self):
