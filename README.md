@@ -16,5 +16,6 @@
 | sms_base                | 短信基础  | 用于短信登录和通知的基础模块                               |
 | sms_aliyun              | 阿里云短信| 使短信模块支持阿里云服务商                        |
 | sms_qcloud              | 腾讯云短信| 拓展短信框架，使其支持腾讯云发送短信服务            |
+| authing_login           | Authing登录模块| 实现统一登录odoo应用，官网：https://authing.cn/     |
 
 适用于odoo12EE/CE
