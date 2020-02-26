@@ -24,4 +24,5 @@
         'views/res_users.xml',
         'views/new_user_groups.xml',
     ],
+    'images': ['static/description/images1.png','static/description/images2.png','static/description/images3.png']
 }
