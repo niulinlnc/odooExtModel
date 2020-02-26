@@ -70,7 +70,7 @@
                                     请输入应用秘钥
                                 </div>
                                 <div class="text-muted">
-                                    <field name="authing_secret"/>
+                                    <field name="authing_secret" password="password"/>
                                 </div>
                             </div>
                         </div>
