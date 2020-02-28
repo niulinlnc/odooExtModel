@@ -52,7 +52,7 @@ class WageEmployeePayslip(models.Model):
             res.write({
                 'job_id': res.employee_id.job_id.id,
                 'name': "{}<{}>工资条".format(res.employee_id.name, res.date_code),
-                'emp_number': res.employee_id.din_jobnumber,
+                # 'emp_number': res.employee_id.din_jobnumber,
             })
 
 

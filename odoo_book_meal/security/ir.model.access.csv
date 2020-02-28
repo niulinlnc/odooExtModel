@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odoo_meal_type,odoo.meal.type,model_odoo_meal_type,odoo_book_meal.user_groups,1,1,1,1
+access_odoo_meal_tag,odoo.meal.tag,model_odoo_meal_tag,odoo_book_meal.user_groups,1,1,1,1
+access_odoo_meal_product,odoo.meal.product,model_odoo_meal_product,odoo_book_meal.user_groups,1,0,0,0
+access_odoo_meal_product_manage,odoo.meal.product.manage,model_odoo_meal_product,odoo_book_meal.manage_groups,1,1,1,1
+access_odoo_meal_order,odoo.meal.order,model_odoo_meal_order,odoo_book_meal.user_groups,1,1,1,1
+access_odoo_meal_order_line,odoo.meal.order.line,model_odoo_meal_order_line,odoo_book_meal.user_groups,1,1,1,1
+
+access_odoo_meal_alert,odoo.meal.alert,model_odoo_meal_alert,odoo_book_meal.user_groups,1,0,0,0
+access_odoo_meal_alert_manage,odoo.meal.alert.manage,model_odoo_meal_alert,odoo_book_meal.manage_groups,1,1,1,1

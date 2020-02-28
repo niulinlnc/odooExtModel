@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_contract_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_calendar_id']" position="after">
+                <field name="payroll_company" options="{'no_create_edit': True, 'no_create': True}"/>
+                <field name="household_id" options="{'no_create_edit': True, 'no_create': True}"/>
+            </xpath>
+            <xpath expr="//page[@name='information']" position="inside">
+                <group name="薪资项目">
+                    <field name="project_ids" nolabel="1">
+                        <tree editable="bottom" default_order="sequence">
+                            <field name="sequence" widget="handle"/>
+                            <field name="structure_id" required="1" options='{"no_open": "1","no_edit": "1","no_create": "1"}'/>
+                            <field name="wage_amount" sum="wage_amount"/>
+                        </tree>
+                    </field>
+                </group>
+                <field name="amount_total"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="hr_contract" name="薪资合同" action="hr_contract.action_hr_contract" parent="main_menu" sequence="5"
+            groups="odoo_wage_manage.supervisor_groups"/>
+
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="52"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block sms_base_settings_block" string="短信" data-string="短信" data-key="sms_base" groups="sms_base.manage_groups">
+                    <h2>短信设置</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="sms_auto_login"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="sms_auto_login"/>
+                                <div class="text-muted">
+                                   用户使用验证码登录的手机号不存在时，将自动创建新的用户
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('sms_auto_login', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">
+                                    新用户权限
+                                </span>
+                                <div class="text-muted">
+                                    创建新用户时的默认权限，请谨慎分配！
+                                </div>
+                                <div class="text-muted">
+                                    <field name="sms_group_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="sms_update_pwd"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="sms_update_pwd"/>
+                                <div class="text-muted">
+                                   修改密码时需通过手机验证后才能修改用户密码
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="sms_phone_login"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="sms_phone_login"/>
+                                <div class="text-muted">
+                                   开启后手机号也可作为账号登陆系统
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_configuration_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'sms_base'}</field>
+    </record>
+
+    <menuitem id="res_config_settings_menu" name="设置" parent="configure_menu" sequence="1" action="res_config_settings_configuration_action"/>
+
+</odoo>

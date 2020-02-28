@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2019 SuXueFeng GUN
+-->
+<odoo>
+
+    <record id="odoo_meal_type_tree_view" model="ir.ui.view">
+        <field name="name">菜品类型</field>
+        <field name="model">odoo.meal.type</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odoo_meal_type_action">
+        <field name="name">菜品类型</field>
+        <field name="res_model">odoo.meal.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="odoo_meal_type_menu" name="菜品类型" parent="configure_menu" sequence="1" action="odoo_meal_type_action"/>
+
+
+    <record id="odoo_meal_tag_tree_view" model="ir.ui.view">
+        <field name="name">标签</field>
+        <field name="model">odoo.meal.tag</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="odoo_meal_tag_action">
+        <field name="name">标签</field>
+        <field name="res_model">odoo.meal.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="odoo_meal_tag_menu" name="标签" parent="configure_menu" sequence="2" action="odoo_meal_tag_action"/>
+
+</odoo>

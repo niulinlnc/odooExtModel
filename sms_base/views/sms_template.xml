@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_template_tree_view" model="ir.ui.view">
+        <field name="name">短信模板</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="signature_id"/>
+                <field name="code"/>
+                <field name="ttype"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sms_template_form_view" model="ir.ui.view">
+        <field name="name">短信模板</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="name" placeholder="模板名称..."/>
+                            <field name="partner_id"/>
+                            <field name="signature_id"/>
+                        </group>
+                        <group>
+                            <field name="code"/>
+                            <field name="ttype"/>
+                            <field name="timeout" attrs="{'invisible': [('ttype', '!=', 'code')]}"/>
+                        </group>
+                    </group>
+                    <div name="description">
+                        <div class="alert alert-danger oe_edit_only text-center" role="alert">
+                            <p>请注意区分"短信签名"；部分服务商会区分验证码和通知消息的签名，例如阿里云和腾讯云都是区分了验证码和通用消息的签名名称！</p>
+                        </div>
+                        <div class="alert alert-info" role="alert" attrs="{'invisible': [('ttype', '!=', 'code')]}">
+                            <h3>短信模板：手机验证码</h3>
+                            <p>内容：您此次的验证码为：${code}，请勿泄露。</p>
+                        </div>
+                        <div class="alert alert-info" role="alert" attrs="{'invisible': [('ttype', '!=', 'new_user')]}">
+                            <h3>短信模板: 新用户短信通知</h3>
+                            <p>内容：您的账号已创建成功。账号：${username}，初始密码：${pwd}，请及时修改初始密码。</p>
+                        </div>
+                        <div class="alert alert-info" role="alert" attrs="{'invisible': [('ttype', '!=', 'up_pwd')]}">
+                            <h3>短信模板: 修改密码通知</h3>
+                            <p>内容：您的账户信息已发生改变，新的账户信息为：用户名：${name}，密码：${pwd}，请妥善保管！</p>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="sms_template_action">
+        <field name="name">短信模板</field>
+        <field name="res_model">sms.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sms_template_menu" name="短信模板" parent="main_menu" sequence="5" action="sms_template_action"/>
+
+</odoo>

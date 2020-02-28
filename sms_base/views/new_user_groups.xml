@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="new_user_groups_tree_view" model="ir.ui.view">
+        <field name="name">新用户权限</field>
+        <field name="model">new.user.groups</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="name"/>
+                <field name="groups_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="new_user_groups_form_view" model="ir.ui.view">
+        <field name="name">新用户权限</field>
+        <field name="model">new.user.groups</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" placeholder="为该权限组取一个名字吧..."/>
+                        <field name="groups_ids" widget="many2many_tags" options='{"no_open": True, "no_create": True}' required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="new_user_groups_action">
+        <field name="name">新用户权限</field>
+        <field name="res_model">new.user.groups</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="new_user_groups_menu" name="新用户权限" parent="configure_menu" sequence="2" action="new_user_groups_action"/>
+
+</odoo>

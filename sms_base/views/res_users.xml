@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_users_form_inherit" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_title']/group" position='inside'>
+                <field name="user_phone" placeholder="用户使用手机接受短信消息的号码..." required="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="change_password_user_sms_form_view" model="ir.ui.view">
+        <field name="name">验证手机验证码</field>
+        <field name="model">change.password.user.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="phone"/>
+                    </group>
+                    <group>
+                        <field name="code" placeholder="请输入您收到的验证码..."/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="修改密码" name="change_password_button" type="object" class="oe_highlight"/>
+                    <button string="取消" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="change_password_user_sms_action" model="ir.actions.act_window">
+        <field name="name">验证手机验证码</field>
+        <field name="res_model">change.password.user.sms</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
